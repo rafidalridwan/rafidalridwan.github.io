@@ -1,1779 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
-<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
-
 <head>
-    <meta charset="utf-8">
-    <title>Pipra - Construction Company</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Video Upload & Playback Platform</title>
+  <style>
+    :root {
+      --bg-dark: #0b1020;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --accent: #3b82f6;
+      /* blue-500 */
+      --text-main: #e5e7eb;
+      --text-muted: #94a3b8;
+    }
 
-    <!-- Favicon -->
-    <link href="img/favicon.html" rel="icon">
+    * {
+      box-sizing: border-box;
+    }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&amp;family=Teko:wght@400;500;600&amp;display=swap"
-        rel="stylesheet">
+    body {
+      margin: 0;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
 
-    <!-- Icon Font Stylesheet -->
-    <link href="cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="cdn.jsdelivr.net/npm/bootstrap-icons%401.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    section {
+      position: relative;
+    }
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/owl.carousel.min.css">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/magnific-popup.min.css">
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 100px 24px;
+    }
 
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+    h1,
+    h2,
+    h3 {
+      color: #ffffff;
+      margin: 0 0 12px;
+    }
 
-    <link href="css/style2.css" rel="stylesheet">
+    h1 {
+      font-size: 52px;
+      line-height: 1.15;
+    }
 
-    <link rel="stylesheet" type="text/css" href="plugins/revolution/revolution/css/settings.css">
-    <!-- REVOLUTION SLIDER CSS -->
-    <link rel="stylesheet" type="text/css" href="plugins/revolution/revolution/css/navigation.css">
-    <!-- REVOLUTION NAVIGATION STYLE -->
+    h2 {
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
 
+    p {
+      color: var(--text-muted);
+      max-width: 720px;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(circle at top, #1e293b, #020617 60%);
+    }
+
+    .hero span {
+      color: var(--accent);
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 36px;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #020617;
+      text-decoration: none;
+      font-weight: 700;
+      border-radius: 999px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.35);
+    }
+
+    .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(56, 189, 248, 0.5);
+    }
+
+    /* PARALLAX SECTION */
+    .parallax {
+      background-image: linear-gradient(rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.9)),
+        url('https://images.unsplash.com/photo-1527443224154-c4a3942d3acf');
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* GRID & CARDS */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(2, 6, 23, 0.95));
+      padding: 28px;
+      border-radius: 18px;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.35), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(59, 130, 246, 0.9);
+      box-shadow: 0 30px 60px rgba(59, 130, 246, 0.35);
+    }
+
+
+
+    /* HIGHLIGHT */
+    .highlight {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(15, 23, 42, 0.8));
+      border: 1px solid rgba(59, 130, 246, 0.45);
+      padding: 40px;
+      border-radius: 22px;
+      font-size: 18px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--text-muted);
+      background: #020617;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 38px;
+      }
+
+      .container {
+        padding: 80px 20px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status">
-        </div>
-        <img height="50" width="80" class="position-absolute top-50 start-50 translate-middle"
-            src="img/icons/icon-1.png" alt="Icon">
 
+  <section class="hero">
+    <div class="container">
+      <h1>
+        Secure Video Platform<br />
+        <span>Scale. Protect. Stream.</span>
+      </h1>
+      <p>
+        Enterprise-grade video delivery for LMS, OTT, and paid platforms —
+        streaming smoothly to <b>30,000–50,000+</b> concurrent users with
+        YouTube-like performance.
+      </p>
+      <a href="https://custom-hls-player.vercel.app/?playlist=1806" class="cta">Request Demo</a>
     </div>
-    <!-- Spinner End -->
+  </section>
 
-
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top py-lg-0 px-lg-5 wow fadeIn"
-        data-wow-delay="0.1s">
-        <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="text-primary m-0"><img height="70" width="100" class="me-3" src="img/icons/icon-1.png"
-                    alt="Icon">
-            </h1>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Home</a>
-                <a href="about.html" class="nav-item nav-link">About</a>
-                <a href="service.html" class="nav-item nav-link">Services</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Projects</a>
-                    <div class="dropdown-menu border-0 m-0">
-                        <a href="index.html" class="dropdown-item">Project 1</a>
-                        <a href="index.html" class="dropdown-item">Project 2</a>
-                        <a href="index.html" class="dropdown-item">Project 3</a>
-                        <a href="index.html" class="dropdown-item">Project 4</a>
-                        <a href="index.html" class="dropdown-item">Project 5</a>
-                    </div>
-                </div>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
-            </div>
-        </div>
-    </nav>
-    <!-- Navbar End -->
-
-
-    <!-- Carousel Start -->
-    <!-- <div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="owl-carousel header-carousel position-relative">
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/carousel-1.jpg'>">
-                <img class="img-fluid" src="img/carousel-1.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <h1 class="display-1 text-white animated slideInDown">Best Architecture And Interior
-                                    Design Services</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-3  animated slideInDown">Vero elitr justo
-                                    clita lorem. Ipsum dolor
-                                    at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea
-                                    elitr.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/carousel-2.jpg'>">
-                <img class="img-fluid" src="img/carousel-2.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <h1 class="display-1 text-white animated slideInDown">Best Architecture And Interior
-                                    Design Services</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-3">Vero elitr justo clita lorem. Ipsum dolor
-                                    at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea
-                                    elitr.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/carousel-3.jpg'>">
-                <img class="img-fluid" src="img/carousel-3.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-10 col-lg-8">
-                                <h1 class="display-1 text-white animated slideInDown">Best Architecture And Interior
-                                    Design Services</h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-3">Vero elitr justo clita lorem. Ipsum dolor
-                                    at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea
-                                    elitr.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- Carousel End -->
-
-
-    <!-- SLIDER START -->
-    <div id="welcome_wrapper" class="rev_slider_wrapper fullscreen-container" data-alias="goodnews-header"
-        data-source="gallery" style="background:#eeeeee;padding:0px;">
-        <div id="welcome" class="rev_slider fullscreenbanner" style="display:none;" data-version="5.4.3.1">
-            <ul>
-                <!-- SLIDE 1 -->
-                <li data-index="rs-902" data-transition="fadethroughdark" data-slotamount="default"
-                    data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default"
-                    data-masterspeed="default" data-thumb="img/carousel-1.jpg" data-rotate="0" data-fstransition="fade"
-                    data-fsmasterspeed="300" data-fsslotamount="7" data-saveperformance="off" data-title=""
-                    data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6=""
-                    data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
-                    <!-- MAIN IMAGE -->
-                    <img src="img/carousel-1.jpg" alt="" data-lazyload="img/carousel-1.jpg"
-                        data-bgposition="center center" data-bgfit="cover" data-bgparallax="4" class="rev-slidebg"
-                        data-no-retina>
-                    <!-- LAYERS -->
-                    <div class="dark-overlay"></div>
-                    <!-- BACKGROUND VIDEO LAYER -->
-                    <!-- LAYER NR. 1 -->
-                    <div class="tp-caption tp-shape tp-shapewrapper " id="rrzb_902-1"
-                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                        data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
-                        data-width="full" data-height="full" data-whitespace="nowrap" data-type="shape"
-                        data-basealign="slide" data-responsive_offset="off" data-responsive="off" data-frames='[
-                        {"from":"opacity:0;","speed":1000,"to":"o:1;","delay":0,"ease":"Power4.easeOut"},
-                        {"delay":"wait","speed":1000,"to":"opacity:0;","ease":"Power4.easeOut"}
-                        ]' data-textAlign="['left','left','left','left']" data-paddingtop="[0,0,0,0]"
-                        data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                        style="z-index: 4;background-color:rgba(0, 0, 0, 0.2);border-color:rgba(0, 0, 0, 0);border-width:0px;">
-                    </div>
-
-                    <div id="rrzb_902" class="rev_row_zone rev_row_zone_middle" style="z-index: 7;">
-                        <!-- Content Block -->
-                        <!-- LAYER NR. 1 -->
-                        <div class="tp-caption  " id="slide-902-layer-1" data-x="['left','left','left','left']"
-                            data-hoffset="['100','100','100','100']" data-y="['bottom','bottom','bottom','bottom']"
-                            data-voffset="['0','0','0','0']" data-width="none" data-height="none"
-                            data-whitespace="nowrap" data-type="row" data-columnbreak="3" data-responsive_offset="on"
-                            data-responsive="off" data-frames='[{"delay":10,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                            {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                            data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[50,60,40,50]"
-                            data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']"
-                            data-paddingtop="[0,0,0,0]" data-paddingright="[150,130,80,50]"
-                            data-paddingbottom="[0,0,0,0]" data-paddingleft="[150,130,80,50]"
-                            style="z-index: 7; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;">
-
-                            <!-- LAYER NR. 2 -->
-                            <div class="tp-caption  " id="slide-902-layer-2" data-x="['left','left','left','left']"
-                                data-hoffset="['0','0','100','100']" data-y="['top','top','top','top']"
-                                data-voffset="['0','0','100','100']" data-width="none" data-height="none"
-                                data-whitespace="nowrap" data-type="column" data-responsive_offset="on"
-                                data-responsive="off"
-                                data-frames='[{"delay":"+0","speed":750,"sfxcolor":"#fff","sfx_effect":"","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                    {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power4.easeInOut"}]'
-                                data-columnwidth="100%" data-verticalalign="top" data-margintop="[0,0,0,0]"
-                                data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                data-textAlign="['center','center','center','center']" data-paddingtop="[50,50,50,50]"
-                                data-paddingright="[0,0,30,30]" data-paddingbottom="[50,50,50,50]"
-                                data-paddingleft="[0,0,30,30]" style="z-index: 8; width: 100%;">
-                                <!-- LAYER NR. 3 -->
-                                <div class="tp-caption   tp-resizeme" id="slide-902-layer-3"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','260','250','190']"
-                                    data-width="none" data-height="none"
-                                    data-whitespace="['normal','nowrap','nowrap','nowrap']" data-type="text"
-                                    data-basealign="slide" data-responsive_offset="off"
-                                    data-frames='[{"delay":"+490","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]"
-                                    data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]"
-                                    data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','inherit','inherit','inherit']"
-                                    data-paddingtop="[5,5,5,5]" data-paddingright="[5,5,5,5]"
-                                    data-paddingbottom="[5,5,5,5]" data-paddingleft="[5,5,5,5]"
-                                    style="z-index: 10; white-space: normal; font-size: 18px; line-height: 15px; font-weight: 700; color: #fff; letter-spacing: 3px; display: inline-block;">
-                                    <!-- GENERAL -->
-                                </div>
-
-                                <!-- LAYER NR. 4 -->
-                                <div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme" id="slide-902-layer-4"
-                                    data-x="['left','left','left','left']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','top','top','top']" data-voffset="['0','0','0','0']"
-                                    data-width="full" data-height="15" data-whitespace="normal" data-type="shape"
-                                    data-responsive_offset="on"
-                                    data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['inherit','inherit','inherit','inherit']"
-                                    data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]"
-                                    data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                                    style="z-index: 13; display: block;background-color:rgba(0, 0, 0, 0);">
-                                </div>
-
-                                <!-- LAYER NR. 5 -->
-                                <div class="tp-caption   tp-resizeme  tp-linkmod" id="slide-902-layer-5"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','170','140','120']"
-                                    data-fontsize="['60','60','60','40']" data-lineheight="['60','60','60','40']"
-                                    data-width="['900','700','100%','100%']" data-height="none" data-whitespace="normal"
-                                    data-type="text" data-actions='' data-basealign="slide" data-responsive_offset="off"
-                                    data-frames='[{"delay":"+590","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"},
-                                        {"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgb(255,255,255);"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
-                                    data-paddingright="[5,5,5,5]" data-paddingbottom="[10,10,10,10]"
-                                    data-paddingleft="[5,5,5,5]" style="z-index: 11; white-space: normal; font-weight: 600; color: #fff; letter-spacing: 2px; display: inline-block;
-                                        text-decoration: none; text-transform:capitalize">Innovative Design Solutions
-                                </div>
-
-                                <!-- LAYER NR. 6 -->
-                                <div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme" id="slide-902-layer-6"
-                                    data-x="['left','left','left','left']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','top','top','top']" data-voffset="['0','0','0','0']"
-                                    data-width="full" data-height="15" data-whitespace="normal" data-type="shape"
-                                    data-responsive_offset="on"
-                                    data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['inherit','inherit','inherit','inherit']"
-                                    data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]"
-                                    data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                                    style="z-index: 9; display: block;background-color:rgba(0, 0, 0, 0);"> </div>
-
-                                <!-- LAYER NR. 7 -->
-                                <div class="tp-caption   tp-resizeme" id="slide-902-layer-7"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','100','80','70']"
-                                    data-width="['none','460','100%','100%']" data-height="none"
-                                    data-whitespace="normal" data-type="text" data-basealign="slide"
-                                    data-responsive_offset="off"
-                                    data-frames='[{"delay":"+690","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','center','center','center']" data-paddingtop="[5,5,5,5]"
-                                    data-paddingright="[5,5,5,5]" data-paddingbottom="[5,5,5,5]"
-                                    data-paddingleft="[5,5,5,5]" style="z-index: 12; white-space: normal; font-size: 16px; line-height: 22px;
-                                        font-weight: 400; color: #fff; letter-spacing: 0px; display: inline-block;">
-                                    Pushing the boundaries of creativity to deliver unique and functional spaces
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <!-- LAYER NR. 8 -->
-                    <!-- Border Part -->
-                    <div class="tp-caption tp-shape tp-shapewrapper " id="slide-902-layer-8"
-                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                        data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
-                        data-width="full" data-height="full" data-whitespace="nowrap"
-                        data-visibility="['on','on','off','off']" data-type="shape" data-basealign="slide"
-                        data-responsive_offset="off" data-responsive="off"
-                        data-frames='[{"delay":50,"speed":100,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"frame":"999","to":"opacity:0;","ease":"Power3.easeIn"}]'
-                        data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                        data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                        style="z-index: 5;background-color:rgba(0, 0, 0, 0);border-color:rgb(255,255,255);border-style:solid;border-width:0px 80px 80px 80px;">
-                    </div>
-
-                </li>
-
-                <!-- SLIDE 2 -->
-                <li data-index="rs-903" data-transition="fadethroughdark" data-slotamount="default"
-                    data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default"
-                    data-masterspeed="default" data-thumb="img/carousel-2.jpg" data-rotate="0" data-fstransition="fade"
-                    data-fsmasterspeed="300" data-fsslotamount="7" data-saveperformance="off" data-title=""
-                    data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6=""
-                    data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
-                    <!-- MAIN IMAGE -->
-                    <img src="img/carousel-2.jpg" alt="" data-lazyload="img/carousel-2.jpg"
-                        data-bgposition="center center" data-bgfit="cover" data-bgparallax="4" class="rev-slidebg"
-                        data-no-retina>
-                    <!-- LAYERS -->
-                    <div class="dark-overlay"></div>
-                    <!-- BACKGROUND VIDEO LAYER -->
-                    <!-- LAYER NR. 1 -->
-                    <div class="tp-caption tp-shape tp-shapewrapper " id="rrzb_903-1"
-                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                        data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
-                        data-width="full" data-height="full" data-whitespace="nowrap" data-type="shape"
-                        data-basealign="slide" data-responsive_offset="off" data-responsive="off" data-frames='[
-                        {"from":"opacity:0;","speed":1000,"to":"o:1;","delay":0,"ease":"Power4.easeOut"},
-                        {"delay":"wait","speed":1000,"to":"opacity:0;","ease":"Power4.easeOut"}
-                        ]' data-textAlign="['left','left','left','left']" data-paddingtop="[0,0,0,0]"
-                        data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                        style="z-index: 4;background-color:rgba(0, 0, 0, 0.2);border-color:rgba(0, 0, 0, 0);border-width:0px;">
-                    </div>
-
-                    <div id="rrzb_903" class="rev_row_zone rev_row_zone_middle" style="z-index: 7;">
-                        <!-- Content Block -->
-                        <!-- LAYER NR. 1 -->
-                        <div class="tp-caption  " id="slide-903-layer-1" data-x="['left','left','left','left']"
-                            data-hoffset="['100','100','100','100']" data-y="['bottom','bottom','bottom','bottom']"
-                            data-voffset="['0','0','0','0']" data-width="none" data-height="none"
-                            data-whitespace="nowrap" data-type="row" data-columnbreak="3" data-responsive_offset="on"
-                            data-responsive="off" data-frames='[{"delay":10,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                            {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                            data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[50,60,40,50]"
-                            data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']"
-                            data-paddingtop="[0,0,0,0]" data-paddingright="[150,130,80,50]"
-                            data-paddingbottom="[0,0,0,0]" data-paddingleft="[150,130,80,50]"
-                            style="z-index: 7; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;">
-
-                            <!-- LAYER NR. 2 -->
-                            <div class="tp-caption  " id="slide-903-layer-2" data-x="['left','left','left','left']"
-                                data-hoffset="['0','0','100','100']" data-y="['top','top','top','top']"
-                                data-voffset="['0','0','100','100']" data-width="none" data-height="none"
-                                data-whitespace="nowrap" data-type="column" data-responsive_offset="on"
-                                data-responsive="off"
-                                data-frames='[{"delay":"+0","speed":750,"sfxcolor":"#fff","sfx_effect":"","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                    {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power4.easeInOut"}]'
-                                data-columnwidth="100%" data-verticalalign="top" data-margintop="[0,0,0,0]"
-                                data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                data-textAlign="['center','center','center','center']" data-paddingtop="[50,50,50,50]"
-                                data-paddingright="[0,0,30,30]" data-paddingbottom="[50,50,50,50]"
-                                data-paddingleft="[0,0,30,30]" style="z-index: 8; width: 100%;">
-                                <!-- LAYER NR. 3 -->
-                                <div class="tp-caption   tp-resizeme" id="slide-903-layer-3"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','260','250','190']"
-                                    data-width="none" data-height="none"
-                                    data-whitespace="['normal','nowrap','nowrap','nowrap']" data-type="text"
-                                    data-basealign="slide" data-responsive_offset="off"
-                                    data-frames='[{"delay":"+490","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]"
-                                    data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]"
-                                    data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','inherit','inherit','inherit']"
-                                    data-paddingtop="[5,5,5,5]" data-paddingright="[5,5,5,5]"
-                                    data-paddingbottom="[5,5,5,5]" data-paddingleft="[5,5,5,5]"
-                                    style="z-index: 10; white-space: normal; font-size: 18px; line-height: 18px; font-weight: 700; color: #fff; letter-spacing: 3px; display: inline-block;">
-                                    <!-- GENERAL -->
-                                </div>
-
-                                <!-- LAYER NR. 4 -->
-                                <div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme" id="slide-903-layer-4"
-                                    data-x="['left','left','left','left']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','top','top','top']" data-voffset="['0','0','0','0']"
-                                    data-width="full" data-height="15" data-whitespace="normal" data-type="shape"
-                                    data-responsive_offset="on"
-                                    data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['inherit','inherit','inherit','inherit']"
-                                    data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]"
-                                    data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                                    style="z-index: 13; display: block;background-color:rgba(0, 0, 0, 0);">
-                                </div>
-
-                                <!-- LAYER NR. 5 -->
-                                <div class="tp-caption   tp-resizeme  tp-linkmod" id="slide-903-layer-5"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','170','140','120']"
-                                    data-fontsize="['60','60','60','40']" data-lineheight="['60','60','60','40']"
-                                    data-width="['900','700','100%','100%']" data-height="none" data-whitespace="normal"
-                                    data-type="text" data-actions='' data-basealign="slide" data-responsive_offset="off"
-                                    data-frames='[{"delay":"+590","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"},
-                                        {"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgb(255,255,255);"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
-                                    data-paddingright="[5,5,5,5]" data-paddingbottom="[10,10,10,10]"
-                                    data-paddingleft="[5,5,5,5]" style="z-index: 11; white-space: normal; font-weight: 600; color: #fff; letter-spacing: 2px; display: inline-block;
-                                        text-decoration: none; text-transform:capitalize">Sustainable Architecture
-                                </div>
-
-                                <!-- LAYER NR. 6 -->
-                                <div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme" id="slide-903-layer-6"
-                                    data-x="['left','left','left','left']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','top','top','top']" data-voffset="['0','0','0','0']"
-                                    data-width="full" data-height="15" data-whitespace="normal" data-type="shape"
-                                    data-responsive_offset="on"
-                                    data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['inherit','inherit','inherit','inherit']"
-                                    data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]"
-                                    data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                                    style="z-index: 9; display: block;background-color:rgba(0, 0, 0, 0);"> </div>
-
-                                <!-- LAYER NR. 7 -->
-                                <div class="tp-caption   tp-resizeme" id="slide-903-layer-7"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','100','80','70']"
-                                    data-width="['none','460','100%','100%']" data-height="none"
-                                    data-whitespace="normal" data-type="text" data-basealign="slide"
-                                    data-responsive_offset="off"
-                                    data-frames='[{"delay":"+690","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','center','center','center']" data-paddingtop="[5,5,5,5]"
-                                    data-paddingright="[5,5,5,5]" data-paddingbottom="[5,5,5,5]"
-                                    data-paddingleft="[5,5,5,5]" style="z-index: 12; white-space: normal; font-size: 16px; line-height: 22px;
-                                        font-weight: 400; color: #fff; letter-spacing: 0px; display: inline-block;">
-                                    Committed to eco-friendly practices for a greener future
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <!-- LAYER NR. 8 -->
-                    <!-- Border Part -->
-                    <div class="tp-caption tp-shape tp-shapewrapper " id="slide-903-layer-8"
-                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                        data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
-                        data-width="full" data-height="full" data-whitespace="nowrap"
-                        data-visibility="['on','on','off','off']" data-type="shape" data-basealign="slide"
-                        data-responsive_offset="off" data-responsive="off"
-                        data-frames='[{"delay":50,"speed":100,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"frame":"999","to":"opacity:0;","ease":"Power3.easeIn"}]'
-                        data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                        data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                        style="z-index: 5;background-color:rgba(0, 0, 0, 0);border-color:rgb(255,255,255);border-style:solid;border-width:0px 80px 80px 80px;">
-                    </div>
-
-                </li>
-
-                <!-- SLIDE 3 -->
-                <li data-index="rs-904" data-transition="fadethroughdark" data-slotamount="default"
-                    data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default"
-                    data-masterspeed="default" data-thumb="img/carousel-3.jpg" data-rotate="0" data-fstransition="fade"
-                    data-fsmasterspeed="300" data-fsslotamount="7" data-saveperformance="off" data-title=""
-                    data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6=""
-                    data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
-                    <!-- MAIN IMAGE -->
-                    <img src="img/carousel-3.jpg" alt="" data-lazyload="img/carousel-3.jpg"
-                        data-bgposition="center center" data-bgfit="cover" data-bgparallax="4" class="rev-slidebg"
-                        data-no-retina>
-                    <!-- LAYERS -->
-                    <div class="dark-overlay"></div>
-                    <!-- BACKGROUND VIDEO LAYER -->
-                    <!-- LAYER NR. 1 -->
-                    <div class="tp-caption tp-shape tp-shapewrapper " id="rrzb_904-1"
-                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                        data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
-                        data-width="full" data-height="full" data-whitespace="nowrap" data-type="shape"
-                        data-basealign="slide" data-responsive_offset="off" data-responsive="off" data-frames='[
-                        {"from":"opacity:0;","speed":1000,"to":"o:1;","delay":0,"ease":"Power4.easeOut"},
-                        {"delay":"wait","speed":1000,"to":"opacity:0;","ease":"Power4.easeOut"}
-                        ]' data-textAlign="['left','left','left','left']" data-paddingtop="[0,0,0,0]"
-                        data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                        style="z-index: 4;background-color:rgba(0, 0, 0, 0.2);border-color:rgba(0, 0, 0, 0);border-width:0px;">
-                    </div>
-
-                    <div id="rrzb_904" class="rev_row_zone rev_row_zone_middle" style="z-index: 7;">
-                        <!-- Content Block -->
-                        <!-- LAYER NR. 1 -->
-                        <div class="tp-caption  " id="slide-904-layer-1" data-x="['left','left','left','left']"
-                            data-hoffset="['100','100','100','100']" data-y="['bottom','bottom','bottom','bottom']"
-                            data-voffset="['0','0','0','0']" data-width="none" data-height="none"
-                            data-whitespace="nowrap" data-type="row" data-columnbreak="3" data-responsive_offset="on"
-                            data-responsive="off" data-frames='[{"delay":10,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                            {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                            data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[50,60,40,50]"
-                            data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']"
-                            data-paddingtop="[0,0,0,0]" data-paddingright="[150,130,80,50]"
-                            data-paddingbottom="[0,0,0,0]" data-paddingleft="[150,130,80,50]"
-                            style="z-index: 7; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;">
-
-                            <!-- LAYER NR. 2 -->
-                            <div class="tp-caption  " id="slide-904-layer-2" data-x="['left','left','left','left']"
-                                data-hoffset="['0','0','100','100']" data-y="['top','top','top','top']"
-                                data-voffset="['0','0','100','100']" data-width="none" data-height="none"
-                                data-whitespace="nowrap" data-type="column" data-responsive_offset="on"
-                                data-responsive="off"
-                                data-frames='[{"delay":"+0","speed":750,"sfxcolor":"#fff","sfx_effect":"","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                    {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power4.easeInOut"}]'
-                                data-columnwidth="100%" data-verticalalign="top" data-margintop="[0,0,0,0]"
-                                data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                data-textAlign="['center','center','center','center']" data-paddingtop="[50,50,50,50]"
-                                data-paddingright="[0,0,30,30]" data-paddingbottom="[50,50,50,50]"
-                                data-paddingleft="[0,0,30,30]" style="z-index: 8; width: 100%;">
-                                <!-- LAYER NR. 3 -->
-                                <div class="tp-caption   tp-resizeme" id="slide-904-layer-3"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','260','250','190']"
-                                    data-width="none" data-height="none"
-                                    data-whitespace="['normal','nowrap','nowrap','nowrap']" data-type="text"
-                                    data-basealign="slide" data-responsive_offset="off"
-                                    data-frames='[{"delay":"+490","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]"
-                                    data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]"
-                                    data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','inherit','inherit','inherit']"
-                                    data-paddingtop="[5,5,5,5]" data-paddingright="[5,5,5,5]"
-                                    data-paddingbottom="[5,5,5,5]" data-paddingleft="[5,5,5,5]"
-                                    style="z-index: 10; white-space: normal; font-size: 18px; line-height: 18px; font-weight: 700; color: #fff; letter-spacing: 3px; display: inline-block;">
-                                    <!-- GENERAL -->
-                                </div>
-
-                                <!-- LAYER NR. 4 -->
-                                <div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme" id="slide-904-layer-4"
-                                    data-x="['left','left','left','left']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','top','top','top']" data-voffset="['0','0','0','0']"
-                                    data-width="full" data-height="15" data-whitespace="normal" data-type="shape"
-                                    data-responsive_offset="on"
-                                    data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['inherit','inherit','inherit','inherit']"
-                                    data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]"
-                                    data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                                    style="z-index: 13; display: block;background-color:rgba(0, 0, 0, 0);">
-                                </div>
-
-                                <!-- LAYER NR. 5 -->
-                                <div class="tp-caption   tp-resizeme  tp-linkmod" id="slide-904-layer-5"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','170','140','120']"
-                                    data-fontsize="['60','60','60','40']" data-lineheight="['60','60','60','40']"
-                                    data-width="['900','700','100%','100%']" data-height="none" data-whitespace="normal"
-                                    data-type="text" data-actions='' data-basealign="slide" data-responsive_offset="off"
-                                    data-frames='[{"delay":"+590","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"},
-                                        {"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;","style":"c:rgb(255,255,255);"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
-                                    data-paddingright="[5,5,5,5]" data-paddingbottom="[10,10,10,10]"
-                                    data-paddingleft="[5,5,5,5]" style="z-index: 11; white-space: normal; font-weight: 600; color: #fff; letter-spacing: 2px; display: inline-block;
-                                        text-decoration: none; text-transform:capitalize">Client-Centric Approach</div>
-
-                                <!-- LAYER NR. 6 -->
-                                <div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme" id="slide-904-layer-6"
-                                    data-x="['left','left','left','left']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','top','top','top']" data-voffset="['0','0','0','0']"
-                                    data-width="full" data-height="15" data-whitespace="normal" data-type="shape"
-                                    data-responsive_offset="on"
-                                    data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['inherit','inherit','inherit','inherit']"
-                                    data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]"
-                                    data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                                    style="z-index: 9; display: block;background-color:rgba(0, 0, 0, 0);"> </div>
-
-                                <!-- LAYER NR. 7 -->
-                                <div class="tp-caption   tp-resizeme" id="slide-904-layer-7"
-                                    data-x="['left','center','center','center']" data-hoffset="['0','0','0','0']"
-                                    data-y="['top','bottom','bottom','bottom']" data-voffset="['0','100','80','70']"
-                                    data-width="['none','460','100%','100%']" data-height="none"
-                                    data-whitespace="normal" data-type="text" data-basealign="slide"
-                                    data-responsive_offset="off"
-                                    data-frames='[{"delay":"+690","speed":750,"sfxcolor":"#fff","sfx_effect":"blockfromleft","frame":"0","from":"z:0;","to":"o:1;","ease":"Power4.easeInOut"},
-                                        {"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                    data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]"
-                                    data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]"
-                                    data-textAlign="['center','center','center','center']" data-paddingtop="[5,5,5,5]"
-                                    data-paddingright="[5,5,5,5]" data-paddingbottom="[5,5,5,5]"
-                                    data-paddingleft="[5,5,5,5]" style="z-index: 12; white-space: normal; font-size: 16px; line-height: 22px;
-                                        font-weight: 400; color: #fff; letter-spacing: 0px; display: inline-block;">
-                                    Crafting spaces that reflect the visions and needs of our clients
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <!-- LAYER NR. 8 -->
-                    <!-- Border Part -->
-                    <div class="tp-caption tp-shape tp-shapewrapper " id="slide-904-layer-8"
-                        data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                        data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
-                        data-width="full" data-height="full" data-whitespace="nowrap"
-                        data-visibility="['on','on','off','off']" data-type="shape" data-basealign="slide"
-                        data-responsive_offset="off" data-responsive="off"
-                        data-frames='[{"delay":50,"speed":100,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":1000,"frame":"999","to":"opacity:0;","ease":"Power3.easeIn"}]'
-                        data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                        data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]"
-                        style="z-index: 5;background-color:rgba(0, 0, 0, 0);border-color:rgb(255,255,255);border-style:solid;border-width:0px 80px 80px 80px;">
-                    </div>
-
-                </li>
-
-            </ul>
-            <div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
-        </div>
+  <section class="container">
+    <h2>Why This Platform</h2>
+    <div class="grid">
+      <div class="card">🔐 <b>Private Storage</b><br />Videos remain fully private with zero public URLs.</div>
+      <div class="card">🛡️ <b>Anti‑Download</b><br />Blocks IDM, hotlinking, and common download tools.</div>
+      <div class="card">🚀 <b>Ultra Performance</b><br />CDN‑powered streaming for 30k–50k viewers.</div>
+      <div class="card">👤 <b>Access Control</b><br />User‑based, token‑based, and time‑limited playback.</div>
     </div>
-    <!-- SLIDER END -->
+  </section>
 
-    <!-- Facts Start -->
-    <div class="container-xxl py-5">
-        <div class="container pt-5">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="fact-item text-center bg-light h-100 p-5 pt-0">
-                        <div class="fact-icon">
-                            <img src="img/icons/icon-2.png" alt="Icon">
-                        </div>
-                        <h3 class="mb-3">Design Approach</h3>
-                        <p class="mb-0">We blend creativity and functionality to craft spaces that inspire and endure,
-                            Our designs prioritize sustainability and innovation.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="fact-item text-center bg-light h-100 p-5 pt-0">
-                        <div class="fact-icon">
-                            <img src="img/icons/icon-3.png" alt="Icon">
-                        </div>
-                        <h3 class="mb-3">Innovative Solutions</h3>
-                        <p class="mb-0">We leverage cutting-edge technology and forward-thinking designs to transform
-                            visions into reality.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="fact-item text-center bg-light h-100 p-5 pt-0">
-                        <div class="fact-icon">
-                            <img src="img/icons/icon-4.png" alt="Icon">
-                        </div>
-                        <h3 class="mb-3">Project Management</h3>
-                        <p class="mb-0">Our meticulous project management ensures timely delivery and exceptional
-                            quality at every stage.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <section class="parallax">
+    <div class="container">
+      <h2>Built for High-Traffic Platforms</h2>
+      <p>
+        Designed with cloud-native architecture, CDN-powered HLS streaming,
+        and token-based authorization to ensure performance, security,
+        and reliability even under extreme load.
+      </p>
     </div>
-    <!-- Facts End -->
+  </section>
 
-
-    <!-- About Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow slideInLeft" data-wow-delay="0.1s">
-                    <div class="about-img">
-                        <img class="img-fluid" src="img/about-1.jpg" alt="">
-                        <img class="img-fluid" src="img/about-2.jpg" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-6 wow slideInRight" data-wow-delay="0.1s">
-                    <h4 class="section-title">About Us</h4>
-                    <h1 class="display-5 mb-4">A Creative Architecture Agency For Your Dream Home</h1>
-                    <p>At our creative architecture agency, we specialize in turning your dream home into a stunning
-                        reality. Our team combines innovative design with meticulous attention to detail, ensuring that
-                        every aspect of your home reflects your unique vision and lifestyle</p>
-                    <p>
-                        With a focus on sustainability and functionality, we create living spaces that are not only
-                        beautiful but also enduring and efficient. Let us bring your dream home to life with our expert
-                        architectural solutions.
-                    </p>
-                    <div class="d-flex align-items-center mb-5">
-                        <div class="d-flex flex-shrink-0 align-items-center justify-content-center border border-5 border-primary"
-                            style="width: 120px; height: 120px;">
-                            <h1 class="display-1 mb-n2" data-toggle="counter-up">3</h1>
-                        </div>
-                        <div class="ps-4">
-                            <h3>Years</h3>
-                            <h3>Working</h3>
-                            <h3 class="mb-0">Experience</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <section class="container">
+    <h2>Core Capabilities</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>☁️ Secure Uploads</h3>
+        <p>Presigned uploads to AWS S3 or DigitalOcean Spaces with zero credential exposure.</p>
+      </div>
+      <div class="card">
+        <h3>🎥 Private Streaming</h3>
+        <p>Signed HLS playlists with short-lived tokens and strict validation.</p>
+      </div>
+      <div class="card">
+        <h3>🎛️ Custom Player</h3>
+        <p>No download button, watermarking, playback limits, and UI restrictions.</p>
+      </div>
+      <div class="card">
+        <h3>📈 Extreme Scalability</h3>
+        <p>Optimized to serve 20k–30k concurrent viewers smoothly.</p>
+      </div>
     </div>
-    <!-- About End -->
+  </section>
 
-    <!-- WELCOME SECTION START -->
-    <div class="section-full clearfix p-t80  bg-gray">
-        <div class="container">
-            <div class="section-content">
-                <div class="row">
-                    <div class="col-lg-5 col-md-12 m-b30 text-uppercase text-black">
-                        <h4 class="section-title">WELCOME</h4>
-                        <h2 class="font-40">
-                            We are creative Building - Design Company
-                        </h2>
-                        <p>We pride ourselves on delivering innovative and aesthetically
-                            pleasing architectural
-                            solutions tailored to your needs. Our team of skilled architects and designers work closely
-                            with you to transform your vision into reality, creating functional and inspiring spaces.
-
-                        </p>
-                    </div>
-
-                    <div class="col-lg-7 col-md-12">
-                        <div class="m-carousel-1 m-l100">
-                            <div class="owl-carousel home-carousel-1 owl-btn-vertical-center">
-                                <!-- COLUMNS 1 -->
-                                <div class="item">
-                                    <div class="ow-img wt-img-effect zoom-slow">
-                                        <a href="about-1.html"><img src="img/gallery/pic1.jpg" alt=""></a>
-                                    </div>
-                                </div>
-                                <!-- COLUMNS 2 -->
-                                <div class="item">
-                                    <div class="ow-img wt-img-effect zoom-slow">
-                                        <a href="about-1.html"><img src="img/gallery/pic2.jpg" alt=""></a>
-                                    </div>
-                                </div>
-                                <!-- COLUMNS 3 -->
-                                <div class="item">
-                                    <div class="owl-img wt-img-effect zoom-slow">
-                                        <a href="about-1.html"><img src="img/gallery/pic3.jpg" alt=""></a>
-                                    </div>
-                                </div>
-                                <!-- COLUMNS 4 -->
-                                <div class="item">
-                                    <div class="ow-img wt-img-effect zoom-slow">
-                                        <a href="about-1.html"><img src="img/gallery/pic4.jpg" alt=""></a>
-                                    </div>
-                                </div>
-                                <!-- COLUMNS 5 -->
-                                <div class="item">
-                                    <div class="ow-img wt-img-effect zoom-slow">
-                                        <a href="about-1.html"><img src="img/gallery/pic5.jpg" alt=""></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="hilite-title p-lr20 m-tb20 text-right text-uppercase bdr-gray bdr-right">
-                </div>
-            </div>
-        </div>
+  <section class="container">
+    <h2>Technology Stack</h2>
+    <div class="grid">
+      <div class="card"><b>Frontend</b><br />React.js / Vue.js / HTML</div>
+      <div class="card"><b>Backend</b><br />Laravel, Django</div>
+      <div class="card"><b>Streaming Gateway</b><br />Node.js</div>
+      <div class="card"><b>Storage</b><br />AWS S3 / DigitalOcean</div>
     </div>
-    <!-- WELCOME  SECTION END -->
+  </section>
 
-
-    <!-- Service Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h4 class="section-title">Our Services</h4>
-                <h1 class="display-5 mb-4">We Focused On Modern Architecture And Interior Design</h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" src="img/service-1.jpg" alt="">
-                        <div class="service-text p-5">
-                            <img class="mb-4" src="img/icons/icon-5.png" alt="Icon">
-                            <h3 class="mb-3">Architecture</h3>
-                            <p class="mb-4">Designing innovative and sustainable spaces that bring your vision to life
-                            </p>
-                            <a class="btn" href="#"><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" src="img/service-2.jpg" alt="">
-                        <div class="service-text p-5">
-                            <img class="mb-4" src="img/icons/icon-6.png" alt="Icon">
-                            <h3 class="mb-3">3D Animation</h3>
-                            <p class="mb-4">Bringing designs to life with realistic and immersive 3D visualizations</p>
-                            <a class="btn" href="#"><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" src="img/service-3.jpg" alt="">
-                        <div class="service-text p-5">
-                            <img class="mb-4" src="img/icons/icon-7.png" alt="Icon">
-                            <h3 class="mb-3">House Planning</h3>
-                            <p class="mb-4">Crafting detailed and functional plans to create your perfect home</p>
-                            <a class="btn" href="#"><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" src="img/service-4.jpg" alt="">
-                        <div class="service-text p-5">
-                            <img class="mb-4" src="img/icons/icon-8.png" alt="Icon">
-                            <h3 class="mb-3">Interior Design</h3>
-                            <p class="mb-4">Transforming spaces with aesthetic and functional interior solutions
-                                tailored to your style</p>
-                            <a class="btn" href="#"><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" src="img/service-5.jpg" alt="">
-                        <div class="service-text p-5">
-                            <img class="mb-4" src="img/icons/icon-9.png" alt="Icon">
-                            <h3 class="mb-3">Renovation</h3>
-                            <p class="mb-4">Revitalizing existing spaces with modern designs and enhanced functionality
-                            </p>
-                            <a class="btn" href="#"><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item d-flex position-relative text-center h-100">
-                        <img class="bg-img" src="img/service-6.jpg" alt="">
-                        <div class="service-text p-5">
-                            <img class="mb-4" src="img/icons/icon-10.png" alt="Icon">
-                            <h3 class="mb-3">Construction</h3>
-                            <p class="mb-4">Building high-quality, durable structures with precision and expertise</p>
-                            <a class="btn" href="#"><i class="fa fa-plus text-primary me-3"></i>Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <section class="container">
+    <h2>Perfect For</h2>
+    <div class="highlight">
+      🎓 LMS & E-learning Platforms<br />
+      💼 Corporate Training Systems<br />
+      💳 Paid Courses & Membership Sites<br />
+      🏢 Enterprise Internal Video Platforms
     </div>
-    <!-- Service End -->
+  </section>
 
-
-    <!-- Feature Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <h4 class="section-title">Why Choose Us!</h4>
-                    <h1 class="display-5 mb-4">Why You Should Trust Us? Learn More About Us!</h1>
-                    <div class="row g-4">
-                        <div class="col-12">
-                            <div class="d-flex align-items-start">
-                                <img class="flex-shrink-0" src="img/icons/icon-2.png" alt="Icon">
-                                <div class="ms-4">
-                                    <h3>Design Approach</h3>
-                                    <p class="mb-0">We blend creativity and functionality to craft spaces that inspire
-                                        and endure, Our designs prioritize sustainability and innovation.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex align-items-start">
-                                <img class="flex-shrink-0" src="img/icons/icon-3.png" alt="Icon">
-                                <div class="ms-4">
-                                    <h3>Innovative Solutions</h3>
-                                    <p class="mb-0">We leverage cutting-edge technology and forward-thinking designs to
-                                        transform visions into reality.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex align-items-start">
-                                <img class="flex-shrink-0" src="img/icons/icon-4.png" alt="Icon">
-                                <div class="ms-4">
-                                    <h3>Project Management</h3>
-                                    <p class="mb-0">Our meticulous project management ensures timely delivery and
-                                        exceptional quality at every stage.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="feature-img">
-                        <img class="img-fluid" src="img/about-2.jpg" alt="">
-                        <img class="img-fluid" src="img/about-1.jpg" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
+  <section class="container" id="contact">
+    <h2>Ready to Launch?</h2>
+    <p>
+      Secure your video content with a platform designed for performance,
+      protection, and growth.
+    </p>
+    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 36px;">
+      <a href="https://wa.me/8801721914666" class="cta" target="_blank" rel="noopener"
+        style="background: linear-gradient(135deg, #25D366, #128C7E); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.35);">WhatsApp</a>
+      <a href="tel:+8801721914666" class="cta" style="background: linear-gradient(135deg, #38bdf8, #0ea5e9);">Phone</a>
+      <a href="mailto:rafidalridwan@gmail.com" class="cta">Email Us</a>
     </div>
-    <!-- Feature End -->
+  </section>
 
-
-    <!-- Project Start -->
-    <!-- <div class="container-xxl project py-5">
-        <div class="container">
-            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h4 class="section-title">Our Projects</h4>
-                <h1 class="display-5 mb-4">Visit Our Latest Projects And Our Innovative Works</h1>
-            </div>
-            <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="col-lg-4">
-                    <div class="nav nav-pills d-flex justify-content-between w-100 h-100 me-4">
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4 active"
-                            data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button">
-                            <h3 class="m-0">01. Modern Complex</h3>
-                        </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4"
-                            data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button">
-                            <h3 class="m-0">02. Royal Hotel</h3>
-                        </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4"
-                            data-bs-toggle="pill" data-bs-target="#tab-pane-3" type="button">
-                            <h3 class="m-0">03. Mexwel Buiding</h3>
-                        </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-0"
-                            data-bs-toggle="pill" data-bs-target="#tab-pane-4" type="button">
-                            <h3 class="m-0">04. Shopping Complex</h3>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="tab-content w-100">
-                        <div class="tab-pane fade show active" id="tab-pane-1">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute img-fluid w-100 h-100" src="img/project-1.jpg"
-                                            style="object-fit: cover;" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h1 class="mb-3">3 Years Of Experience In Architecture Industry</h1>
-                                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                                        diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit
-                                        clita duo justo magna dolore erat amet</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Design Approach</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Innovative Solutions</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Project Management</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-pane-2">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute img-fluid w-100 h-100" src="img/project-2.jpg"
-                                            style="object-fit: cover;" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h1 class="mb-3">3 Years Of Experience In Architecture Industry</h1>
-                                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                                        diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit
-                                        clita duo justo magna dolore erat amet</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Design Approach</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Innovative Solutions</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Project Management</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-pane-3">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute img-fluid w-100 h-100" src="img/project-3.jpg"
-                                            style="object-fit: cover;" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h1 class="mb-3">3 Years Of Experience In Architecture Industry</h1>
-                                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                                        diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit
-                                        clita duo justo magna dolore erat amet</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Design Approach</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Innovative Solutions</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Project Management</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-pane-4">
-                            <div class="row g-4">
-                                <div class="col-md-6" style="min-height: 350px;">
-                                    <div class="position-relative h-100">
-                                        <img class="position-absolute img-fluid w-100 h-100" src="img/project-4.jpg"
-                                            style="object-fit: cover;" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h1 class="mb-3">3 Years Of Experience In Architecture Industry</h1>
-                                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
-                                        diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit
-                                        clita duo justo magna dolore erat amet</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Design Approach</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Innovative Solutions</p>
-                                    <p><i class="fa fa-check text-primary me-3"></i>Project Management</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- Project End -->
-
-    <!-- LATEST PRJECTS SLIDER START -->
-    <div class="section-full p-t80 p-lr80 latest_project-outer square_shape3">
-
-        <!-- TITLE START -->
-        <div class="section-head text-left wow fadeInRight" data-wow-delay="0.1s">
-            <div class="row">
-                <div class="col-xl-5 col-lg-12 col-md-12">
-                    <h2 class="text-uppercase font-36">Latest Project</h2>
-                    <div class="wt-separator-outer">
-                        <div class="wt-separator bg-black"></div>
-                    </div>
-                </div>
-                <div class="col-xl-7 col-lg-12 col-md-12">
-                    <ul class="btn-filter-wrap">
-                        <li class="btn-filter btn-active" style="color: #f82249;">All Project</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- TITLE END -->
-
-        <!-- IMAGE CAROUSEL START -->
-        <div class="section-content wow fadeInRight" data-wow-delay="0.3s">
-            <div class="owl-carousel owl-carousel-filter  owl-btn-bottom-left">
-                <!-- COLUMNS 1 -->
-                <div class="item fadingcol building-col">
-                    <div class="wt-img-effect ">
-                        <img src="img/gallery/portrait/pic1.jpg" alt="">
-                        <div class="overlay-bx-2 ">
-                            <div class="line-amiation">
-                                <div class="text-white  font-weight-300 p-a40">
-                                    <h2><a href="project-detail.html"
-                                            class="text-white font-20 letter-spacing-4 text-uppercase">Triangle
-                                            Concrete House on lake</a></h2>
-                                    <p>Morbi mattis ex non urna condimentum,
-                                        eget eleifend diam molestie. Curabitur
-                                        lorem enim, maximus non null.
-                                    </p>
-                                    <a href="project-detail.html"
-                                        class="v-button letter-spacing-4 font-12 text-uppercase p-l20">Read
-                                        More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- COLUMNS 2 -->
-                <div class="item fadingcol  building-col">
-                    <div class="wt-img-effect ">
-                        <img src="img/gallery/portrait/pic2.jpg" alt="">
-                        <div class="overlay-bx-2 ">
-                            <div class="line-amiation">
-                                <div class="text-white  font-weight-300 p-a40">
-                                    <h2><a href="project-detail.html"
-                                            class="text-white font-20 letter-spacing-4 text-uppercase">Triangle
-                                            Concrete House on lake</a></h2>
-                                    <p>Morbi mattis ex non urna condimentum,
-                                        eget eleifend diam molestie. Curabitur
-                                        lorem enim, maximus non null.
-                                    </p>
-                                    <a href="project-detail.html"
-                                        class="v-button letter-spacing-4 font-12 text-uppercase p-l20">Read
-                                        More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- COLUMNS 3 -->
-
-                <div class="item fadingcol building-col">
-                    <div class="wt-img-effect ">
-                        <img src="img/gallery/portrait/pic3.jpg" alt="">
-                        <div class="overlay-bx-2 ">
-                            <div class="line-amiation">
-                                <div class="text-white  font-weight-300 p-a40">
-                                    <h2><a href="project-detail.html"
-                                            class="text-white font-20 letter-spacing-4 text-uppercase">Triangle
-                                            Concrete House on lake</a></h2>
-                                    <p>Morbi mattis ex non urna condimentum,
-                                        eget eleifend diam molestie. Curabitur
-                                        lorem enim, maximus non null.
-                                    </p>
-                                    <a href="project-detail.html"
-                                        class="v-button letter-spacing-4 font-12 text-uppercase p-l20">Read
-                                        More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- COLUMNS 4 -->
-                <div class="item fadingcol building-col">
-                    <div class="wt-img-effect ">
-                        <img src="img/gallery/portrait/pic4.jpg" alt="">
-                        <div class="overlay-bx-2 ">
-                            <div class="line-amiation">
-                                <div class="text-white  font-weight-300 p-a40">
-                                    <h2><a href="project-detail.html"
-                                            class="text-white font-20 letter-spacing-4 text-uppercase">Triangle
-                                            Concrete House on lake</a></h2>
-                                    <p>Morbi mattis ex non urna condimentum,
-                                        eget eleifend diam molestie. Curabitur
-                                        lorem enim, maximus non null.
-                                    </p>
-                                    <a href="project-detail.html"
-                                        class="v-button letter-spacing-4 font-12 text-uppercase p-l20">Read
-                                        More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- COLUMNS 5 -->
-                <div class="item fadingcol interior-col">
-                    <div class="wt-img-effect ">
-                        <img src="img/gallery/portrait/pic5.jpg" alt="">
-                        <div class="overlay-bx-2 ">
-                            <div class="line-amiation">
-                                <div class="text-white  font-weight-300 p-a40">
-                                    <h2><a href="project-detail.html"
-                                            class="text-white font-20 letter-spacing-4 text-uppercase">Triangle
-                                            Concrete House on lake</a></h2>
-                                    <p>Morbi mattis ex non urna condimentum,
-                                        eget eleifend diam molestie. Curabitur
-                                        lorem enim, maximus non null.
-                                    </p>
-                                    <a href="project-detail.html"
-                                        class="v-button letter-spacing-4 font-12 text-uppercase p-l20">Read
-                                        More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- COLUMNS 6 -->
-                <div class="item fadingcol restaurant-col">
-                    <div class="wt-img-effect ">
-                        <img src="img/gallery/portrait/pic6.jpg" alt="">
-                        <div class="overlay-bx-2 ">
-                            <div class="line-amiation">
-                                <div class="text-white  font-weight-300 p-a40">
-                                    <h2><a href="project-detail.html"
-                                            class="text-white font-20 letter-spacing-4 text-uppercase">Triangle
-                                            Concrete House on lake</a></h2>
-                                    <p>Morbi mattis ex non urna condimentum,
-                                        eget eleifend diam molestie. Curabitur
-                                        lorem enim, maximus non null.
-                                    </p>
-                                    <a href="project-detail.html"
-                                        class="v-button letter-spacing-4 font-12 text-uppercase p-l20">Read
-                                        More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- COLUMNS 7 -->
-                <div class="item fadingcol restaurant-col">
-                    <div class="wt-img-effect ">
-                        <img src="img/gallery/portrait/pic7.jpg" alt="">
-                        <div class="overlay-bx-2 ">
-                            <div class="line-amiation">
-                                <div class="text-white  font-weight-300 p-a40">
-                                    <h2><a href="project-detail.html"
-                                            class="text-white font-20 letter-spacing-4 text-uppercase">Triangle
-                                            Concrete House on lake</a></h2>
-                                    <p>Morbi mattis ex non urna condimentum,
-                                        eget eleifend diam molestie. Curabitur
-                                        lorem enim, maximus non null.
-                                    </p>
-                                    <a href="project-detail.html"
-                                        class="v-button letter-spacing-4 font-12 text-uppercase p-l20">Read
-                                        More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- COLUMNS 8 -->
-                <div class="item fadingcol interior-col">
-                    <div class="wt-img-effect ">
-                        <img src="img/gallery/portrait/pic7.jpg" alt="">
-                        <div class="overlay-bx-2 ">
-                            <div class="line-amiation">
-                                <div class="text-white  font-weight-300 p-a40">
-                                    <h2><a href="project-detail.html"
-                                            class="text-white font-20 letter-spacing-4 text-uppercase">Triangle
-                                            Concrete House on lake</a></h2>
-                                    <p>Morbi mattis ex non urna condimentum,
-                                        eget eleifend diam molestie. Curabitur
-                                        lorem enim, maximus non null.
-                                    </p>
-                                    <a href="project-detail.html"
-                                        class="v-button letter-spacing-4 font-12 text-uppercase p-l20">Read
-                                        More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="hilite-title p-lr20 m-tb20 text-right text-uppercase bdr-gray bdr-right">
-            <strong>Awesome</strong>
-            <span class="text-black">Designs</span>
-        </div>
-    </div>
-    <!-- LATEST PRJECTS SLIDER END -->
-
-    <!-- WHO WE ARE SECTION START -->
-    <div class="section-full p-t140 clearfix bg-repeat tm-wo-we-r"
-        style="background-image:url(img/background/ptn-1.png);">
-        <div class="container-fluid">
-            <div class="section-content">
-                <div class="row d-flex align-items-center">
-                    <div class="col-xl-6 col-lg-5 col-md-12">
-                        <div class="wt-left-part">
-                            <div class="text-uppercase text-black">
-                                <span class="font-30 font-weight-300 d-block m-b10 section-title">Wo we are </span>
-                                <h2 class="font-40">
-                                    We are creative architecture Studio
-                                </h2>
-                                <p>We are a creative architecture studio dedicated to transforming ideas into stunning
-                                    and functional spaces. Our innovative designs and meticulous attention to detail
-                                    ensure that every project reflects our clients' unique visions and needs.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-7 col-md-12">
-                        <div class="m-carousel-2">
-                            <div class="owl-carousel carousel-hover home-carousel-2 owl-btn-vertical-center">
-                                <!-- COLUMNS 1 -->
-                                <div class="item">
-                                    <div class="wt-box">
-                                        <div class="ow-img wt-carousel-block gradi-black">
-                                            <img src="img/projects/pic-1.jpg" alt="">
-                                            <div class="p-a50 wt-carousel-info text-white">
-                                                <div class="carousel-line">
-                                                    <h2 class="font-28 font-weight-400 m-b10">New Acropolis
-                                                        Museum</h2>
-                                                    <p class="m-b0">Mattis ex non urna condimentum, eget
-                                                        eleifend diam molestie. Curabitur lorem enimnulla sed,
-                                                        egestas, maximus non nulla sed, egestas venenatis felis
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- COLUMNS 2 -->
-                                <div class="item">
-                                    <div class="wt-box">
-                                        <div class="ow-img wt-carousel-block gradi-black">
-                                            <img src="img/projects/pic-2.jpg" alt="">
-                                            <div class="p-a50 wt-carousel-info text-white">
-                                                <div class="carousel-line">
-                                                    <h2 class="font-28 font-weight-400 m-b10">New Acropolis
-                                                        Museum</h2>
-                                                    <p class="m-b0">Mattis ex non urna condimentum, eget
-                                                        eleifend diam molestie. Curabitur lorem enimnulla sed,
-                                                        egestas, maximus non nulla sed, egestas venenatis felis
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- COLUMNS 3 -->
-                                <div class="item">
-                                    <div class="wt-box">
-                                        <div class="ow-img wt-carousel-block gradi-black">
-                                            <img src="img/projects/pic-3.jpg" alt="">
-                                            <div class="p-a50 wt-carousel-info text-white">
-                                                <div class="carousel-line">
-                                                    <h2 class="font-28 font-weight-400 m-b10">New Acropolis
-                                                        Museum</h2>
-                                                    <p class="m-b0">Mattis ex non urna condimentum, eget
-                                                        eleifend diam molestie. Curabitur lorem enimnulla sed,
-                                                        egestas, maximus non nulla sed, egestas venenatis felis
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- COLUMNS 4 -->
-                                <div class="item">
-                                    <div class="wt-box">
-                                        <div class="ow-img wt-carousel-block gradi-black">
-                                            <img src="img/projects/pic-4.jpg" alt="">
-                                            <div class="p-a50 wt-carousel-info text-white">
-                                                <div class="carousel-line">
-                                                    <h2 class="font-28 font-weight-400 m-b10">New Acropolis
-                                                        Museum</h2>
-                                                    <p class="m-b0">Mattis ex non urna condimentum, eget
-                                                        eleifend diam molestie. Curabitur lorem enimnulla sed,
-                                                        egestas, maximus non nulla sed, egestas venenatis felis
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- COLUMNS 5 -->
-                                <div class="item">
-                                    <div class="wt-box">
-                                        <div class="ow-img wt-carousel-block gradi-black">
-                                            <img src="img/projects/pic-5.jpg" alt="">
-                                            <div class="p-a50 wt-carousel-info text-white">
-                                                <div class="carousel-line">
-                                                    <h2 class="font-28 font-weight-400 m-b10">New Acropolis
-                                                        Museum</h2>
-                                                    <p class="m-b0">Mattis ex non urna condimentum, eget
-                                                        eleifend diam molestie. Curabitur lorem enimnulla sed,
-                                                        egestas, maximus non nulla sed, egestas venenatis felis
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-bg-img">
-                                <img src="img/slider-corner.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="hilite-title p-lr20 m-tb20 text-left text-uppercase bdr-gray bdr-left">
-                <strong>30+ Projects</strong>
-                <span class="text-black">Completed</span>
-            </div>
-        </div>
-    </div>
-    <!-- WHO WE ARE SECTION END -->
-
-
-    <!-- Team Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h4 class="section-title">Team Members</h4>
-                <h1 class="display-5 mb-4">We Are Creative Architecture Team For Your Dream Home</h1>
-            </div>
-            <div class="row g-0 team-items">
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item position-relative">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="img/team-1.jpg" alt="">
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href="#"><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Architect Name</h3>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="team-item position-relative">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="img/team-2.jpg" alt="">
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href="#"><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Architect Name</h3>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="team-item position-relative">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="img/team-3.jpg" alt="">
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href="#"><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Architect Name</h3>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="team-item position-relative">
-                        <div class="position-relative">
-                            <img class="img-fluid" src="img/team-4.jpg" alt="">
-                            <div class="team-social text-center">
-                                <a class="btn btn-square" href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href="#"><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href="#"><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="bg-light text-center p-4">
-                            <h3 class="mt-2">Architect Name</h3>
-                            <span class="text-primary">Designation</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
-
-    <!-- COMPANY DETAIL SECTION START -->
-    <div class="section-full p-t80 p-b50 overlay-wraper bg-top-center bg-parallax" data-stellar-background-ratio="0.5"
-        style="background-image:url(img/background/bg-11.jpg);">
-        <div class="overlay-main opacity-08 bg-black"></div>
-        <div class="container ">
-            <div class="row">
-
-                <div class="col-lg-6 col-md-12 m-b30">
-                    <div class="some-facts">
-                        <div class="text-white text-uppercase">
-                            <span class="font-30 font-weight-300">Mission</span>
-                            <!-- <h2 class="font-50">
-                                Intresting Facts
-                            </h2> -->
-                            <p class="font-15 font-weight-300">"Designing innovative and sustainable spaces that inspire
-                                and enhance the lives of our clients and communities."
-                            </p>
-
-                            <span class="font-30 font-weight-300">Vision</span>
-                            <!-- <h2 class="font-50">
-                                Intresting Facts
-                            </h2> -->
-                            <p class="font-15 font-weight-300">"To be a global leader in architectural excellence,
-                                shaping the future of built environments with creativity and integrity."
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6 col-md-12">
-                    <div class="row some-facts-counter">
-                        <div class="col-md-4 col-sm-4">
-                            <div class="wt-icon-box-wraper p-a10 text-white m-b30">
-                                <div class="icon-content text-center">
-                                    <div class="font-40 font-weight-600 m-b5"><span class="counter">451</span>
-                                    </div>
-                                    <div class="wt-separator-outer m-b20">
-                                        <div class="wt-separator bg-white"></div>
-                                    </div>
-                                    <span class="text-uppercase">Happy Clients</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-4">
-                            <div class="wt-icon-box-wraper p-a10 text-white m-b30">
-                                <div class="icon-content text-center">
-                                    <div class="font-40 font-weight-600 m-b5"><span class="counter">532</span>
-                                    </div>
-                                    <div class="wt-separator-outer m-b20">
-                                        <div class="wt-separator bg-white"></div>
-                                    </div>
-                                    <span class="text-uppercase">Finished projects</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-4">
-                            <div class="wt-icon-box-wraper p-a10 text-white m-b30">
-                                <div class="icon-content text-center">
-                                    <div class="font-40 font-weight-600 m-b5"><span class="counter">299</span>
-                                    </div>
-                                    <div class="wt-separator-outer m-b20">
-                                        <div class="wt-separator bg-white"></div>
-                                    </div>
-                                    <span class="text-uppercase">Working Days</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- COMPANY DETAIL SECTION End -->
-
-
-    <!-- TESTIMONIALS SECTION START -->
-    <div class="section-full p-t80 clearfixbg-repeat " style="background-image:url(img/background/ptn-1.png);">
-        <div class="container">
-            <div class="section-content">
-                <!-- TITLE START -->
-                <div class="section-head text-left">
-                    <h2 class="text-uppercase font-36">Testimonials</h2>
-                    <div class="wt-separator-outer">
-                        <div class="wt-separator bg-black"></div>
-                    </div>
-                </div>
-                <!-- TITLE END -->
-                <!-- TESTIMONIAL 4 START ON BACKGROUND -->
-                <div class="section-content">
-                    <div class="owl-carousel testimonial-home">
-                        <div class="item wow fadeInRight" data-wow-delay="0.1s">
-                            <div class="testimonial-6">
-                                <div class="testimonial-pic-block">
-                                    <div class="testimonial-pic">
-                                        <img src="img/testimonials/pic1.jpg" width="132" height="132" alt="">
-                                    </div>
-                                </div>
-                                <div class="testimonial-text clearfix bg-white">
-                                    <div class="testimonial-detail clearfix">
-                                        <strong class="testimonial-name">Taylor Roberts</strong>
-                                        <span class="testimonial-position p-t0">Co-manager associated</span>
-                                    </div>
-                                    <div class="testimonial-paragraph text-black p-t15">
-                                        <span class="fa fa-quote-left"></span>
-                                        <p>typefaces and layouts, and in appearance of different general the
-                                            content of dummy text is nonsensical.typefaces of dummy text is
-                                            nonsensical.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item wow fadeInRight" data-wow-delay="0.2s">
-                            <div class="testimonial-6">
-                                <div class="testimonial-pic-block">
-                                    <div class="testimonial-pic">
-                                        <img src="img/testimonials/pic4.jpg" width="132" height="132" alt="">
-                                    </div>
-                                </div>
-                                <div class="testimonial-text clearfix bg-white">
-                                    <div class="testimonial-detail clearfix">
-                                        <strong class="testimonial-name">Robert willson</strong>
-                                        <span class="testimonial-position p-t0">Co-manager associated</span>
-                                    </div>
-                                    <div class="testimonial-paragraph text-black p-t15">
-                                        <span class="fa fa-quote-left"></span>
-                                        <p>typefaces and layouts, and in appearance of different general the
-                                            content of dummy text is nonsensical.typefaces of dummy text is
-                                            nonsensical.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item wow fadeInRight" data-wow-delay="0.3s">
-                            <div class="testimonial-6">
-                                <div class="testimonial-pic-block">
-                                    <div class="testimonial-pic">
-                                        <img src="img/testimonials/pic2.jpg" width="132" height="132" alt="">
-                                    </div>
-                                </div>
-                                <div class="testimonial-text clearfix bg-white">
-                                    <div class="testimonial-detail clearfix">
-                                        <strong class="testimonial-name">Taylor Roberts</strong>
-                                        <span class="testimonial-position p-t0">Co-manager associated</span>
-                                    </div>
-                                    <div class="testimonial-paragraph text-black p-t15">
-                                        <span class="fa fa-quote-left"></span>
-                                        <p>typefaces and layouts, and in appearance of different general the
-                                            content of dummy text is nonsensical.typefaces of dummy text is
-                                            nonsensical.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimonial-6">
-                                <div class="testimonial-pic-block">
-                                    <div class="testimonial-pic">
-                                        <img src="img/testimonials/pic3.jpg" width="132" height="132" alt="">
-                                    </div>
-                                </div>
-                                <div class="testimonial-text clearfix bg-white">
-                                    <div class="testimonial-detail clearfix">
-                                        <strong class="testimonial-name">Robert willson</strong>
-                                        <span class="testimonial-position p-t0">Co-manager associated</span>
-                                    </div>
-                                    <div class="testimonial-paragraph text-black p-t15">
-                                        <span class="fa fa-quote-left"></span>
-                                        <p>typefaces and layouts, and in appearance of different general the
-                                            content of dummy text is nonsensical.typefaces of dummy text is
-                                            nonsensical.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimonial-6">
-                                <div class="testimonial-pic-block">
-                                    <div class="testimonial-pic">
-                                        <img src="img/testimonials/pic1.jpg" width="132" height="132" alt="">
-                                    </div>
-                                </div>
-                                <div class="testimonial-text clearfix bg-white">
-                                    <div class="testimonial-detail clearfix">
-                                        <strong class="testimonial-name">Taylor Roberts</strong>
-                                        <span class="testimonial-position p-t0">Co-manager associated</span>
-                                    </div>
-                                    <div class="testimonial-paragraph text-black p-t15">
-                                        <span class="fa fa-quote-left"></span>
-                                        <p>typefaces and layouts, and in appearance of different general the
-                                            content of dummy text is nonsensical.typefaces of dummy text is
-                                            nonsensical.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="testimonial-6">
-                                <div class="testimonial-pic-block">
-                                    <div class="testimonial-pic">
-                                        <img src="img/testimonials/pic4.jpg" width="132" height="132" alt="">
-                                    </div>
-                                </div>
-                                <div class="testimonial-text clearfix bg-white">
-                                    <div class="testimonial-detail clearfix">
-                                        <strong class="testimonial-name">Taylor Roberts</strong>
-                                        <span class="testimonial-position p-t0">Co-manager associated</span>
-                                    </div>
-                                    <div class="testimonial-paragraph text-black p-t15">
-                                        <span class="fa fa-quote-left"></span>
-                                        <p>typefaces and layouts, and in appearance of different general the
-                                            content of dummy text is nonsensical.typefaces of dummy text is
-                                            nonsensical.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="hilite-title p-lr20 m-tb20 text-right text-uppercase bdr-gray bdr-right">
-                <strong>Client</strong>
-                <span class="text-black">Says</span>
-            </div>
-        </div>
-    </div>
-    <!-- TESTIMONIALS SECTION END -->
-
-
-    <!-- Google Map Start -->
-    <div class="container-xxl pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
-        <iframe class="w-100 mb-n2" style="height: 450px;"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.446133577837!2d89.36543697530392!3d24.848607977936975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fc5527d3b9693d%3A0x32693e6ff983ee93!2sShop%20No%3A%2081%2C82%2C%20Railway%20Market%2C%20Station%20Road%2C%20Bogura!5e0!3m2!1sen!2sbd!4v1716643250556!5m2!1sen!2sbd"
-            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
-    <!-- Google Map End -->
-
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <img class="mb-5" height="110" width="160" src="img/icons/icon-1.png" alt="Icon">
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Address</h3>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>Shop No-81,82. Station Road,
-                        Railway Market, Puran Bogra, Bangladesh</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>01601-041123</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>epipra.bd@gmail.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-body me-1" href="https://www.facebook.com/pipra06"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-body me-1" href="https://www.facebook.com/pipra06"><i
-                                class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-body me-0" href="
-                        http://www.linkedin.com/piprabd"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Services</h3>
-                    <a class="btn btn-link" href="#">Architecture</a>
-                    <a class="btn btn-link" href="#">3D Animation</a>
-                    <a class="btn btn-link" href="#">House Planning</a>
-                    <a class="btn btn-link" href="#">Interior Design</a>
-                    <a class="btn btn-link" href="#">Construction</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h3 class="text-light mb-4">Quick Links</h3>
-                    <a class="btn btn-link" href="#">About Us</a>
-                    <a class="btn btn-link" href="#">Contact Us</a>
-                    <a class="btn btn-link" href="#">Our Services</a>
-                    <a class="btn btn-link" href="#">Terms & Condition</a>
-                    <a class="btn btn-link" href="#">Support</a>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">পিঁপড়া 2024</a>, ALL RIGHTS RESERVED.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
-    <script src="code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="cdn.jsdelivr.net/npm/bootstrap%405.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="lib/tempusdominus/js/moment.min.js"></script>
-    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/magnific-popup.min.js"></script>
-    <script src="js/scrolla.min.js"></script><!-- ON SCROLL CONTENT ANIMTE   -->
-    <script src="js/custom.js"></script><!-- CUSTOM FUCTIONS  -->
-    <script src="js/shortcode.js"></script>
-
-    <!-- REVOLUTION JS FILES -->
-    <script src="plugins/revolution/revolution/js/jquery.themepunch.tools.min.js"></script>
-    <script src="plugins/revolution/revolution/js/jquery.themepunch.revolution.min.js"></script>
-    <script src="plugins/revolution/revolution/js/extensions/revolution-plugin.js"></script>
-
-    <!-- REVOLUTION SLIDER SCRIPT FILES -->
-    <script src="js/rev-script-1.js"></script>
+  <footer>
+    © 2026 Secure Video Platform. All rights reserved.
+  </footer>
 
 </body>
-
 
 </html>
