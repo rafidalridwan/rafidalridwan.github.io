@@ -26,10 +26,89 @@
       color: var(--text-main);
       line-height: 1.7;
       overflow-x: hidden;
+      position: relative;
     }
 
+    /* PARTICLES BACKGROUND */
+    .particles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(59, 130, 246, 0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float linear infinite;
+      box-shadow: 0 0 6px rgba(59, 130, 246, 0.8), 0 0 12px rgba(59, 130, 246, 0.4);
+    }
+
+    .particle::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 1) 0%, rgba(59, 130, 246, 0.3) 50%, transparent 100%);
+      border-radius: 50%;
+      filter: blur(1px);
+    }
+
+    /* Larger particles for variety */
+    .particle.large {
+      background: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.9), 0 0 20px rgba(56, 189, 248, 0.5);
+    }
+
+    .particle.large::before {
+      background: radial-gradient(circle, rgba(56, 189, 248, 1) 0%, rgba(56, 189, 248, 0.2) 60%, transparent 100%);
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      50% {
+        transform: translateY(50vh) translateX(var(--move-x, 0)) rotate(180deg);
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-100vh) translateX(calc(var(--move-x, 0) * 2)) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Ensure content is above particles */
     section {
       position: relative;
+      z-index: 1;
+    }
+
+    section .container>h2,
+    section .container>p {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    section .container .grid {
+      text-align: left;
     }
 
     .container {
@@ -53,6 +132,7 @@
     h2 {
       font-size: 32px;
       margin-bottom: 30px;
+      text-align: center;
     }
 
     p {
@@ -149,6 +229,30 @@
       border-radius: 22px;
       font-size: 18px;
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45);
+      text-align: center;
+      margin: 0 auto;
+      max-width: 720px;
+    }
+
+    /* DASHBOARD BUTTON */
+    .view-all-btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(56, 189, 248, 0.2));
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 999px;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    }
+
+    .view-all-btn:hover {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(56, 189, 248, 0.3));
+      border-color: rgba(59, 130, 246, 0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
     }
 
     footer {
@@ -171,6 +275,8 @@
 </head>
 
 <body>
+  <!-- Animated Particles Background -->
+  <div class="particles-container" id="particles"></div>
 
   <section class="hero">
     <div class="container">
@@ -183,7 +289,7 @@
         streaming smoothly to <b>30,000–50,000+</b> concurrent users with
         YouTube-like performance.
       </p>
-      <a href="https://custom-hls-player.vercel.app/?playlist=1806" class="cta">Request Demo</a>
+      <a target="_blank" href="https://custom-hls-player.vercel.app/?playlist=1806" class="cta">Player Demo</a>
     </div>
   </section>
 
@@ -250,23 +356,62 @@
     </div>
   </section>
 
-  <section class="container" id="contact">
+  <section class="container" id="contact" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
     <h2>Ready to Launch?</h2>
-    <p>
-      Secure your video content with a platform designed for performance,
-      protection, and growth.
-    </p>
     <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 36px;">
       <a href="https://wa.me/8801721914666" class="cta" target="_blank" rel="noopener"
         style="background: linear-gradient(135deg, #25D366, #128C7E); box-shadow: 0 10px 30px rgba(37, 211, 102, 0.35);">WhatsApp</a>
       <a href="tel:+8801721914666" class="cta" style="background: linear-gradient(135deg, #38bdf8, #0ea5e9);">Phone</a>
       <a href="mailto:rafidalridwan@gmail.com" class="cta">Email Us</a>
     </div>
+    <div style="margin-top: 50px;">
+      <a href="dashboard.html" class="view-all-btn">View Video Uploads Platform Screenshots →</a>
+    </div>
   </section>
 
   <footer>
     © 2026 Secure Video Platform. All rights reserved.
   </footer>
+
+  <script>
+    // Create animated particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 60; // Number of particles
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+
+        // 20% chance of being a large particle
+        const isLarge = Math.random() < 0.2;
+        particle.className = isLarge ? 'particle large' : 'particle';
+
+        // Random size: small (2-4px) or large (5-8px)
+        const size = isLarge ? Math.random() * 3 + 5 : Math.random() * 2 + 2;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+
+        // Random starting position
+        particle.style.left = Math.random() * 100 + '%';
+
+        // Random animation duration (8s to 25s) - larger particles move slower
+        const duration = isLarge ? Math.random() * 10 + 15 : Math.random() * 10 + 8;
+        particle.style.animationDuration = duration + 's';
+
+        // Random delay to stagger animations
+        particle.style.animationDelay = Math.random() * 5 + 's';
+
+        // Random horizontal movement
+        const horizontalMove = (Math.random() - 0.5) * 300;
+        particle.style.setProperty('--move-x', horizontalMove + 'px');
+
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Initialize particles on page load
+    window.addEventListener('load', createParticles);
+  </script>
 
 </body>
 
