@@ -18,6 +18,11 @@
       --muted: #555b66;
       --text: #e8eaf0;
       --text-dim: #8a919e;
+      --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-fast: 0.22s;
+      --duration-normal: 0.38s;
+      --duration-slow: 0.65s;
     }
 
     *,
@@ -30,6 +35,27 @@
 
     html {
       scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .reveal,
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+        will-change: auto;
+      }
     }
 
     body {
@@ -79,6 +105,14 @@
       border-bottom: 1px solid var(--border);
       background: rgba(11, 12, 14, 0.85);
       backdrop-filter: blur(12px);
+      transition:
+        background-color var(--duration-normal) var(--ease-smooth),
+        border-color var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth);
+    }
+
+    nav.nav--scrolled {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
     }
 
     .nav-logo {
@@ -88,6 +122,7 @@
       letter-spacing: 0.08em;
       color: var(--accent);
       text-decoration: none;
+      transition: color var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth);
     }
 
     .nav-links {
@@ -102,7 +137,26 @@
       font-size: 0.75rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      transition: color 0.2s;
+      transition: color var(--duration-fast) var(--ease-smooth);
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--duration-normal) var(--ease-smooth);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
+      transform: scaleX(1);
     }
 
     .nav-links a:hover {
@@ -145,7 +199,7 @@
       border: 1px solid var(--accent);
       padding: 0.3em 0.8em;
       margin-bottom: 1.5rem;
-      animation: fadeUp 0.6s ease both;
+      animation: fadeUp 0.75s var(--ease-out) both;
     }
 
     h1 {
@@ -154,7 +208,7 @@
       line-height: 1.05;
       letter-spacing: -0.02em;
       color: var(--text);
-      animation: fadeUp 0.6s 0.1s ease both;
+      animation: fadeUp 0.75s 0.08s var(--ease-out) both;
     }
 
     h1 em {
@@ -167,7 +221,7 @@
       color: var(--text-dim);
       max-width: 400px;
       font-size: 0.85rem;
-      animation: fadeUp 0.6s 0.2s ease both;
+      animation: fadeUp 0.75s 0.16s var(--ease-out) both;
     }
 
     .hero-cta {
@@ -175,7 +229,7 @@
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
-      animation: fadeUp 0.6s 0.3s ease both;
+      animation: fadeUp 0.75s 0.24s var(--ease-out) both;
     }
 
     .btn {
@@ -188,7 +242,16 @@
       text-decoration: none;
       border: 1px solid transparent;
       cursor: pointer;
-      transition: all 0.2s;
+      transition:
+        color var(--duration-normal) var(--ease-smooth),
+        background-color var(--duration-normal) var(--ease-smooth),
+        border-color var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-fast) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
     }
 
     .btn-primary {
@@ -220,7 +283,10 @@
       border: 1px solid var(--border);
       background: var(--surface);
       padding: 2.5rem;
-      animation: fadeUp 0.7s 0.4s ease both;
+      animation: fadeUp 0.85s 0.32s var(--ease-out) both;
+      transition:
+        border-color var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth);
     }
 
     .hero-panel::before {
@@ -263,9 +329,15 @@
       font-size: 2rem;
       color: var(--text);
       line-height: 1;
+      font-variant-numeric: tabular-nums;
     }
 
-    .stat-value span {
+    .stat-counter {
+      display: inline-block;
+      transition: transform 0.15s var(--ease-smooth);
+    }
+
+    .stat-value .stat-suffix {
       color: var(--accent);
     }
 
@@ -289,6 +361,70 @@
       text-align: center;
       color: var(--accent);
       font-size: 0.9rem;
+    }
+
+    .social-links {
+      margin-top: 1.25rem;
+      display: flex;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-dim);
+      text-decoration: none;
+      transition:
+        border-color var(--duration-normal) var(--ease-smooth),
+        color var(--duration-normal) var(--ease-smooth),
+        background var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-fast) var(--ease-smooth);
+    }
+
+    .social-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(200, 240, 77, 0.06);
+    }
+
+    .social-link:active {
+      transform: translateY(0) scale(0.96);
+    }
+
+    .social-link--whatsapp:hover {
+      border-color: #25d366;
+      color: #25d366;
+      background: rgba(37, 211, 102, 0.1);
+    }
+
+    .social-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    footer .footer-social {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: 0.75rem;
+    }
+
+    footer .footer-social .social-link {
+      width: 32px;
+      height: 32px;
+    }
+
+    footer .footer-social .social-link svg {
+      width: 14px;
+      height: 14px;
     }
 
     /* ── SECTION BASE ── */
@@ -332,11 +468,14 @@
     .skill-block {
       background: var(--surface);
       padding: 2rem;
-      transition: background 0.2s;
+      transition:
+        background var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-normal) var(--ease-smooth);
     }
 
     .skill-block:hover {
       background: #15181e;
+      transform: translateY(-2px);
     }
 
     .skill-block-title {
@@ -359,10 +498,15 @@
       border: 1px solid var(--border);
       color: var(--text-dim);
       background: var(--bg);
-      transition: all 0.2s;
+      transition:
+        border-color var(--duration-normal) var(--ease-smooth),
+        color var(--duration-normal) var(--ease-smooth),
+        background var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-fast) var(--ease-smooth);
     }
 
     .tag:hover {
+      transform: translateY(-1px);
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -381,7 +525,7 @@
       padding: 2rem 0;
       border-bottom: 1px solid var(--border);
       position: relative;
-      transition: background 0.2s;
+      transition: background var(--duration-normal) var(--ease-smooth);
     }
 
     .exp-item:first-child {
@@ -427,7 +571,10 @@
       padding: 2.5rem;
       position: relative;
       overflow: hidden;
-      transition: background 0.25s;
+      transition:
+        background var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth);
     }
 
     .project-card::after {
@@ -440,11 +587,13 @@
       background: linear-gradient(90deg, var(--accent), var(--accent2));
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.3s ease;
+      transition: transform var(--duration-slow) var(--ease-smooth);
     }
 
     .project-card:hover {
       background: #15181e;
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
     }
 
     .project-card:hover::after {
@@ -470,7 +619,7 @@
     .project-name a {
       color: inherit;
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color var(--duration-fast) var(--ease-smooth);
     }
 
     .project-name a:hover {
@@ -514,11 +663,16 @@
       border: 1px solid var(--border);
       background: var(--surface);
       position: relative;
-      transition: border-color 0.2s;
+      transition:
+        border-color var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth);
     }
 
     .edu-item:hover {
       border-color: var(--muted);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
     }
 
     .edu-degree {
@@ -586,11 +740,15 @@
       text-decoration: none;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
       z-index: 200;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+      transition:
+        transform var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-normal) var(--ease-smooth),
+        filter var(--duration-normal) var(--ease-smooth),
+        color var(--duration-normal) var(--ease-smooth);
     }
 
     .whatsapp-float:hover {
-      transform: translateY(-2px) scale(1.03);
+      transform: translateY(-3px) scale(1.04);
       filter: brightness(1.06);
       box-shadow: 0 14px 30px rgba(0, 0, 0, 0.42);
     }
@@ -605,28 +763,170 @@
       fill: currentColor;
     }
 
+    .whatsapp-tooltip {
+      position: absolute;
+      right: calc(100% + 12px);
+      top: 50%;
+      transform: translateY(-50%) translateX(10px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      white-space: nowrap;
+      padding: 0.5rem 0.85rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+      transition:
+        opacity var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-normal) var(--ease-smooth),
+        visibility var(--duration-normal) var(--ease-smooth);
+    }
+
+    .whatsapp-tooltip::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .whatsapp-float.is-tooltip-visible .whatsapp-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    /* ── WHATSAPP CONFIRM MODAL ── */
+    .wa-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity var(--duration-normal) var(--ease-smooth), visibility var(--duration-normal) var(--ease-smooth);
+    }
+
+    .wa-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .wa-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+    }
+
+    .wa-modal__dialog {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 420px);
+      padding: 2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      transform: scale(0.94) translateY(16px);
+      transition:
+        opacity var(--duration-normal) var(--ease-smooth),
+        transform var(--duration-normal) var(--ease-out);
+    }
+
+    .wa-modal.is-open .wa-modal__dialog {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .wa-modal__dialog::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 2rem;
+      right: 2rem;
+      height: 2px;
+      background: linear-gradient(90deg, #25d366, var(--accent));
+    }
+
+    .wa-modal__title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 0.65rem;
+    }
+
+    .wa-modal__text {
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    .wa-modal__actions {
+      margin-top: 1.75rem;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .wa-modal__confirm {
+      background: #25d366;
+      border-color: #25d366;
+      color: #0b0c0e;
+    }
+
+    .wa-modal__confirm:hover {
+      background: transparent;
+      color: #25d366;
+    }
+
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
       from {
         opacity: 0;
-        transform: translateY(24px);
+        transform: translate3d(0, 28px, 0);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
       }
     }
 
     .reveal {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translate3d(0, 32px, 0);
+      transition:
+        opacity var(--duration-slow) var(--ease-smooth),
+        transform var(--duration-slow) var(--ease-smooth);
+      transition-delay: var(--reveal-delay, 0s);
+      will-change: opacity, transform;
     }
 
     .reveal.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0);
+      will-change: auto;
+    }
+
+    .section-header.reveal {
+      transform: translate3d(0, 20px, 0);
     }
 
     /* ── RESPONSIVE ── */
@@ -700,6 +1000,10 @@
         text-align: center;
       }
 
+      footer .footer-social {
+        justify-content: center;
+      }
+
       .whatsapp-float {
         right: 0.8rem;
         bottom: 0.8rem;
@@ -742,6 +1046,24 @@
         width: 20px;
         height: 20px;
       }
+
+      .whatsapp-tooltip {
+        right: 50%;
+        top: auto;
+        bottom: calc(100% + 10px);
+        transform: translateX(50%) translateY(8px);
+      }
+
+      .whatsapp-tooltip::after {
+        right: auto;
+        left: 50%;
+        top: 100%;
+        transform: translateX(-50%) rotate(135deg);
+      }
+
+      .whatsapp-float.is-tooltip-visible .whatsapp-tooltip {
+        transform: translateX(50%) translateY(0);
+      }
     }
   </style>
 </head>
@@ -781,11 +1103,13 @@
       <div class="panel-title">// quick profile</div>
       <div class="stat-row">
         <div class="stat-label">Years of experience</div>
-        <div class="stat-value">5<span>+</span></div>
+        <div class="stat-value"><span class="stat-counter" data-target="5">0</span><span class="stat-suffix">+</span>
+        </div>
       </div>
       <div class="stat-row">
         <div class="stat-label">Projects shipped</div>
-        <div class="stat-value">100<span>+</span></div>
+        <div class="stat-value"><span class="stat-counter" data-target="50">0</span><span class="stat-suffix">+</span>
+        </div>
       </div>
       <!-- <div class="stat-row">
         <div class="stat-label">CGPA (B.Sc CSE)</div>
@@ -795,6 +1119,38 @@
         <div class="contact-item"><span class="ico">@</span> rafidalridwan@gmail.com</div>
         <div class="contact-item"><span class="ico">📞</span> +880 1721-914666</div>
         <div class="contact-item"><span class="ico">📍</span> Mohammadpur, Dhaka-1207</div>
+      </div>
+      <div class="social-links" aria-label="Social profiles">
+        <a class="social-link" href="https://github.com/rafidalridwan" target="_blank" rel="noopener noreferrer"
+          aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.12-1.5-1.12-1.5-.92-.64.07-.63.07-.63 1.02.07 1.56 1.07 1.56 1.07.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.74 0 0 .84-.27 2.75 1.05A9.2 9.2 0 0 1 12 6.84c.85.004 1.71.12 2.51.35 1.91-1.32 2.75-1.05 2.75-1.05.55 1.42.2 2.48.1 2.74.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.49A10.06 10.06 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+          </svg>
+        </a>
+        <a class="social-link" href="https://www.linkedin.com/in/rafidalridwan/" target="_blank"
+          rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22 0H2C.9 0 0 .9 0 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2z" />
+          </svg>
+        </a>
+        <a class="social-link" href="https://www.facebook.com/ra.al.rid/" target="_blank" rel="noopener noreferrer"
+          aria-label="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07c0 6.02 4.39 11.02 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.27h3.32l-.53 3.49h-2.79v8.44C19.61 23.09 24 18.09 24 12.07z" />
+          </svg>
+        </a>
+        <a class="social-link social-link--whatsapp" href="https://wa.me/8801721914666" target="_blank"
+          rel="noopener noreferrer" aria-label="WhatsApp 01721914666">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <path
+              d="M19.11 17.64c-.26-.13-1.55-.76-1.79-.85-.24-.09-.42-.13-.6.13-.18.26-.69.85-.85 1.02-.16.17-.31.2-.57.07-.26-.13-1.1-.4-2.09-1.27-.77-.68-1.29-1.52-1.44-1.78-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.44.09-.17.04-.33-.02-.46-.07-.13-.6-1.45-.82-1.99-.21-.5-.43-.43-.6-.44h-.51c-.17 0-.44.07-.67.33-.23.26-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.71 4.3 3.8.6.26 1.08.42 1.45.54.61.19 1.17.16 1.61.1.49-.07 1.55-.63 1.77-1.24.22-.61.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3Z" />
+            <path
+              d="M27.21 4.78A15.83 15.83 0 0 0 16 0C7.18 0 0 7.18 0 16c0 2.82.74 5.58 2.14 8.02L0 32l8.2-2.1A15.93 15.93 0 0 0 16 32c8.82 0 16-7.18 16-16 0-4.27-1.66-8.28-4.79-11.22ZM16 29.29c-2.43 0-4.81-.65-6.89-1.87l-.49-.29-4.86 1.24 1.3-4.73-.32-.5A13.24 13.24 0 0 1 2.72 16C2.72 8.68 8.68 2.72 16 2.72c3.53 0 6.84 1.37 9.33 3.87A13.1 13.1 0 0 1 29.29 16c0 7.32-5.96 13.29-13.29 13.29Z" />
+          </svg>
+        </a>
       </div>
     </div>
   </section>
@@ -905,61 +1261,6 @@
 
       <div class="project-card reveal">
         <div class="project-role">Full Stack Engineer</div>
-        <div class="project-name"><a href="https://rml.singularitybd.co/" target="_blank"
-            rel="noopener noreferrer">Runner Credit Sales Management System</a></div>
-        <p class="project-desc">Web-based vehicle sales platform handling cash and EMI transactions. Implemented EMI
-          collection modules, target sheet management, and multi-bank API integrations.</p>
-        <div class="project-stack">
-          <span class="stack-tag">Laravel</span>
-          <span class="stack-tag">MySQL</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal">
-        <div class="project-role">Backend Engineer</div>
-        <div class="project-name"><a href="https://nagad.com.bd/" target="_blank" rel="noopener noreferrer">Nagad
-            Website</a></div>
-        <p class="project-desc">Official website for one of Bangladesh's leading MFS platforms. Built CMS panel and
-          RESTful API with Laravel; utilized Redis caching within a microservices architecture.</p>
-        <div class="project-stack">
-          <span class="stack-tag">Nuxt.js</span>
-          <span class="stack-tag">Laravel</span>
-          <span class="stack-tag">Redis</span>
-          <span class="stack-tag">Microservices</span>
-          <span class="stack-tag">MySQL</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal">
-        <div class="project-role">Backend Engineer</div>
-        <div class="project-name"><a href="https://www.bracbank.com/" target="_blank" rel="noopener noreferrer">Brac
-            Bank
-            Website</a></div>
-        <p class="project-desc">High-traffic banking website frontend with Next.js; built the API layer with Redis
-          caching and a CMS panel using Laravel Blade.</p>
-        <div class="project-stack">
-          <span class="stack-tag">Next.js</span>
-          <span class="stack-tag">Laravel</span>
-          <span class="stack-tag">MySQL</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal">
-        <div class="project-role">Full Stack Engineer</div>
-        <div class="project-name"><a href="https://p2a.academy/" target="_blank" rel="noopener noreferrer">P2A
-            Academy</a></div>
-        <p class="project-desc">Comprehensive e-learning platform using a multi-stack approach — Next.js frontend with
-          Django-powered API using Redis caching.</p>
-        <div class="project-stack">
-          <span class="stack-tag">Next.js</span>
-          <span class="stack-tag">Django</span>
-          <span class="stack-tag">Laravel</span>
-          <span class="stack-tag">MySQL</span>
-        </div>
-      </div>
-
-      <div class="project-card reveal">
-        <div class="project-role">Full Stack Engineer</div>
         <div class="project-name"><a href="https://idlckickstart.com/" target="_blank" rel="noopener noreferrer">IDLC
             KickStart</a></div>
         <p class="project-desc">Developed KickStart using Next.js, Laravel Inertia.js, APIs, and Redis. Optimized
@@ -985,6 +1286,91 @@
           <span class="stack-tag">Inertia.js</span>
           <span class="stack-tag">Next.js</span>
           <span class="stack-tag">PostgreSQL</span>
+          <span class="stack-tag">REST APIs</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-role">Backend Engineer</div>
+        <div class="project-name"><a href="https://www.bracbank.com/" target="_blank" rel="noopener noreferrer">Brac
+            Bank
+            Website</a></div>
+        <p class="project-desc">High-traffic banking website frontend with Next.js; built the API layer with Redis
+          caching and a CMS panel using Laravel Blade.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Next.js</span>
+          <span class="stack-tag">Laravel</span>
+          <span class="stack-tag">MySQL</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-role">Backend Engineer</div>
+        <div class="project-name"><a href="https://nagad.com.bd/" target="_blank" rel="noopener noreferrer">Nagad
+            Website</a></div>
+        <p class="project-desc">Official website for one of Bangladesh's leading MFS platforms. Built CMS panel and
+          RESTful API with Laravel; utilized Redis caching within a microservices architecture.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Nuxt.js</span>
+          <span class="stack-tag">Laravel</span>
+          <span class="stack-tag">Redis</span>
+          <span class="stack-tag">Microservices</span>
+          <span class="stack-tag">MySQL</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-role">Full Stack Engineer</div>
+        <div class="project-name"><a href="https://rml.singularitybd.co/" target="_blank"
+            rel="noopener noreferrer">Runner Credit Sales Management System</a></div>
+        <p class="project-desc">Web-based vehicle sales platform handling cash and EMI transactions. Implemented EMI
+          collection modules, target sheet management, and multi-bank API integrations.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Laravel</span>
+          <span class="stack-tag">MySQL</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-role">Full Stack Engineer</div>
+        <div class="project-name"><a href="https://dettolhygienecurriculum.com/" target="_blank"
+            rel="noopener noreferrer">Dettol Hygiene Curriculum</a></div>
+        <p class="project-desc">Interactive hygiene education platform for Reckitt Benckiser — user registration,
+          curriculum quizzes, certificates, and bilingual (English/Bengali) experience. Built with Laravel Blade
+          templates
+          and dynamic front-end interactions using jQuery and AJAX.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Laravel</span>
+          <span class="stack-tag">Blade</span>
+          <span class="stack-tag">jQuery</span>
+          <span class="stack-tag">AJAX</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-role">Full Stack Engineer</div>
+        <div class="project-name"><a href="https://p2a.academy/" target="_blank" rel="noopener noreferrer">P2A
+            Academy</a></div>
+        <p class="project-desc">Comprehensive e-learning platform using a multi-stack approach — Next.js frontend with
+          Django-powered API using Redis caching.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Next.js</span>
+          <span class="stack-tag">Django</span>
+          <span class="stack-tag">Laravel</span>
+          <span class="stack-tag">MySQL</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-role">Full Stack Engineer</div>
+        <div class="project-name"><a href="https://techvitalbd.com/" target="_blank" rel="noopener noreferrer">Tech
+            Vital</a></div>
+        <p class="project-desc">Corporate healthcare technology website for TechVital Systems — showcasing medical
+          equipment, services, products, partners, and company content. Built with a Next.js frontend and a Laravel API
+          backend.</p>
+        <div class="project-stack">
+          <span class="stack-tag">Next.js</span>
+          <span class="stack-tag">Laravel</span>
           <span class="stack-tag">REST APIs</span>
         </div>
       </div>
@@ -1042,11 +1428,56 @@
       <a href="mailto:rafidalridwan@gmail.com">rafidalridwan@gmail.com</a>
       &nbsp;·&nbsp;
       <a href="tel:+8801721914666">+880 1721-914666</a>
+      <div class="footer-social" aria-label="Social profiles">
+        <a class="social-link" href="https://github.com/rafidalridwan" target="_blank" rel="noopener noreferrer"
+          aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.12-1.5-1.12-1.5-.92-.64.07-.63.07-.63 1.02.07 1.56 1.07 1.56 1.07.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.74 0 0 .84-.27 2.75 1.05A9.2 9.2 0 0 1 12 6.84c.85.004 1.71.12 2.51.35 1.91-1.32 2.75-1.05 2.75-1.05.55 1.42.2 2.48.1 2.74.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.49A10.06 10.06 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+          </svg>
+        </a>
+        <a class="social-link" href="https://www.linkedin.com/in/rafidalridwan/" target="_blank"
+          rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22 0H2C.9 0 0 .9 0 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2z" />
+          </svg>
+        </a>
+        <a class="social-link" href="https://www.facebook.com/ra.al.rid/" target="_blank" rel="noopener noreferrer"
+          aria-label="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07c0 6.02 4.39 11.02 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.27h3.32l-.53 3.49h-2.79v8.44C19.61 23.09 24 18.09 24 12.07z" />
+          </svg>
+        </a>
+        <a class="social-link social-link--whatsapp" href="https://wa.me/8801721914666" target="_blank"
+          rel="noopener noreferrer" aria-label="WhatsApp 01721914666">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <path
+              d="M19.11 17.64c-.26-.13-1.55-.76-1.79-.85-.24-.09-.42-.13-.6.13-.18.26-.69.85-.85 1.02-.16.17-.31.2-.57.07-.26-.13-1.1-.4-2.09-1.27-.77-.68-1.29-1.52-1.44-1.78-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.44.09-.17.04-.33-.02-.46-.07-.13-.6-1.45-.82-1.99-.21-.5-.43-.43-.6-.44h-.51c-.17 0-.44.07-.67.33-.23.26-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.71 4.3 3.8.6.26 1.08.42 1.45.54.61.19 1.17.16 1.61.1.49-.07 1.55-.63 1.77-1.24.22-.61.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3Z" />
+            <path
+              d="M27.21 4.78A15.83 15.83 0 0 0 16 0C7.18 0 0 7.18 0 16c0 2.82.74 5.58 2.14 8.02L0 32l8.2-2.1A15.93 15.93 0 0 0 16 32c8.82 0 16-7.18 16-16 0-4.27-1.66-8.28-4.79-11.22ZM16 29.29c-2.43 0-4.81-.65-6.89-1.87l-.49-.29-4.86 1.24 1.3-4.73-.32-.5A13.24 13.24 0 0 1 2.72 16C2.72 8.68 8.68 2.72 16 2.72c3.53 0 6.84 1.37 9.33 3.87A13.1 13.1 0 0 1 29.29 16c0 7.32-5.96 13.29-13.29 13.29Z" />
+          </svg>
+        </a>
+      </div>
     </div>
   </footer>
 
-  <a class="whatsapp-float" href="https://wa.me/8801721914666" target="_blank" rel="noopener noreferrer"
-    aria-label="Chat on WhatsApp">
+  <div id="wa-confirm-modal" class="wa-modal" hidden aria-hidden="true">
+    <div class="wa-modal__backdrop" data-wa-close></div>
+    <div class="wa-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="wa-modal-title">
+      <h3 class="wa-modal__title" id="wa-modal-title">Open WhatsApp?</h3>
+      <p class="wa-modal__text">Would you like to send a message on WhatsApp? You can cancel if you opened this by
+        mistake.</p>
+      <div class="wa-modal__actions">
+        <button type="button" class="btn btn-ghost" data-wa-close>Cancel</button>
+        <button type="button" class="btn wa-modal__confirm" data-wa-confirm>Send message</button>
+      </div>
+    </div>
+  </div>
+
+  <a class="whatsapp-float" href="https://wa.me/8801721914666" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+    <span class="whatsapp-tooltip" role="tooltip">Say hi! 👋</span>
     <svg viewBox="0 0 32 32" aria-hidden="true">
       <path
         d="M19.11 17.64c-.26-.13-1.55-.76-1.79-.85-.24-.09-.42-.13-.6.13-.18.26-.69.85-.85 1.02-.16.17-.31.2-.57.07-.26-.13-1.1-.4-2.09-1.27-.77-.68-1.29-1.52-1.44-1.78-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.44.09-.17.04-.33-.02-.46-.07-.13-.6-1.45-.82-1.99-.21-.5-.43-.43-.6-.44h-.51c-.17 0-.44.07-.67.33-.23.26-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.71 4.3 3.8.6.26 1.08.42 1.45.54.61.19 1.17.16 1.61.1.49-.07 1.55-.63 1.77-1.24.22-.61.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3Z" />
@@ -1056,19 +1487,214 @@
   </a>
 
   <script>
-    // Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          entry.target.style.transitionDelay = (i * 0.05) + 's';
+    // Nav shadow on scroll
+    (() => {
+      const nav = document.querySelector('nav');
+      if (!nav) return;
+      const onScroll = () => {
+        nav.classList.toggle('nav--scrolled', window.scrollY > 24);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    // Scroll reveal — staggered, smooth
+    (() => {
+      const revealEls = document.querySelectorAll('.reveal');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        revealEls.forEach((el) => el.classList.add('visible'));
+        return;
+      }
+
+      const sectionGroups = new Map();
+      revealEls.forEach((el) => {
+        const section = el.closest('section') || document.body;
+        if (!sectionGroups.has(section)) sectionGroups.set(section, []);
+        sectionGroups.get(section).push(el);
+      });
+
+      sectionGroups.forEach((els) => {
+        els.forEach((el, index) => {
+          el.style.setProperty('--reveal-delay', `${Math.min(index * 0.07, 0.42)}s`);
+        });
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
           entry.target.classList.add('visible');
           observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
 
-    revealEls.forEach(el => observer.observe(el));
+      revealEls.forEach((el) => observer.observe(el));
+    })();
+
+    // WhatsApp — confirm before opening chat
+    (() => {
+      const modal = document.getElementById('wa-confirm-modal');
+      if (!modal) return;
+
+      const confirmBtn = modal.querySelector('[data-wa-confirm]');
+      const closeEls = modal.querySelectorAll('[data-wa-close]');
+      let pendingUrl = '';
+
+      const openModal = (url) => {
+        pendingUrl = url;
+        modal.removeAttribute('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        modal.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        confirmBtn.focus();
+      };
+
+      const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('hidden', '');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        pendingUrl = '';
+      };
+
+      const openWhatsApp = () => {
+        if (pendingUrl) window.open(pendingUrl, '_blank', 'noopener,noreferrer');
+        closeModal();
+      };
+
+      document.querySelectorAll('a[href*="wa.me"]').forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal(link.href);
+        });
+      });
+
+      confirmBtn.addEventListener('click', openWhatsApp);
+      closeEls.forEach((el) => el.addEventListener('click', closeModal));
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+      });
+    })();
+
+    // WhatsApp float — random greeting tooltip shortly after page load
+    (() => {
+      const btn = document.querySelector('.whatsapp-float');
+      const tip = btn?.querySelector('.whatsapp-tooltip');
+      if (!btn || !tip) return;
+
+      const greetings = [
+        'Say hi! 👋',
+        "Let's chat!",
+        'Hello there!',
+        'Need help? Message me',
+        'Assalamu Alaikum!',
+        'Good to connect!',
+        'Welcome! 👋',
+      ];
+
+      const prefersReducedMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ~70% chance to show a random greeting when the page loads
+      if (Math.random() >= 0.7) return;
+
+      const showDelay = prefersReducedMotion ? 800 : 1800 + Math.random() * 2200;
+      const visibleFor = prefersReducedMotion ? 3500 : 5000;
+
+      window.setTimeout(() => {
+        tip.textContent = greetings[Math.floor(Math.random() * greetings.length)];
+        btn.classList.add('is-tooltip-visible');
+
+        window.setTimeout(() => {
+          btn.classList.remove('is-tooltip-visible');
+        }, visibleFor);
+      }, showDelay);
+    })();
+
+    // Hero stat counters — animate when #hero enters view (incl. nav jump)
+    (() => {
+      const hero = document.getElementById('hero');
+      if (!hero) return;
+
+      const counters = hero.querySelectorAll('.stat-counter');
+      if (!counters.length) return;
+
+      const prefersReducedMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const duration = 1400;
+      let rafIds = [];
+
+      const cancelAnimations = () => {
+        rafIds.forEach(id => cancelAnimationFrame(id));
+        rafIds = [];
+      };
+
+      const setFinalValues = () => {
+        counters.forEach((el) => {
+          el.textContent = el.dataset.target || '0';
+        });
+      };
+
+      const resetCounters = () => {
+        cancelAnimations();
+        counters.forEach((el) => {
+          el.textContent = '0';
+        });
+      };
+
+      const animateCounters = () => {
+        if (prefersReducedMotion) {
+          setFinalValues();
+          return;
+        }
+
+        cancelAnimations();
+        counters.forEach((el) => {
+          const target = Number(el.dataset.target) || 0;
+          const start = performance.now();
+
+          const tick = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(target * eased);
+            if (progress < 1) {
+              const id = requestAnimationFrame(tick);
+              rafIds.push(id);
+            } else {
+              el.textContent = target;
+            }
+          };
+
+          const id = requestAnimationFrame(tick);
+          rafIds.push(id);
+        });
+      };
+
+      let heroInView = false;
+
+      const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!heroInView) animateCounters();
+            heroInView = true;
+          } else {
+            heroInView = false;
+            resetCounters();
+          }
+        });
+      }, { threshold: 0.35 });
+
+      heroObserver.observe(hero);
+
+      document.querySelectorAll('a[href="#hero"]').forEach((link) => {
+        link.addEventListener('click', () => {
+          window.setTimeout(animateCounters, 350);
+        });
+      });
+    })();
 
     // Animated dot particles background (lightweight canvas)
     (() => {
@@ -1107,6 +1733,7 @@
       let rafId = 0;
 
       const mouse = { x: -9999, y: -9999, active: false };
+      const smoothMouse = { x: -9999, y: -9999 };
       const onMove = (e) => {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
@@ -1194,6 +1821,11 @@
       const draw = () => {
         ctx.clearRect(0, 0, w, h);
 
+        if (mouse.active) {
+          smoothMouse.x += (mouse.x - smoothMouse.x) * 0.12;
+          smoothMouse.y += (mouse.y - smoothMouse.y) * 0.12;
+        }
+
         // A slightly softer overlay for blending with your noise background.
         ctx.globalCompositeOperation = 'lighter';
 
@@ -1234,8 +1866,8 @@
           let alpha = p.baseAlpha;
 
           if (mouse.active) {
-            const dx = p.x - mouse.x;
-            const dy = p.y - mouse.y;
+            const dx = p.x - smoothMouse.x;
+            const dy = p.y - smoothMouse.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             const influence = Math.max(0, 1 - dist / 180);
             radius += influence * 2.2;
