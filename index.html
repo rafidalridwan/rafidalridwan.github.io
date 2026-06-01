@@ -572,6 +572,39 @@
       text-decoration: none;
     }
 
+    /* ── WHATSAPP FLOAT BUTTON ── */
+    .whatsapp-float {
+      position: fixed;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      width: 56px;
+      height: 56px;
+      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      z-index: 200;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .whatsapp-float:hover {
+      transform: translateY(-2px) scale(1.03);
+      filter: brightness(1.06);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.42);
+    }
+
+    .whatsapp-float:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .whatsapp-float svg {
+      width: 28px;
+      height: 28px;
+      fill: currentColor;
+    }
+
     /* ── ANIMATIONS ── */
     @keyframes fadeUp {
       from {
@@ -597,13 +630,49 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
+    @media (max-width: 1200px) {
       nav {
-        padding: 1rem 1.5rem;
+        padding: 1rem 1.25rem;
       }
 
       .nav-links {
-        gap: 1.2rem;
+        gap: 1rem;
+      }
+
+      .nav-links a {
+        font-size: 0.68rem;
+      }
+
+      .whatsapp-float {
+        right: 1rem;
+        bottom: 1rem;
+        width: 50px;
+        height: 50px;
+      }
+
+      .whatsapp-float svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        padding: 0.9rem 1rem;
+        align-items: flex-start;
+        gap: 0.65rem;
+      }
+
+      .nav-links {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.9rem;
+      }
+
+      .nav-links a {
+        font-size: 0.66rem;
+        letter-spacing: 0.08em;
       }
 
       #hero {
@@ -629,6 +698,49 @@
         flex-direction: column;
         gap: 1rem;
         text-align: center;
+      }
+
+      .whatsapp-float {
+        right: 0.8rem;
+        bottom: 0.8rem;
+        width: 48px;
+        height: 48px;
+      }
+
+      .whatsapp-float svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nav-logo {
+        font-size: 0.92rem;
+      }
+
+      .nav-links {
+        gap: 0.45rem 0.75rem;
+      }
+
+      .nav-links a {
+        font-size: 0.62rem;
+        letter-spacing: 0.06em;
+      }
+
+      #hero {
+        padding-top: 8.6rem;
+      }
+
+      .whatsapp-float {
+        right: 0.7rem;
+        bottom: 0.7rem;
+        width: 44px;
+        height: 44px;
+      }
+
+      .whatsapp-float svg {
+        width: 20px;
+        height: 20px;
       }
     }
   </style>
@@ -793,7 +905,8 @@
 
       <div class="project-card reveal">
         <div class="project-role">Full Stack Engineer</div>
-        <div class="project-name">Runner Credit Sales Management System</div>
+        <div class="project-name"><a href="https://rml.singularitybd.co/" target="_blank"
+            rel="noopener noreferrer">Runner Credit Sales Management System</a></div>
         <p class="project-desc">Web-based vehicle sales platform handling cash and EMI transactions. Implemented EMI
           collection modules, target sheet management, and multi-bank API integrations.</p>
         <div class="project-stack">
@@ -804,7 +917,8 @@
 
       <div class="project-card reveal">
         <div class="project-role">Backend Engineer</div>
-        <div class="project-name">Nagad Website</div>
+        <div class="project-name"><a href="https://nagad.com.bd/" target="_blank" rel="noopener noreferrer">Nagad
+            Website</a></div>
         <p class="project-desc">Official website for one of Bangladesh's leading MFS platforms. Built CMS panel and
           RESTful API with Laravel; utilized Redis caching within a microservices architecture.</p>
         <div class="project-stack">
@@ -818,7 +932,9 @@
 
       <div class="project-card reveal">
         <div class="project-role">Backend Engineer</div>
-        <div class="project-name">Brac Bank Website</div>
+        <div class="project-name"><a href="https://www.bracbank.com/" target="_blank" rel="noopener noreferrer">Brac
+            Bank
+            Website</a></div>
         <p class="project-desc">High-traffic banking website frontend with Next.js; built the API layer with Redis
           caching and a CMS panel using Laravel Blade.</p>
         <div class="project-stack">
@@ -830,7 +946,8 @@
 
       <div class="project-card reveal">
         <div class="project-role">Full Stack Engineer</div>
-        <div class="project-name">P2A Academy</div>
+        <div class="project-name"><a href="https://p2a.academy/" target="_blank" rel="noopener noreferrer">P2A
+            Academy</a></div>
         <p class="project-desc">Comprehensive e-learning platform using a multi-stack approach — Next.js frontend with
           Django-powered API using Redis caching.</p>
         <div class="project-stack">
@@ -859,7 +976,8 @@
 
       <div class="project-card reveal">
         <div class="project-role">Backend Engineer</div>
-        <div class="project-name">Biometrics System — Saint Kitts & Nevis</div>
+        <div class="project-name"><a href="https://biometrics.gov.kn/" target="_blank"
+            rel="noopener noreferrer">Biometrics System — Saint Kitts & Nevis</a></div>
         <p class="project-desc">Biometric-based government application with high-security APIs and admin panel for
           efficient national data management. Top-level security standards throughout.</p>
         <div class="project-stack">
@@ -926,6 +1044,16 @@
       <a href="tel:+8801721914666">+880 1721-914666</a>
     </div>
   </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/8801721914666" target="_blank" rel="noopener noreferrer"
+    aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path
+        d="M19.11 17.64c-.26-.13-1.55-.76-1.79-.85-.24-.09-.42-.13-.6.13-.18.26-.69.85-.85 1.02-.16.17-.31.2-.57.07-.26-.13-1.1-.4-2.09-1.27-.77-.68-1.29-1.52-1.44-1.78-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.44.09-.17.04-.33-.02-.46-.07-.13-.6-1.45-.82-1.99-.21-.5-.43-.43-.6-.44h-.51c-.17 0-.44.07-.67.33-.23.26-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.71 4.3 3.8.6.26 1.08.42 1.45.54.61.19 1.17.16 1.61.1.49-.07 1.55-.63 1.77-1.24.22-.61.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3Z" />
+      <path
+        d="M27.21 4.78A15.83 15.83 0 0 0 16 0C7.18 0 0 7.18 0 16c0 2.82.74 5.58 2.14 8.02L0 32l8.2-2.1A15.93 15.93 0 0 0 16 32c8.82 0 16-7.18 16-16 0-4.27-1.66-8.28-4.79-11.22ZM16 29.29c-2.43 0-4.81-.65-6.89-1.87l-.49-.29-4.86 1.24 1.3-4.73-.32-.5A13.24 13.24 0 0 1 2.72 16C2.72 8.68 8.68 2.72 16 2.72c3.53 0 6.84 1.37 9.33 3.87A13.1 13.1 0 0 1 29.29 16c0 7.32-5.96 13.29-13.29 13.29Z" />
+    </svg>
+  </a>
 
   <script>
     // Scroll reveal
@@ -995,6 +1123,12 @@
 
       const particles = [];
       let count = 140;
+      let linkDist = 120;
+      let speedRange = 0.28;
+      let radiusMin = 1.2;
+      let radiusMax = 2.6;
+      let alphaMin = 0.28;
+      let alphaMax = 0.5;
 
       const resize = () => {
         dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -1008,7 +1142,35 @@
         // Map canvas coordinates to CSS pixels.
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        count = Math.min(220, Math.max(120, Math.floor((w * h) / 42000)));
+        const isMobile = w <= 600;
+        const isTablet = w > 600 && w <= 1024;
+
+        if (isMobile) {
+          count = Math.min(130, Math.max(70, Math.floor((w * h) / 62000)));
+          speedRange = 0.2;
+          radiusMin = 0.65;
+          radiusMax = 1.45;
+          alphaMin = 0.2;
+          alphaMax = 0.34;
+          linkDist = 75;
+        } else if (isTablet) {
+          count = Math.min(170, Math.max(90, Math.floor((w * h) / 52000)));
+          speedRange = 0.24;
+          radiusMin = 0.85;
+          radiusMax = 1.9;
+          alphaMin = 0.23;
+          alphaMax = 0.4;
+          linkDist = 95;
+        } else {
+          count = Math.min(220, Math.max(120, Math.floor((w * h) / 42000)));
+          speedRange = 0.28;
+          radiusMin = 1.2;
+          radiusMax = 2.6;
+          alphaMin = 0.28;
+          alphaMax = 0.5;
+          linkDist = 120;
+        }
+
         particles.length = 0;
 
         const rand = (min, max) => min + Math.random() * (max - min);
@@ -1017,10 +1179,10 @@
           particles.push({
             x: rand(0, w),
             y: rand(0, h),
-            vx: rand(-0.28, 0.28),
-            vy: rand(-0.28, 0.28),
-            r: rand(1.2, 2.6),
-            baseAlpha: rand(0.28, 0.5),
+            vx: rand(-speedRange, speedRange),
+            vy: rand(-speedRange, speedRange),
+            r: rand(radiusMin, radiusMax),
+            baseAlpha: rand(alphaMin, alphaMax),
             useSecond,
           });
         }
@@ -1036,7 +1198,6 @@
         ctx.globalCompositeOperation = 'lighter';
 
         // Connection lines (helps visibility a lot)
-        const linkDist = 120;
         for (let i = 0; i < particles.length; i++) {
           const a = particles[i];
           for (let j = i + 1; j < particles.length; j++) {
