@@ -1069,6 +1069,36 @@
 </head>
 
 <body>
+  <!-- RESUME MODAL -->
+  <div id="resume-modal" role="dialog" aria-modal="true" aria-label="Resume"
+    style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1.5rem;">
+    <div
+      style="position:relative;width:100%;max-width:860px;height:90vh;background:var(--surface);border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;">
+      <div
+        style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0;">
+        <span style="font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);">Resume —
+          Rafid Al Ridwan</span>
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+          <a id="resume-download" href="/RAfidAlRidwan.pdf" download="RafidAlRidwan_Resume.pdf"
+            style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5em 1.2em;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;background:var(--accent);color:#0b0c0e;border:1px solid var(--accent);transition:background 0.22s,color 0.22s;cursor:pointer;"
+            onmouseover="this.style.background='transparent';this.style.color='var(--accent)';"
+            onmouseout="this.style.background='var(--accent)';this.style.color='#0b0c0e';">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 4h14v-2H5v2z" />
+            </svg>
+            Download
+          </a>
+          <button onclick="closeResumeModal()" aria-label="Close"
+            style="background:transparent;border:1px solid var(--border);color:var(--text-dim);width:34px;height:34px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:border-color 0.22s,color 0.22s;"
+            onmouseover="this.style.borderColor='var(--muted)';this.style.color='var(--text)';"
+            onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-dim)';">✕</button>
+        </div>
+      </div>
+      <iframe id="resume-iframe" src="" style="flex:1;width:100%;border:none;background:#1a1a1a;"
+        title="Resume PDF"></iframe>
+    </div>
+  </div>
+
   <canvas id="bg-particles" aria-hidden="true"></canvas>
 
   <!-- NAV -->
@@ -1079,7 +1109,7 @@
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#education">Education</a></li>
-      <li><a href="/RAfidAlRidwan.pdf">Resume</a></li>
+      <li><a href="#" id="resume-trigger" onclick="openResumeModal(event)">Resume</a></li>
     </ul>
   </nav>
 
@@ -1487,6 +1517,30 @@
   </a>
 
   <script>
+    // Resume modal
+    function openResumeModal(e) {
+      e.preventDefault();
+      var modal = document.getElementById('resume-modal');
+      var iframe = document.getElementById('resume-iframe');
+      if (!iframe.src || iframe.src === window.location.href) {
+        iframe.src = '/RAfidAlRidwan.pdf';
+      }
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeResumeModal() {
+      document.getElementById('resume-modal').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('resume-modal').addEventListener('click', function (e) {
+        if (e.target === this) closeResumeModal();
+      });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeResumeModal();
+    });
+
     // Nav shadow on scroll
     (() => {
       const nav = document.querySelector('nav');
