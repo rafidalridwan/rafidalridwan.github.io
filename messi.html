@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lionel Messi — Career Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;
+  --gold-l:#E8C97A;
+  --gold-d:#8B6914;
+  --sky:#74AECE;
+  --white:#F5F2EB;
+  --cream:#DCD4C2;
+  --dim:#A89A77;
+  --bg:#0C0A06;
+  --card:rgba(255,255,255,0.04);
+  --bdr:rgba(201,168,76,0.18);
+  --bdrs:rgba(201,168,76,0.38);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* fallback font stack so text always shows */
+h1,h2,h3,.serif{font-family:'Cormorant Garamond','Georgia',serif}
+p,span,div{font-family:'Outfit','Helvetica Neue',Arial,sans-serif}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;height:100vh;min-height:620px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  /* Deep blue-black with subtle texture — reliable fallback when image loads */
+  background:
+    linear-gradient(160deg,#0d1117 0%,#0c0a06 60%,#06080c 100%);
+}
+.hero-img-layer{
+  position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1540379708242-14a809bef941?w=1600&q=75&auto=format&fit=crop') center/cover no-repeat;
+  opacity:0;
+  transform:scale(1.08);
+  transition:opacity 1.4s ease, transform 9s ease-out;
+}
+.hero-img-layer.loaded{opacity:1;transform:scale(1)}
+.hero-veil{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(10,8,4,0.35) 0%,
+    rgba(10,8,4,0.15) 25%,
+    rgba(10,8,4,0.55) 60%,
+    rgba(10,8,4,0.97) 100%);
+  z-index:1;
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:2;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,168,76,0.04) 1px,transparent 1px);
+  background-size:70px 70px;
+}
+.hero-num{
+  position:absolute;right:-1%;top:50%;transform:translateY(-55%);
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:clamp(16rem,26vw,32rem);font-weight:700;line-height:1;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(201,168,76,0.10);
+  pointer-events:none;user-select:none;letter-spacing:-.05em;
+  z-index:2;
+}
+.hero-content{
+  position:relative;z-index:3;
+  padding:0 6rem 5.5rem;
+}
+.eyebrow{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.68rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.8rem;
+}
+.eyebrow-line{display:block;width:34px;height:1px;background:var(--gold);flex-shrink:0}
+.hero-title{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:clamp(4rem,8.5vw,9.5rem);font-weight:300;
+  line-height:.92;letter-spacing:-.02em;margin-bottom:.2em;
+  color:var(--white);
+}
+.hero-title em{font-style:italic;color:var(--gold-l)}
+.hero-byline{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream);opacity:.7;font-weight:300;margin-bottom:3rem;
+}
+.pills{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:3rem}
+.pill{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.62rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--bdrs);border-radius:2px;
+  padding:.38rem 1rem;background:rgba(201,168,76,0.07);
+}
+.hero-row{
+  display:flex;border:1px solid var(--bdr);width:fit-content;
+  border-radius:3px;overflow:hidden;
+}
+.hstat{
+  padding:1.3rem 2.2rem;border-right:1px solid var(--bdr);
+  background:rgba(12,10,6,0.75);
+}
+.hstat:last-child{border-right:none}
+.hstat-n{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:2.6rem;font-weight:600;line-height:1;color:var(--gold-l);
+}
+.hstat-l{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream);opacity:.66;margin-top:.28rem;font-weight:300;
+}
+
+/* ─── TICKER ─── */
+.ticker{
+  border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);
+  background:rgba(201,168,76,0.03);overflow:hidden;padding:1.5rem 0;
+}
+.t-track{display:flex;width:max-content}
+.t-item{
+  display:flex;align-items:center;gap:.65rem;
+  padding:0 2rem;border-right:1px solid var(--bdr);white-space:nowrap;
+}
+.t-icon{font-size:1.1rem}
+.t-name{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--cream);opacity:.7;
+}
+.t-count{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.3rem;font-weight:600;color:var(--gold);
+}
+
+/* ─── IMAGE STRIP ─── */
+.img-strip{display:grid;grid-template-columns:1fr 1fr 1fr;height:360px}
+.ip{position:relative;overflow:hidden;background:#111009}
+.ip-img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(.65) brightness(.7) contrast(1.1);
+}
+.ip-shade{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(12,10,6,.75) 0%,rgba(12,10,6,.25) 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:2rem;
+}
+.ip-bar{position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.ip-num{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:3.8rem;font-weight:700;color:var(--gold-l);line-height:1;
+}
+.ip-lbl{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--cream);opacity:.6;margin-top:.3rem;
+}
+
+/* ─── SECTIONS ─── */
+.sec{padding:6rem 6rem;position:relative}
+.sec-alt{background:rgba(201,168,76,0.022)}
+.sec-hdr{display:flex;align-items:baseline;gap:1.4rem;margin-bottom:3.5rem}
+.sec-n{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:.88rem;color:var(--gold);opacity:.5;
+}
+.sec-t{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:2.5rem;font-weight:300;letter-spacing:-.01em;color:var(--white);
+}
+.sec-t em{font-style:italic;color:var(--gold-l)}
+.sec-line{flex:1;height:1px;background:var(--bdr)}
+
+/* ─── STAT CELLS ─── */
+.sgrid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1.5px;background:var(--bdr);
+  border:1px solid var(--bdr);border-radius:3px;overflow:hidden;
+}
+.sc{background:#0E0C08;padding:2.2rem 1.8rem;position:relative}
+.sc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold-d),transparent);
+}
+.sc-l{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:.8rem;
+}
+.sc-n{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:3rem;font-weight:600;line-height:1;color:var(--gold-l);margin-bottom:.3rem;
+}
+.sc-d{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.65rem;color:var(--cream);opacity:.62;font-weight:300;
+}
+
+/* ─── QUOTE BANNER ─── */
+.qbanner{
+  position:relative;height:300px;overflow:hidden;
+  background:#080806;
+}
+.qbanner-img{
+  width:100%;height:100%;object-fit:cover;object-position:center 40%;
+  filter:grayscale(.6) brightness(.5) contrast(1.1);
+  display:block;
+}
+.qbanner-over{
+  position:absolute;inset:0;
+  background:linear-gradient(to right,rgba(8,8,6,.95) 0%,rgba(8,8,6,.55) 50%,rgba(8,8,6,.25) 100%);
+  display:flex;align-items:center;padding:0 6rem;
+}
+.qb-inner{max-width:580px}
+.qb-q{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.95rem;font-weight:300;font-style:italic;
+  line-height:1.45;color:var(--white);margin-bottom:1.1rem;
+}
+.qb-a{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);opacity:.6;
+}
+
+/* ─── BAR CHART ─── */
+.bchart{
+  display:flex;align-items:flex-end;gap:4px;
+  height:210px;padding-bottom:1.6rem;
+  border-bottom:1px solid var(--bdr);
+}
+.bg{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  gap:3px;height:100%;justify-content:flex-end;
+  position:relative;cursor:default;
+}
+.bg:hover .bf{opacity:1}
+.bg:hover .btt{opacity:1}
+.bf{width:100%;border-radius:2px 2px 0 0;opacity:.58}
+.bf.g{background:var(--gold)}
+.bf.a{background:var(--sky)}
+.bs{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.46rem;color:var(--dim);
+  text-align:center;margin-top:.3rem;
+  transform:rotate(-45deg);white-space:nowrap;
+}
+.btt{
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#1A1610;border:1px solid var(--bdrs);border-radius:2px;
+  padding:.3rem .5rem;
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.56rem;color:var(--gold-l);
+  white-space:nowrap;pointer-events:none;opacity:0;z-index:10;
+}
+.cleg{display:flex;gap:1.5rem;margin-top:1.1rem;justify-content:flex-end}
+.li{
+  display:flex;align-items:center;gap:.38rem;
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
+}
+.ld{width:8px;height:8px;border-radius:1px}
+
+/* ─── CLUB TIMELINE ─── */
+.ctl{position:relative}
+.ctl::before{
+  content:'';position:absolute;left:185px;top:0;bottom:0;
+  width:1px;
+  background:linear-gradient(to bottom,transparent,var(--bdrs) 8%,var(--bdrs) 92%,transparent);
+}
+.ce{display:grid;grid-template-columns:185px 1fr;position:relative}
+.cy{padding:2.2rem 2.6rem 2.2rem 0;text-align:right;position:relative}
+.cy::after{
+  content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);
+  width:9px;height:9px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 0 3px rgba(201,168,76,0.18);
+}
+.cy-y{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:.84rem;color:var(--gold);opacity:.62;
+}
+.cn{padding:2.2rem 0 2.2rem 3.5rem;border-bottom:1px solid rgba(201,168,76,0.06)}
+.ce:last-child .cn{border-bottom:none}
+.cn-name{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.65rem;font-weight:400;color:var(--white);
+  margin-bottom:.75rem;display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;
+}
+.badge{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.54rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:500;
+  background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.22);
+  border-radius:2px;padding:.2rem .6rem;
+}
+.cs-row{display:flex;gap:2.2rem;flex-wrap:wrap}
+.csm{display:flex;flex-direction:column;gap:.1rem}
+.csm-n{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.55rem;font-weight:600;color:var(--gold-l);line-height:1;
+}
+.csm-l{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.56rem;letter-spacing:.17em;text-transform:uppercase;color:var(--dim);
+}
+
+/* ─── NARROW BANNER ─── */
+.nbanner{
+  position:relative;height:240px;overflow:hidden;background:#06060a;
+}
+.nbanner-img{
+  width:100%;height:100%;object-fit:cover;object-position:center 30%;
+  filter:grayscale(.65) brightness(.45) contrast(1.15);display:block;
+}
+.nbanner-over{
+  position:absolute;inset:0;
+  background:rgba(8,8,6,0.6);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;
+}
+.nb-line{width:72px;height:1px;background:var(--gold);opacity:.45}
+.nb-n{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:3.2rem;font-weight:700;letter-spacing:-.02em;color:var(--gold-l);
+}
+.nb-s{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--cream);opacity:.66;
+}
+
+/* ─── AWARDS ─── */
+.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.ac{
+  background:var(--card);border:1px solid var(--bdr);border-radius:3px;
+  padding:2rem 1.7rem;position:relative;overflow:hidden;
+}
+.ac::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-d),transparent);
+}
+.ac-bg{
+  position:absolute;right:1.2rem;top:.8rem;
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:4.5rem;font-weight:700;
+  color:transparent;-webkit-text-stroke:1px rgba(201,168,76,0.13);
+  pointer-events:none;
+}
+.ac-icon{font-size:1.6rem;margin-bottom:1rem;display:block}
+.ac-t{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.35rem;font-weight:400;color:var(--white);margin-bottom:.3rem;line-height:1.2;
+}
+.ac-d{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.6rem;letter-spacing:.08em;color:var(--dim);font-weight:300;
+}
+.ac-p{
+  display:inline-block;margin-top:.9rem;
+  background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.22);
+  border-radius:2px;padding:.18rem .65rem;
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.05rem;font-weight:600;color:var(--gold);
+}
+
+/* ─── FIFA 2026 FIXTURES ─── */
+.fixtures-wrap{
+  background:rgba(116,174,206,0.04);
+  border:1px solid rgba(116,174,206,0.15);
+  border-radius:4px;overflow:hidden;
+}
+.fix-header{
+  background:linear-gradient(90deg,rgba(116,174,206,0.12),rgba(201,168,76,0.08));
+  border-bottom:1px solid rgba(116,174,206,0.2);
+  padding:1.6rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.fix-title{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.7rem;font-weight:400;color:var(--white);
+}
+.fix-title em{font-style:italic;color:var(--sky)}
+.fix-badge{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--sky);border:1px solid rgba(116,174,206,0.3);
+  border-radius:2px;padding:.3rem .8rem;background:rgba(116,174,206,0.08);
+}
+.group-tag{
+  padding:.7rem 2rem;
+  background:rgba(201,168,76,0.06);
+  border-bottom:1px solid var(--bdr);
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+  display:flex;align-items:center;gap:1rem;
+}
+.group-tag span{opacity:.55}
+.fix-match{
+  display:grid;
+  grid-template-columns:140px 1fr 60px 1fr 140px;
+  align-items:center;
+  padding:1.5rem 2rem;
+  border-bottom:1px solid rgba(201,168,76,0.05);
+  gap:1rem;
+}
+.fix-match:last-child{border-bottom:none}
+.fix-match:hover{background:rgba(201,168,76,0.03)}
+.fix-date{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.65rem;font-weight:400;color:var(--dim);
+}
+.fix-date strong{
+  display:block;
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.05rem;font-weight:600;color:var(--cream);margin-bottom:.15rem;
+}
+.fix-team{
+  display:flex;align-items:center;gap:.75rem;
+}
+.fix-team.right{flex-direction:row-reverse;text-align:right}
+.fix-flag{font-size:1.5rem;flex-shrink:0}
+.fix-tname{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.2rem;font-weight:400;color:var(--white);
+}
+.fix-tname.hl{color:var(--gold-l)}
+.fix-vs{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--dim);text-align:center;
+}
+.fix-venue{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.58rem;color:var(--dim);font-weight:300;
+  grid-column:1/-1;
+  display:flex;align-items:center;gap:.5rem;
+  padding-top:.3rem;
+  border-top:1px solid rgba(201,168,76,0.04);
+  margin-top:.4rem;
+}
+.fix-venue::before{content:'📍';font-size:.8rem}
+.defending-note{
+  padding:1.2rem 2rem;
+  background:linear-gradient(90deg,rgba(201,168,76,0.07),transparent);
+  border-top:1px solid var(--bdr);
+  display:flex;align-items:center;gap:1rem;
+}
+.dn-icon{font-size:1.5rem}
+.dn-text{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.68rem;color:var(--cream);font-weight:300;opacity:.65;
+}
+.dn-text strong{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:.95rem;color:var(--gold);font-weight:600;font-style:normal;
+}
+
+/* ─── NATIONAL ─── */
+.nat-wrap{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.nat-intro{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.05rem;font-weight:300;font-style:italic;
+  color:var(--cream);line-height:1.8;opacity:.62;margin-bottom:2rem;
+}
+.nat-list{list-style:none}
+.nat-list li{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.85rem 0;border-bottom:1px solid rgba(201,168,76,0.07);
+}
+.nat-list li:last-child{border-bottom:none}
+.nl-k{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.73rem;letter-spacing:.1em;color:var(--dim);font-weight:300;
+}
+.nl-v{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.4rem;font-weight:600;color:var(--gold-l);
+}
+.qblock{
+  border-left:2px solid var(--gold);padding:1.7rem 2rem;
+  background:rgba(201,168,76,0.04);border-radius:0 3px 3px 0;margin-bottom:1.6rem;
+}
+.qblock-q{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.3rem;font-weight:300;font-style:italic;
+  line-height:1.6;color:var(--white);opacity:.85;margin-bottom:.7rem;
+}
+.qblock-a{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.5;
+}
+
+/* ─── FOOTER ─── */
+.footer{
+  padding:2.5rem 6rem;border-top:1px solid var(--bdr);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.footer-brand{
+  font-family:'Cormorant Garamond','Georgia',serif;
+  font-size:1.05rem;font-style:italic;color:var(--gold);opacity:.48;
+}
+.footer-note{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.56rem;letter-spacing:.15em;color:var(--dim);opacity:.7;text-transform:uppercase;
+}
+
+/* ─── HOVER & MICRO-INTERACTIONS ─── */
+.pill{transition:transform .35s cubic-bezier(.2,.7,.2,1),background .35s,border-color .35s,color .35s}
+.pill:hover{transform:translateY(-3px);background:rgba(201,168,76,0.16);border-color:var(--gold);color:var(--gold-l)}
+
+.hstat{transition:background .4s,transform .4s}
+.hstat:hover{background:rgba(201,168,76,0.10);transform:translateY(-2px)}
+
+.ip{cursor:pointer}
+.ip-img{transition:transform 1.2s cubic-bezier(.2,.7,.2,1),filter .6s}
+.ip:hover .ip-img{transform:scale(1.09);filter:grayscale(.12) brightness(.88) contrast(1.1)}
+.ip-num{transition:transform .5s,color .5s}
+.ip:hover .ip-num{transform:translateY(-4px);color:var(--gold)}
+.ip::after{content:'';position:absolute;inset:0;border:1px solid transparent;transition:border-color .5s;pointer-events:none;z-index:3}
+.ip:hover::after{border-color:var(--bdrs)}
+
+.sc{transition:transform .4s cubic-bezier(.2,.7,.2,1),background .4s,box-shadow .4s}
+.sgrid .sc:hover{transform:translateY(-8px);background:#14110A;box-shadow:0 22px 42px -20px rgba(201,168,76,0.4),0 10px 22px -16px rgba(0,0,0,0.65);z-index:1}
+.sc-n{transition:color .4s}
+.sc:hover .sc-n{color:var(--white)}
+
+/* BRAC-style lift: card rises with a big soft glow + hidden action slides up */
+.ac{transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .5s,background .5s,box-shadow .5s}
+.ag .ac:hover{
+  transform:translateY(-12px);
+  border-color:var(--bdrs);
+  background:rgba(201,168,76,0.07);
+  box-shadow:0 30px 55px -20px rgba(201,168,76,0.30),0 14px 30px -18px rgba(0,0,0,0.7);
+}
+.ac-icon{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.ac:hover .ac-icon{transform:scale(1.25) rotate(-6deg)}
+.ac-bg{transition:transform .5s,-webkit-text-stroke .5s}
+.ac:hover .ac-bg{transform:scale(1.1);-webkit-text-stroke:1px rgba(201,168,76,0.32)}
+.ac-reveal{
+  display:flex;align-items:center;gap:.55rem;
+  max-height:0;opacity:0;margin-top:0;overflow:hidden;
+  transition:max-height .5s cubic-bezier(.2,.7,.2,1),opacity .45s ease,margin-top .5s cubic-bezier(.2,.7,.2,1);
+}
+.ac:hover .ac-reveal{max-height:30px;opacity:1;margin-top:1.05rem}
+.ac-cta{
+  font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:500;
+}
+.ac-cta-arrow{color:var(--gold-l);transition:transform .45s ease}
+.ac:hover .ac-cta-arrow{transform:translateX(6px)}
+
+.ce .cn{transition:background .4s}
+.ce:hover .cn{background:rgba(201,168,76,0.03)}
+.cy::after{transition:transform .4s,box-shadow .4s}
+.ce:hover .cy::after{transform:translateY(-50%) scale(1.45);box-shadow:0 0 0 5px rgba(201,168,76,0.22)}
+
+.nat-list li{transition:padding .35s,background .35s}
+.nat-list li:hover{padding-left:.8rem;background:rgba(201,168,76,0.04)}
+.nl-v{transition:color .35s}
+.nat-list li:hover .nl-v{color:var(--white)}
+
+.fix-tname{transition:color .35s}
+.fix-match:hover .fix-tname{color:var(--gold-l)}
+
+.qbanner-img,.nbanner-img{transition:transform 9s ease-out,filter .6s}
+.qbanner:hover .qbanner-img,.nbanner:hover .nbanner-img{transform:scale(1.07)}
+
+.bf{transition:height 1.1s cubic-bezier(.2,.8,.2,1),opacity .3s,filter .3s}
+.bg:hover .bf.g{filter:drop-shadow(0 0 6px rgba(201,168,76,.6))}
+
+/* ─── SCROLL REVEAL ─── */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ─── HERO ENTRANCE ─── */
+@keyframes heroUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.hero-content>*{animation:heroUp .9s both}
+.eyebrow{animation-delay:.1s}
+.hero-title{animation-delay:.25s}
+.hero-byline{animation-delay:.45s}
+.pills{animation-delay:.6s}
+.hero-row{animation-delay:.75s}
+
+/* ─── SCROLL CUE ─── */
+.scroll-cue{
+  position:absolute;left:50%;bottom:1.5rem;transform:translateX(-50%);z-index:4;
+  display:flex;flex-direction:column;align-items:center;gap:.55rem;
+  font-family:'Outfit',sans-serif;font-size:.5rem;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--cream);opacity:.55;
+}
+.scroll-cue .mouse{width:20px;height:32px;border:1px solid var(--bdrs);border-radius:11px;position:relative}
+.scroll-cue .mouse::after{
+  content:'';position:absolute;left:50%;top:6px;width:3px;height:6px;border-radius:2px;
+  background:var(--gold);transform:translateX(-50%);animation:wheel 1.6s infinite;
+}
+@keyframes wheel{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,11px)}}
+
+/* ─── GALLERY ─── */
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.gcard{position:relative;height:240px;border-radius:4px;overflow:hidden;border:1px solid var(--bdr);cursor:pointer;transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s,border-color .5s}
+.gallery .gcard:hover{transform:translateY(-10px);border-color:var(--bdrs);box-shadow:0 28px 50px -22px rgba(201,168,76,0.30),0 12px 26px -18px rgba(0,0,0,0.7)}
+.gcard img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.55) brightness(.72) contrast(1.08);transition:transform 1.2s cubic-bezier(.2,.7,.2,1),filter .6s}
+.gcard:hover img{transform:scale(1.1);filter:grayscale(.1) brightness(.92)}
+.gcard::before{content:'';position:absolute;inset:0;z-index:1;border:1px solid transparent;transition:border-color .5s;pointer-events:none}
+.gcard:hover::before{border-color:var(--bdrs)}
+.gcard-cap{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;padding:1.1rem 1.2rem;
+  background:linear-gradient(to top,rgba(8,8,6,.92),rgba(8,8,6,.1));
+  font-family:'Cormorant Garamond','Georgia',serif;font-size:1.15rem;color:var(--white);
+  transform:translateY(7px);transition:transform .5s;
+}
+.gcard:hover .gcard-cap{transform:none}
+.gcard-cap small{
+  display:block;font-family:'Outfit','Helvetica Neue',Arial,sans-serif;
+  font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);opacity:.85;margin-top:.25rem;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .hero-content>*{animation:none}
+  .hero-img-layer{transition:opacity .6s;transform:none}
+  .scroll-cue .mouse::after{animation:none}
+}
+
+@media(max-width:860px){
+  .hero-content,.sec,.qbanner-over,.footer{padding-left:1.5rem;padding-right:1.5rem}
+  .gallery{grid-template-columns:1fr 1fr;gap:.8rem}
+  .sgrid{grid-template-columns:repeat(2,1fr)}
+  .ag{grid-template-columns:1fr 1fr}
+  .nat-wrap{grid-template-columns:1fr;gap:2rem}
+  .img-strip{grid-template-columns:1fr}
+  .ip:nth-child(2),.ip:nth-child(3){display:none}
+  .ctl::before{left:105px}
+  .ce{grid-template-columns:105px 1fr}
+  .hero-row{flex-wrap:wrap}
+  .fix-match{grid-template-columns:120px 1fr 44px 1fr 120px}
+  .fix-venue{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-img-layer" id="heroImg"></div>
+  <div class="hero-veil"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-num">10</div>
+
+  <div class="hero-content">
+    <div class="eyebrow"><span class="eyebrow-line"></span>Career Analytics · Est. 2004</div>
+    <h1 class="hero-title">Lionel<br><em>Messi</em></h1>
+    <p class="hero-byline">Born June 24, 1987 · Rosario, Argentina · No. 10 · Forward</p>
+
+    <div class="pills">
+      <div class="pill">🌟 8× Ballon d'Or</div>
+      <div class="pill">🏆 World Cup 2022</div>
+      <div class="pill">⚽ 857+ Career Goals</div>
+      <div class="pill">🇦🇷 Defending Champions 2026</div>
+    </div>
+
+    <div class="hero-row">
+      <div class="hstat"><div class="hstat-n">857</div><div class="hstat-l">Career Goals</div></div>
+      <div class="hstat"><div class="hstat-n">380</div><div class="hstat-l">Career Assists</div></div>
+      <div class="hstat"><div class="hstat-n">1,100+</div><div class="hstat-l">Appearances</div></div>
+      <div class="hstat"><div class="hstat-n">8×</div><div class="hstat-l">Ballon d'Or</div></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><div class="mouse"></div>Scroll</div>
+</section>
+
+<!-- ═══ TICKER ═══ -->
+<div class="ticker"><div class="t-track" id="ticker"></div></div>
+
+<!-- ═══ IMAGE STRIP ═══ -->
+<div class="img-strip">
+  <div class="ip">
+    <img class="ip-img" src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800&q=70&auto=format&fit=crop" alt="Stadium" loading="lazy">
+    <div class="ip-bar"></div>
+    <div class="ip-shade"><div class="ip-num">726</div><div class="ip-lbl">Club Goals — All Competitions</div></div>
+  </div>
+  <div class="ip">
+    <img class="ip-img" src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&q=70&auto=format" alt="Stadium lights" loading="lazy">
+    <div class="ip-bar"></div>
+    <div class="ip-shade"><div class="ip-num">380</div><div class="ip-lbl">Career Assists</div></div>
+  </div>
+  <div class="ip">
+    <img class="ip-img" src="https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=70&auto=format" alt="Football pitch" loading="lazy">
+    <div class="ip-bar"></div>
+    <div class="ip-shade"><div class="ip-num">44</div><div class="ip-lbl">Major Trophies Won</div></div>
+  </div>
+</div>
+
+<!-- ═══ CAREER STATS ═══ -->
+<section class="sec">
+  <div class="sec-hdr">
+    <span class="sec-n">01</span>
+    <h2 class="sec-t">Career <em>Statistics</em></h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="sgrid" id="sgrid"></div>
+</section>
+
+<!-- ═══ QUOTE BANNER 1 ═══ -->
+<div class="qbanner">
+  <img class="qbanner-img" src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1600&q=65&auto=format" alt="Football stadium crowd" loading="lazy">
+  <div class="qbanner-over">
+    <div class="qb-inner">
+      <div class="qb-q">"This Copa del Mundo is for all Argentines. We are world champions. I wanted it so badly."</div>
+      <div class="qb-a">Lionel Messi · Lusail Stadium, Qatar · December 18, 2022</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SEASON CHART ═══ -->
+<section class="sec sec-alt">
+  <div class="sec-hdr">
+    <span class="sec-n">02</span>
+    <h2 class="sec-t">Season <em>by Season</em></h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="bchart" id="bchart"></div>
+  <div class="cleg">
+    <div class="li"><div class="ld" style="background:var(--gold)"></div>Goals</div>
+    <div class="li"><div class="ld" style="background:var(--sky)"></div>Assists</div>
+  </div>
+</section>
+
+<!-- ═══ MOMENTS GALLERY ═══ -->
+<section class="sec">
+  <div class="sec-hdr">
+    <span class="sec-n">03</span>
+    <h2 class="sec-t">In the <em>Arena</em></h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="gallery">
+    <div class="gcard">
+      <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=700&q=70&auto=format&fit=crop" alt="Match action" loading="lazy">
+      <div class="gcard-cap">Match Day<small>Under the Lights</small></div>
+    </div>
+    <div class="gcard">
+      <img src="https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=700&q=70&auto=format&fit=crop" alt="The ball" loading="lazy">
+      <div class="gcard-cap">The Ball<small>Left Foot Magic</small></div>
+    </div>
+    <div class="gcard">
+      <img src="https://images.unsplash.com/photo-1486286701208-1d58e9338013?w=700&q=70&auto=format&fit=crop" alt="Stadium arena" loading="lazy">
+      <div class="gcard-cap">The Arena<small>Where Legends Play</small></div>
+    </div>
+    <div class="gcard">
+      <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=700&q=70&auto=format&fit=crop" alt="The crowd" loading="lazy">
+      <div class="gcard-cap">The Faithful<small>A Global Following</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CLUB TIMELINE ═══ -->
+<section class="sec">
+  <div class="sec-hdr">
+    <span class="sec-n">04</span>
+    <h2 class="sec-t">Club <em>Career</em></h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="ctl" id="ctl"></div>
+</section>
+
+<!-- ═══ FIFA 2026 FIXTURES ═══ -->
+<section class="sec sec-alt">
+  <div class="sec-hdr">
+    <span class="sec-n">05</span>
+    <h2 class="sec-t">FIFA World Cup <em>2026</em></h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="fixtures-wrap">
+    <div class="fix-header">
+      <div class="fix-title">Argentina — <em>Group J</em> Fixtures</div>
+      <div class="fix-badge">🏆 Defending Champions</div>
+    </div>
+
+    <div class="group-tag">Group J <span>Argentina · Algeria · Austria · Jordan</span></div>
+
+    <!-- Match 1 -->
+    <div class="fix-match">
+      <div class="fix-date"><strong>Jun 16</strong>Tue · 9:00 PM ET</div>
+      <div class="fix-team">
+        <span class="fix-flag">🇦🇷</span>
+        <span class="fix-tname hl">Argentina</span>
+      </div>
+      <div class="fix-vs">vs</div>
+      <div class="fix-team right">
+        <span class="fix-flag">🇩🇿</span>
+        <span class="fix-tname">Algeria</span>
+      </div>
+      <div></div>
+      <div class="fix-venue">Arrowhead Stadium — Kansas City, Missouri</div>
+    </div>
+
+    <!-- Match 2 -->
+    <div class="fix-match">
+      <div class="fix-date"><strong>Jun 22</strong>Mon · 1:00 PM ET</div>
+      <div class="fix-team">
+        <span class="fix-flag">🇦🇷</span>
+        <span class="fix-tname hl">Argentina</span>
+      </div>
+      <div class="fix-vs">vs</div>
+      <div class="fix-team right">
+        <span class="fix-flag">🇦🇹</span>
+        <span class="fix-tname">Austria</span>
+      </div>
+      <div></div>
+      <div class="fix-venue">AT&amp;T Stadium — Arlington (Dallas), Texas</div>
+    </div>
+
+    <!-- Match 3 -->
+    <div class="fix-match">
+      <div class="fix-date"><strong>Jun 27</strong>Sat · 10:00 PM ET</div>
+      <div class="fix-team">
+        <span class="fix-flag">🇯🇴</span>
+        <span class="fix-tname">Jordan</span>
+      </div>
+      <div class="fix-vs">vs</div>
+      <div class="fix-team right">
+        <span class="fix-flag">🇦🇷</span>
+        <span class="fix-tname hl">Argentina</span>
+      </div>
+      <div></div>
+      <div class="fix-venue">AT&amp;T Stadium — Arlington (Dallas), Texas</div>
+    </div>
+
+    <div class="defending-note">
+      <span class="dn-icon">⭐⭐⭐</span>
+      <div class="dn-text">
+        Argentina enters as <strong>Defending World Champions</strong> — seeking to become the first back-to-back champions since Brazil in 1958 &amp; 1962. Messi leads the squad as captain.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ NARROW BANNER ═══ -->
+<div class="nbanner">
+  <img class="nbanner-img" src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?w=1600&q=65&auto=format" alt="Stadium night" loading="lazy">
+  <div class="nbanner-over">
+    <div class="nb-line"></div>
+    <div class="nb-n">8 Ballon d'Or</div>
+    <div class="nb-s">The Most Decorated Footballer in History</div>
+    <div class="nb-line"></div>
+  </div>
+</div>
+
+<!-- ═══ AWARDS ═══ -->
+<section class="sec">
+  <div class="sec-hdr">
+    <span class="sec-n">06</span>
+    <h2 class="sec-t">Honours &amp; <em>Awards</em></h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="ag" id="ag"></div>
+</section>
+
+<!-- ═══ QUOTE BANNER 2 ═══ -->
+<div class="qbanner">
+  <img class="qbanner-img" src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1600&q=65&auto=format" alt="Football stadium" loading="lazy">
+  <div class="qbanner-over">
+    <div class="qb-inner">
+      <div class="qb-q">"He is not just the best player alive. He is the best player who has ever lived."</div>
+      <div class="qb-a">Pep Guardiola — On Lionel Messi</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ NATIONAL TEAM ═══ -->
+<section class="sec sec-alt">
+  <div class="sec-hdr">
+    <span class="sec-n">07</span>
+    <h2 class="sec-t">La <em>Albiceleste</em></h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="nat-wrap">
+    <div>
+      <div class="qblock">
+        <div class="qblock-q">"Playing for Argentina is the greatest feeling. It is everything to me. Nothing else compares."</div>
+        <div class="qblock-a">Lionel Messi</div>
+      </div>
+      <div class="qblock">
+        <div class="qblock-q">"I dedicate this to my family, to Diego who is in heaven, and to everyone in Argentina."</div>
+        <div class="qblock-a">Lionel Messi · World Cup 2022 Final</div>
+      </div>
+    </div>
+    <div>
+      <p class="nat-intro">In 187 international appearances, Messi became Argentina's greatest ever scorer, captain, and icon — winning every single title the sport has to offer.</p>
+      <ul class="nat-list" id="natList"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-brand">Leo Messi · Career Analytics</div>
+  <div class="footer-note">Stats through 2024–25 season · Fixtures: FIFA World Cup 2026</div>
+</footer>
+
+<script>
+// Lazy-load hero background
+(function(){
+  var img=new Image();
+  img.onload=function(){document.getElementById('heroImg').classList.add('loaded')};
+  img.src='https://images.unsplash.com/photo-1540379708242-14a809bef941?w=1600&q=75&auto=format&fit=crop';
+  document.getElementById('heroImg').style.backgroundImage="url('"+img.src+"')";
+  document.getElementById('heroImg').style.backgroundSize='cover';
+  document.getElementById('heroImg').style.backgroundPosition='center';
+})();
+
+// Ticker
+var trophies=[
+  {i:'🏆',n:'World Cup',c:'1×'},{i:'🌟',n:"Ballon d'Or",c:'8×'},
+  {i:'🥇',n:'Copa América',c:'3×'},{i:'🏅',n:'La Liga',c:'10×'},
+  {i:'⭐',n:'Champions League',c:'4×'},{i:'🏆',n:'Copa del Rey',c:'7×'},
+  {i:'🥇',n:'Finalissima',c:'1×'},{i:'🌟',n:'FIFA Best',c:'7×'},
+  {i:'🏅',n:'Club World Cup',c:'3×'},{i:'⭐',n:'Golden Boot',c:'6×'},
+  {i:'🏆',n:'Supercopa España',c:'8×'},{i:'🥇',n:'WC Golden Ball',c:'2×'},
+];
+var tk=document.getElementById('ticker');
+[...trophies,...trophies].forEach(function(t){
+  var d=document.createElement('div');d.className='t-item';
+  d.innerHTML='<span class="t-icon">'+t.i+'</span><span class="t-name">'+t.n+'</span><span class="t-count">'+t.c+'</span>';
+  tk.appendChild(d);
+});
+// simple JS marquee
+var pos=0;
+setInterval(function(){
+  pos-=0.5;
+  var half=tk.scrollWidth/2;
+  if(Math.abs(pos)>=half)pos=0;
+  tk.style.transform='translateX('+pos+'px)';
+},16);
+
+// Stat grid
+var stats=[
+  {l:'Club Goals',n:'726',d:'All competitions'},
+  {l:'International Goals',n:'112',d:'Argentina all-time record'},
+  {l:'Career Assists',n:'380',d:'Club & international'},
+  {l:'Appearances',n:'1,100+',d:'Club & international'},
+  {l:'Goals per Match',n:'0.82',d:'Club career average'},
+  {l:'Hat-tricks',n:'57',d:'Professional career'},
+  {l:'Champions League',n:'129',d:'Goals in UCL'},
+  {l:'30+ Goal Seasons',n:'13',d:'In a single season'},
+];
+var sg=document.getElementById('sgrid');
+stats.forEach(function(s){
+  sg.innerHTML+='<div class="sc"><div class="sc-l">'+s.l+'</div><div class="sc-n">'+s.n+'</div><div class="sc-d">'+s.d+'</div></div>';
+});
+
+// Bar chart
+var seasons=[
+  {s:'04/05',g:1,a:0},{s:'05/06',g:8,a:3},{s:'06/07',g:17,a:7},
+  {s:'07/08',g:16,a:14},{s:'08/09',g:38,a:18},{s:'09/10',g:34,a:11},
+  {s:'10/11',g:53,a:24},{s:'11/12',g:73,a:32},{s:'12/13',g:60,a:30},
+  {s:'13/14',g:41,a:21},{s:'14/15',g:58,a:27},{s:'15/16',g:51,a:26},
+  {s:'16/17',g:54,a:16},{s:'17/18',g:45,a:18},{s:'18/19',g:51,a:26},
+  {s:'19/20',g:31,a:26},{s:'20/21',g:38,a:14},{s:'21/22',g:11,a:15},
+  {s:'22/23',g:21,a:20},{s:'23/24',g:44,a:17},{s:'24/25',g:28,a:12},
+];
+var maxG=Math.max.apply(null,seasons.map(function(s){return s.g}));
+var bc=document.getElementById('bchart');
+seasons.forEach(function(s){
+  var grp=document.createElement('div');grp.className='bg';
+  var tt=document.createElement('div');tt.className='btt';tt.innerHTML=''+s.s+'<br>&#9917;'+s.g+' &#127919;'+s.a;
+  var ab=document.createElement('div');ab.className='bf a';ab.dataset.h=Math.round((s.a/maxG)*170);ab.style.height='0px';
+  var gb=document.createElement('div');gb.className='bf g';gb.dataset.h=Math.round((s.g/maxG)*170);gb.style.height='0px';
+  var lb=document.createElement('div');lb.className='bs';lb.textContent=s.s;
+  grp.append(tt,ab,gb,lb);bc.appendChild(grp);
+});
+
+// Club timeline
+var clubs=[
+  {y:'2004 – 2021',n:'FC Barcelona',f:'🇪🇸',a:778,g:672,as:268,b:'Greatest Club Spell'},
+  {y:'2021 – 2023',n:'Paris Saint-Germain',f:'🇫🇷',a:75,g:32,as:35,b:null},
+  {y:'2023 – Present',n:'Inter Miami CF',f:'🇺🇸',a:67,g:48,as:31,b:'Current Club'},
+];
+var ctl=document.getElementById('ctl');
+clubs.forEach(function(c){
+  ctl.innerHTML+='<div class="ce"><div class="cy"><span class="cy-y">'+c.y+'</span></div><div class="cn"><div class="cn-name">'+c.n+' '+c.f+(c.b?'<span class="badge">'+c.b+'</span>':'')+'</div><div class="cs-row"><div class="csm"><span class="csm-n">'+c.a+'</span><span class="csm-l">Apps</span></div><div class="csm"><span class="csm-n">'+c.g+'</span><span class="csm-l">Goals</span></div><div class="csm"><span class="csm-n">'+c.as+'</span><span class="csm-l">Assists</span></div></div></div></div>';
+});
+
+// Awards
+var awards=[
+  {i:'🌟',t:"Ballon d'Or",d:"World's best player",c:'8×',n:'8'},
+  {i:'⚽',t:'FIFA World Cup',d:'Qatar 2022 Champion',c:'2022',n:'1'},
+  {i:'🏅',t:'Copa América',d:'South American champion',c:'3×',n:'3'},
+  {i:'🏆',t:'Champions League',d:'UEFA European elite',c:'4×',n:'4'},
+  {i:'👟',t:'European Golden Boot',d:'Top scorer in Europe',c:'6×',n:'6'},
+  {i:'🥇',t:'La Liga Title',d:'Spanish league champion',c:'10×',n:'10'},
+  {i:'🌍',t:'FIFA Best',d:'World best — FIFA award',c:'7×',n:'7'},
+  {i:'🏆',t:'Copa del Rey',d:'Spanish domestic cup',c:'7×',n:'7'},
+  {i:'🎯',t:'WC Golden Ball',d:'Best player — World Cup',c:'2×',n:'2'},
+];
+var ag=document.getElementById('ag');
+awards.forEach(function(a){
+  ag.innerHTML+='<div class="ac"><div class="ac-bg">'+a.n+'</div><span class="ac-icon">'+a.i+'</span><div class="ac-t">'+a.t+'</div><div class="ac-d">'+a.d+'</div><div class="ac-p">'+a.c+'</div><div class="ac-reveal"><span class="ac-cta">Explore Honour</span><span class="ac-cta-arrow">&#8594;</span></div></div>';
+});
+
+// National stats
+var nat=[
+  {k:'Appearances',v:'187'},{k:'Goals',v:'112'},{k:'Assists',v:'60'},
+  {k:'World Cup Finals',v:'3'},{k:'World Cup Goals',v:'13'},
+  {k:'Copa América Goals',v:'17'},{k:'Debut Year',v:'2005'},{k:'Tournaments Won',v:'5'},
+];
+var nl=document.getElementById('natList');
+nat.forEach(function(n){nl.innerHTML+='<li><span class="nl-k">'+n.k+'</span><span class="nl-v">'+n.v+'</span></li>'});
+
+// ─── Animations: reveal on scroll, count-up numbers, growing bars ───
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // Scroll reveal
+  var sels=['.sec-hdr','.img-strip .ip','.sgrid .sc','.gallery .gcard','.bchart','.cleg',
+            '.fixtures-wrap','.ctl .ce','.ag .ac','.nat-wrap > div','.qbanner','.nbanner'];
+  var revealItems=[];
+  sels.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){el.classList.add('reveal');revealItems.push(el);});
+  });
+  ['.img-strip .ip','.sgrid .sc','.gallery .gcard','.ag .ac'].forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el,i){el.style.transitionDelay=((i%4)*0.08)+'s';});
+  });
+  if(reduce||!('IntersectionObserver'in window)){
+    revealItems.forEach(function(el){el.classList.add('in');});
+  }else{
+    var rio=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){
+        var t=e.target;t.classList.add('in');rio.unobserve(t);
+        setTimeout(function(){t.style.transitionDelay='';},1100);
+      }});
+    },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+    revealItems.forEach(function(el){rio.observe(el)});
+  }
+
+  // Count-up numbers
+  function countUp(el){
+    if(el.dataset.counted)return; el.dataset.counted='1';
+    var raw=el.textContent.trim();
+    var m=raw.match(/^([^\d]*)([\d,.]+)(.*)$/);
+    if(!m)return;
+    var pre=m[1],numStr=m[2],suf=m[3];
+    var hasComma=numStr.indexOf(',')>-1;
+    var decimals=(numStr.split('.')[1]||'').length;
+    var target=parseFloat(numStr.replace(/,/g,''));
+    if(isNaN(target))return;
+    var dur=1100,start=null;
+    function fmt(v){
+      var s=decimals?v.toFixed(decimals):Math.round(v).toString();
+      if(hasComma){var p=s.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');s=p.join('.');}
+      return pre+s+suf;
+    }
+    function step(ts){
+      if(!start)start=ts;
+      var p=Math.min((ts-start)/dur,1),e=1-Math.pow(1-p,3);
+      el.textContent=fmt(target*e);
+      if(p<1)requestAnimationFrame(step);else el.textContent=fmt(target);
+    }
+    requestAnimationFrame(step);
+  }
+  if(!reduce&&'IntersectionObserver'in window){
+    var cio=new IntersectionObserver(function(es){
+      es.forEach(function(e){if(e.isIntersecting){countUp(e.target);cio.unobserve(e.target);}});
+    },{threshold:0.6});
+    document.querySelectorAll('.hstat-n,.ip-num,.sc-n,.nb-n,.csm-n,.nl-v').forEach(function(el){cio.observe(el)});
+  }
+
+  // Growing bar chart
+  function growBars(chart){
+    chart.querySelectorAll('.bf').forEach(function(b,i){
+      var col=Math.floor(i/2);
+      setTimeout(function(){b.style.height=b.dataset.h+'px';},reduce?0:col*30);
+    });
+  }
+  var chart=document.getElementById('bchart');
+  if(chart){
+    if(reduce||!('IntersectionObserver'in window)){growBars(chart);}
+    else{
+      var bio=new IntersectionObserver(function(es){
+        es.forEach(function(e){if(e.isIntersecting){growBars(e.target);bio.unobserve(e.target);}});
+      },{threshold:0.25});
+      bio.observe(chart);
+    }
+  }
+})();
+</script>
+</body>
+</html>
