@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Germany CS Universities — Priority Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --green: #4caf72;
+    --blue: #4c8ecf;
+    --bg: #0d0f14;
+    --surface: #161921;
+    --surface2: #1e2330;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  html {
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+    z-index: 1000;
+  }
+
+  .header-title {
+    font-family: var(--font-head);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+
+  .header-title span {
+    color: var(--gold);
+  }
+
+  .header-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    margin-left: auto;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-gold { background: var(--gold); }
+
+  .legend-border {
+    width: 16px;
+    height: 12px;
+    border: 2px solid var(--gold);
+    border-radius: 2px;
+    background: rgba(201, 168, 76, 0.15);
+    flex-shrink: 0;
+  }
+  .dot-green { background: var(--green); }
+  .dot-blue { background: var(--blue); }
+
+  .stats {
+    display: flex;
+    gap: 16px;
+    padding: 0 4px;
+    border-left: 1px solid var(--border);
+    margin-left: 6px;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--gold);
+  }
+
+  .stat-label {
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+
+  /* ── Main layout ── */
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-search {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+  }
+
+  .search-input {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 7px 11px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .search-input::placeholder { color: var(--muted); }
+  .search-input:focus { border-color: var(--gold); }
+
+  .filter-btns {
+    display: flex;
+    gap: 4px;
+  }
+
+  .filter-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+  }
+
+  .filter-btn.active-green { background: var(--green); color: #000; border-color: var(--green); }
+  .filter-btn.active-blue { background: var(--blue); color: #000; border-color: var(--blue); }
+
+  .uni-list {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .uni-list::-webkit-scrollbar { width: 4px; }
+  .uni-list::-webkit-scrollbar-track { background: transparent; }
+  .uni-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .uni-item {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.12s;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .uni-item:hover { background: var(--surface2); }
+  .uni-item.active { background: rgba(201,168,76,0.1); border-left: 3px solid var(--gold); padding-left: 11px; }
+
+  .uni-rank {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .rank-gold { background: var(--gold); color: #000; }
+  .rank-green { background: var(--green); color: #000; }
+  .rank-blue { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+
+  .uni-info { flex: 1; min-width: 0; }
+
+  .uni-name {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+  }
+
+  .uni-prog {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .uni-tags {
+    display: flex;
+    gap: 4px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  .tag-free { background: rgba(76,175,114,0.15); color: #6fcf8a; }
+  .tag-fee { background: rgba(229,115,50,0.15); color: #e07a40; }
+  .tag-varied { background: rgba(100,130,200,0.15); color: #7eaadf; }
+  .tag-jobs-h { background: rgba(201,168,76,0.15); color: #d4b050; }
+  .tag-jobs-m { background: rgba(120,120,140,0.15); color: #9090aa; }
+  .tag-sem3 { background: rgba(150,80,200,0.1); color: #b070d0; }
+
+  /* ── Map ── */
+  #map {
+    flex: 1;
+    background: #e8e4dc;
+  }
+
+  /* ── Popup ── */
+  .leaflet-popup-content-wrapper {
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+    color: var(--text) !important;
+    font-family: var(--font-mono) !important;
+    padding: 0 !important;
+  }
+
+  .leaflet-popup-tip { background: var(--surface) !important; }
+  .leaflet-popup-content { margin: 0 !important; width: 280px !important; }
+  .leaflet-popup-close-button { color: var(--muted) !important; font-size: 18px !important; top: 8px !important; right: 10px !important; }
+
+  .popup-inner {
+    padding: 16px;
+  }
+
+  .popup-rank-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .popup-badge {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 700;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-tier {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .tier-top { background: rgba(201,168,76,0.2); color: var(--gold-light); }
+  .tier-good { background: rgba(76,175,114,0.2); color: #7fd09a; }
+  .tier-reasonable { background: rgba(120,130,160,0.15); color: #9090aa; }
+
+  .popup-uni-name {
+    font-family: var(--font-head);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 3px;
+  }
+
+  .popup-prog-name {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .popup-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 10px 0;
+  }
+
+  .popup-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .popup-label { color: var(--muted); }
+  .popup-value { color: var(--text); font-weight: 500; }
+
+  .popup-note {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface2);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 10px;
+    line-height: 1.5;
+    border-left: 2px solid var(--gold);
+  }
+
+  .popup-link {
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--gold);
+    text-decoration: none;
+    padding: 7px;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+
+  .popup-link:hover {
+    background: rgba(201,168,76,0.1);
+    border-color: var(--gold);
+  }
+
+  /* Custom marker */
+  .custom-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 11px;
+    border-radius: 50%;
+    border: 2px solid rgba(0,0,0,0.4);
+    cursor: pointer;
+    transition: transform 0.15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  .custom-marker:hover { transform: scale(1.2); }
+
+  /* ── Mobile controls ── */
+  .mobile-list-toggle {
+    display: none;
+    position: fixed;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1100;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .mobile-list-toggle:hover,
+  .mobile-list-toggle.active {
+    background: var(--gold);
+    color: #000;
+    border-color: var(--gold);
+  }
+
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1040;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .sidebar-backdrop.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .sidebar-handle {
+    display: none;
+    width: 36px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 8px auto 4px;
+    flex-shrink: 0;
+  }
+
+  /* ── Tablet ── */
+  @media (max-width: 900px) {
+    header {
+      flex-wrap: wrap;
+      gap: 10px 16px;
+      padding: 10px 14px;
+    }
+
+    .legend {
+      margin-left: 0;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      width: 100%;
+      order: 3;
+    }
+
+    .stats {
+      margin-left: auto;
+      border-left: none;
+      padding: 0;
+    }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    header {
+      padding: 10px 12px;
+      gap: 8px;
+    }
+
+    .header-title { font-size: 15px; }
+    .header-sub { display: none; }
+
+    .legend {
+      gap: 6px 10px;
+    }
+
+    .legend-item { font-size: 10px; }
+
+    .stats {
+      width: 100%;
+      justify-content: space-around;
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+      margin-top: 2px;
+      order: 2;
+    }
+
+    .stat-num { font-size: 14px; }
+
+    .main {
+      position: relative;
+      flex: 1;
+    }
+
+    #map {
+      position: absolute;
+      inset: 0;
+      flex: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .mobile-list-toggle { display: flex; }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      max-height: 72vh;
+      max-height: 72dvh;
+      border-right: none;
+      border-top: 1px solid var(--border);
+      border-radius: 16px 16px 0 0;
+      z-index: 1050;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.4);
+      visibility: hidden;
+    }
+
+    .sidebar.open {
+      transform: translateY(0);
+      visibility: visible;
+    }
+
+    .sidebar-handle { display: block; }
+
+    .sidebar-backdrop { display: block; }
+
+    .sidebar-search {
+      flex-direction: column;
+      padding: 0 12px 12px;
+      gap: 10px;
+    }
+
+    .filter-btns {
+      width: 100%;
+      justify-content: stretch;
+    }
+
+    .filter-btn {
+      flex: 1;
+      text-align: center;
+      padding: 10px 8px;
+      font-size: 11px;
+      min-height: 44px;
+    }
+
+    .search-input {
+      font-size: 16px;
+      padding: 12px 14px;
+      min-height: 44px;
+    }
+
+    .uni-item {
+      padding: 12px 14px;
+      min-height: 44px;
+    }
+
+    .uni-name { white-space: normal; }
+    .uni-prog { white-space: normal; }
+
+    .leaflet-popup-content {
+      width: min(280px, calc(100vw - 48px)) !important;
+    }
+
+    .leaflet-control-zoom {
+      margin-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .leaflet-popup-close-button {
+      width: 36px !important;
+      height: 36px !important;
+      line-height: 36px !important;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .legend-item:nth-child(4) { display: none; }
+    .stat-label { font-size: 8px; }
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="header-title">Germany CS <span>University Map</span></div>
+    <div class="header-sub">30 programs · ranked by reputation + part-time job market</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot dot-gold"></div>Top priority</div>
+    <div class="legend-item"><div class="legend-dot dot-green"></div>Good choice</div>
+    <div class="legend-item"><div class="legend-dot dot-blue"></div>Reasonable</div>
+    <div class="legend-item"><div class="legend-border"></div>Germany border</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num">30</div><div class="stat-label">Programs</div></div>
+    <div class="stat"><div class="stat-num">27</div><div class="stat-label">Cities</div></div>
+    <div class="stat"><div class="stat-num">28</div><div class="stat-label">Free tuition</div></div>
+  </div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<div class="main">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-handle" id="sidebarHandle"></div>
+    <div class="sidebar-search">
+      <input class="search-input" type="text" placeholder="Search university or city…" id="searchInput">
+      <div class="filter-btns">
+        <button class="filter-btn active" data-filter="all" id="btn-all">All</button>
+        <button class="filter-btn" data-filter="top" id="btn-top">⭐ Top</button>
+        <button class="filter-btn" data-filter="free" id="btn-free">Free</button>
+      </div>
+    </div>
+    <div class="uni-list" id="uniList"></div>
+  </div>
+  <div id="map"></div>
+</div>
+
+<button class="mobile-list-toggle" id="mobileListToggle" type="button" aria-expanded="false" aria-controls="sidebar">
+  <span id="toggleIcon">☰</span>
+  <span id="toggleLabel">University List</span>
+</button>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const UNIS = [
+  { rank:1, name:"Technical University of Munich", prog:"Informatics (Computer Science)", city:"Garching / Munich", lat:48.2656, lng:11.6710, tier:"top", fees:"varied", duration:4, jobs:"high", note:"Germany's #1 CS school. Munich has the richest Werkstudent tech market — BMW, Siemens, 1,000+ startups.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/3607/" },
+  { rank:2, name:"RWTH Aachen University", prog:"Computer Engineering", city:"Aachen", lat:50.7775, lng:6.0775, tier:"top", fees:"free", duration:4, jobs:"high", note:"Top 3 engineering uni in Europe. Aachen's industry cluster actively recruits RWTH students for Werkstudent roles.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/5226/" },
+  { rank:3, name:"FAU Erlangen-Nürnberg", prog:"Computational Engineering (CE)", city:"Erlangen", lat:49.5978, lng:11.0046, tier:"top", fees:"free", duration:4, jobs:"high", note:"Top 5 CS in Germany. Siemens HQ and Adidas are nearby — strong Werkstudent market in Bavaria.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/3727/" },
+  { rank:4, name:"Saarland University", prog:"Computer Science (MSc)", city:"Saarbrücken", lat:49.2549, lng:7.0427, tier:"top", fees:"free", duration:4, jobs:"high", note:"Home to CISPA — one of Europe's top cybersecurity institutes. Excellent for AI and security-focused students.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/3624/" },
+  { rank:5, name:"TU Dresden", prog:"Computer Science", city:"Dresden", lat:51.0286, lng:13.7314, tier:"top", fees:"free", duration:4, jobs:"high", note:"Excellence Initiative university. Infineon and Bosch have major semiconductor operations in Dresden.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/10354/" },
+  { rank:6, name:"Ruhr-Universität Bochum", prog:"Computer Science MSc", city:"Bochum", lat:51.4444, lng:7.2613, tier:"good", fees:"varied", duration:4, jobs:"high", note:"Strong IT security focus. Bochum sits in the Ruhr metro — a large region with plenty of tech part-time roles.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/9673/" },
+  { rank:7, name:"University of Stuttgart", prog:"Computer Science", city:"Stuttgart", lat:48.7816, lng:9.1724, tier:"good", fees:"varied", duration:4, jobs:"high", note:"Stuttgart is HQ for Bosch, Porsche, and Daimler — outstanding Werkstudent opportunities in automotive software.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/4439/" },
+  { rank:8, name:"Paderborn University", prog:"MSc Computer Science", city:"Paderborn", lat:51.7082, lng:8.7722, tier:"good", fees:"free", duration:4, jobs:"med", note:"Named 'university for the information society'. Nixdorf Museum nearby — Paderborn has a tech heritage.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/5616/" },
+  { rank:9, name:"RPTU Kaiserslautern-Landau", prog:"Computer Science (MSc)", city:"Kaiserslautern", lat:49.4255, lng:7.7551, tier:"good", fees:"free", duration:4, jobs:"med", note:"DFKI — the German AI Research Center — is located on campus. Excellent for AI/ML track students.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/3629/" },
+  { rank:10, name:"University of Passau", prog:"MSc Computer Science", city:"Passau", lat:48.5678, lng:13.4528, tier:"good", fees:"free", duration:4, jobs:"med", note:"Strong CS department, beautiful Danube riverside campus. Reasonable cost of living for students.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/4455/" },
+  { rank:11, name:"University of Bonn", prog:"Computer Science", city:"Bonn", lat:50.7261, lng:7.0897, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Historic university with solid CS research. Bonn has a moderate tech job market.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/7606/" },
+  { rank:12, name:"Leibniz University Hannover", prog:"Computer Science – MSc", city:"Hannover", lat:52.3822, lng:9.7178, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Bilingual program (German/English). Hannover hosts major trade fairs — some industry presence.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/8935/" },
+  { rank:13, name:"University of Göttingen", prog:"Applied Computer Science (MSc)", city:"Göttingen", lat:51.5415, lng:9.9376, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"One of Germany's most historic universities. Göttingen is a small university town — limited job market.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/4700/" },
+  { rank:14, name:"University of Bayreuth", prog:"Computer Science (MSc)", city:"Bayreuth", lat:49.9262, lng:11.5852, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Compact, modern campus. Known for data science focus. Small city with limited Werkstudent openings.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/5245/" },
+  { rank:15, name:"University of Rostock", prog:"Computer Science International", city:"Rostock", lat:54.0752, lng:12.1040, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Baltic Sea location. One of northern Germany's oldest universities. Two CS programs offered here.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/7618/" },
+  { rank:16, name:"University of Rostock", prog:"Computational Science & Engineering", city:"Rostock", lat:54.0810, lng:12.1100, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Second program at Rostock. More engineering-focused track. Same excellent Baltic city lifestyle.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/4593/" },
+  { rank:17, name:"University of Siegen", prog:"Computer Science", city:"Siegen", lat:50.9111, lng:8.0254, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Modern hilltop campus with scenic city views. Small tech industry nearby.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/4591/" },
+  { rank:18, name:"University of Potsdam", prog:"Computer Science", city:"Potsdam", lat:52.4010, lng:13.0119, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Near Berlin — you can commute to Berlin's massive startup scene by S-Bahn. Hidden advantage!", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/8305/" },
+  { rank:19, name:"Marburg University", prog:"Computer Science (MSc)", city:"Marburg", lat:50.8102, lng:8.7740, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Beautiful medieval university town. CS department is research-oriented. Small job market locally.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/9042/" },
+  { rank:20, name:"University of Regensburg", prog:"Computer Science", city:"Regensburg", lat:48.9968, lng:12.0958, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Compact Bavarian city near Munich. Some access to Munich tech jobs via train.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/9856/" },
+  { rank:21, name:"Kiel University (CAU)", prog:"MSc Computer Science", city:"Kiel", lat:54.3435, lng:10.1150, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Germany's most northern university. Small tech scene but beautiful Baltic Sea port city.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/6148/" },
+  { rank:22, name:"University of Konstanz", prog:"Computer & Information Science", city:"Konstanz", lat:47.6899, lng:9.1879, tier:"reasonable", fees:"paid", duration:4, jobs:"med", note:"Only uni on this list with tuition fees (€1,500/sem). Beautiful Lake Constance campus. Near Switzerland.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/4249/" },
+  { rank:23, name:"Paderborn University", prog:"Computer Engineering (MSc)", city:"Paderborn", lat:51.7120, lng:8.7750, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Engineering-focused track at Paderborn. Same strong CS environment as #8, hardware & systems emphasis.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/5625/" },
+  { rank:24, name:"Chemnitz University of Technology", prog:"Web Engineering", city:"Chemnitz", lat:50.8391, lng:12.9277, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Web-focused MSc — one of the more specialized programs on the list. Saxon city with affordable living.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/8324/" },
+  { rank:25, name:"TU Dortmund University", prog:"MSc Data Science", city:"Dortmund", lat:51.4895, lng:7.4147, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Data Science track in the Ruhr area. Access to Bochum and Essen employers. Good overall ecosystem.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/8951/" },
+  { rank:26, name:"Kiel UAS", prog:"Computer Science", city:"Kiel", lat:54.3326, lng:10.1803, tier:"reasonable", fees:"free", duration:3, jobs:"med", note:"Applied sciences track — more practical, shorter (3 semesters). Same city as Kiel University.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/9058/" },
+  { rank:27, name:"Deggendorf Institute of Technology", prog:"Applied Computer Science (MSc)", city:"Deggendorf", lat:48.8295, lng:12.9546, tier:"reasonable", fees:"free", duration:3, jobs:"med", note:"Short 3-semester program. Small Bavarian town. Practical, industry-oriented curriculum.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/4870/" },
+  { rank:28, name:"Fulda University of Applied Sciences", prog:"Data Science", city:"Fulda", lat:50.5651, lng:9.6868, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Two programs at Fulda. Data Science track. Small city — limited local job market for tech students.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/8953/" },
+  { rank:29, name:"Fulda University of Applied Sciences", prog:"Global Software Development (MSc)", city:"Fulda", lat:50.5620, lng:9.6920, tier:"reasonable", fees:"free", duration:4, jobs:"med", note:"Software-focused track at Fulda. Globally oriented curriculum with international project work.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/3686/" },
+  { rank:30, name:"Bingen University of Applied Sciences", prog:"Master of Science in CS", city:"Bingen am Rhein", lat:49.9522, lng:7.9253, tier:"reasonable", fees:"free", duration:3, jobs:"med", note:"Smallest city on the list. 3-semester program. Limited industry recognition compared to research unis.", link:"https://www2.daad.de/deutschland/studienangebote/international-programmes/en/detail/8324/" },
+];
+
+const TIER_COLOR = { top: '#c9a84c', good: '#4caf72', reasonable: '#4c8ecf' };
+const TIER_LABEL = { top: '⭐ Top Priority', good: '✅ Good Choice', reasonable: '🔵 Reasonable' };
+const TIER_CLASS = { top: 'rank-gold', good: 'rank-green', reasonable: 'rank-blue' };
+const TIER_POPUP = { top: 'tier-top', good: 'tier-good', reasonable: 'tier-reasonable' };
+
+// Map init
+const map = L.map('map', { zoomControl: false }).setView([51.0, 10.5], 6);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 18
+}).addTo(map);
+
+L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+// Germany country border (for easy identification)
+const GERMANY_BORDER = {"type":"FeatureCollection","features":[{"type":"Feature","id":"DEU","properties":{"name":"Germany"},"geometry":{"type":"Polygon","coordinates":[[[9.921906,54.983104],[9.93958,54.596642],[10.950112,54.363607],[10.939467,54.008693],[11.956252,54.196486],[12.51844,54.470371],[13.647467,54.075511],[14.119686,53.757029],[14.353315,53.248171],[14.074521,52.981263],[14.4376,52.62485],[14.685026,52.089947],[14.607098,51.745188],[15.016996,51.106674],[14.570718,51.002339],[14.307013,51.117268],[14.056228,50.926918],[13.338132,50.733234],[12.966837,50.484076],[12.240111,50.266338],[12.415191,49.969121],[12.521024,49.547415],[13.031329,49.307068],[13.595946,48.877172],[13.243357,48.416115],[12.884103,48.289146],[13.025851,47.637584],[12.932627,47.467646],[12.62076,47.672388],[12.141357,47.703083],[11.426414,47.523766],[10.544504,47.566399],[10.402084,47.302488],[9.896068,47.580197],[9.594226,47.525058],[8.522612,47.830828],[8.317301,47.61358],[7.466759,47.620582],[7.593676,48.333019],[8.099279,49.017784],[6.65823,49.201958],[6.18632,49.463803],[6.242751,49.902226],[6.043073,50.128052],[6.156658,50.803721],[5.988658,51.851616],[6.589397,51.852029],[6.84287,52.22844],[7.092053,53.144043],[6.90514,53.482162],[7.100425,53.693932],[7.936239,53.748296],[8.121706,53.527792],[8.800734,54.020786],[8.572118,54.395646],[8.526229,54.962744],[9.282049,54.830865],[9.921906,54.983104]]]}}]};
+
+L.geoJSON(GERMANY_BORDER, {
+  style: {
+    color: '#c9a84c',
+    weight: 3,
+    opacity: 1,
+    fillColor: '#c9a84c',
+    fillOpacity: 0.12,
+    dashArray: null
+  },
+  interactive: false
+}).addTo(map);
+
+// Markers
+const markers = [];
+
+function createIcon(uni) {
+  const color = TIER_COLOR[uni.tier];
+  const bg = uni.tier === 'top' ? color : uni.tier === 'good' ? color : '#1e2330';
+  const textColor = uni.tier === 'reasonable' ? '#7a8099' : '#000';
+  const border = uni.tier === 'reasonable' ? `2px solid ${color}` : 'none';
+  return L.divIcon({
+    className: '',
+    html: `<div style="width:28px;height:28px;border-radius:50%;background:${bg};border:${border};display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:10px;color:${textColor};box-shadow:0 2px 8px rgba(0,0,0,0.5);cursor:pointer;">${uni.rank}</div>`,
+    iconSize: [28, 28],
+    iconAnchor: [14, 14],
+    popupAnchor: [0, -16]
+  });
+}
+
+function feesDisplay(f) {
+  if (f === 'free') return '<span class="tag tag-free">Free tuition</span>';
+  if (f === 'paid') return '<span class="tag tag-fee">€1,500 / sem</span>';
+  return '<span class="tag tag-varied">Varied fees</span>';
+}
+
+function jobsDisplay(j) {
+  return j === 'high'
+    ? '<span class="tag tag-jobs-h">High job market</span>'
+    : '<span class="tag tag-jobs-m">Moderate jobs</span>';
+}
+
+function semDisplay(d) {
+  return d === 3 ? '<span class="tag tag-sem3">3 semesters</span>' : '';
+}
+
+UNIS.forEach((uni, i) => {
+  const marker = L.marker([uni.lat, uni.lng], { icon: createIcon(uni) });
+
+  const popupHtml = `
+    <div class="popup-inner">
+      <div class="popup-rank-row">
+        <div class="popup-badge ${TIER_CLASS[uni.tier]}" style="background:${uni.tier==='reasonable'?'#1e2330':TIER_COLOR[uni.tier]};color:${uni.tier==='reasonable'?'#7a8099':'#000'};border:${uni.tier==='reasonable'?'1px solid #4c8ecf':'none'};width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;">${uni.rank}</div>
+        <span class="popup-tier ${TIER_POPUP[uni.tier]}">${TIER_LABEL[uni.tier]}</span>
+      </div>
+      <div class="popup-uni-name">${uni.name}</div>
+      <div class="popup-prog-name">${uni.prog}</div>
+      <hr class="popup-divider">
+      <div class="popup-row">
+        <span class="popup-label">City</span>
+        <span class="popup-value">${uni.city}</span>
+      </div>
+      <div class="popup-row">
+        <span class="popup-label">Duration</span>
+        <span class="popup-value">${uni.duration} semesters</span>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">
+        ${feesDisplay(uni.fees)}
+        ${jobsDisplay(uni.jobs)}
+        ${semDisplay(uni.duration)}
+      </div>
+      <div class="popup-note">${uni.note}</div>
+      <a class="popup-link" href="${uni.link}" target="_blank">View on DAAD ↗</a>
+    </div>`;
+
+  marker.bindPopup(popupHtml, { maxWidth: 300 });
+
+  marker.on('click', () => {
+    setActive(i);
+  });
+
+  marker.addTo(map);
+  markers.push(marker);
+});
+
+// Sidebar list
+let activeIndex = null;
+let currentFilter = 'all';
+let searchText = '';
+
+function renderList() {
+  const list = document.getElementById('uniList');
+  list.innerHTML = '';
+  UNIS.forEach((uni, i) => {
+    const matchFilter = currentFilter === 'all' ||
+      (currentFilter === 'top' && uni.tier === 'top') ||
+      (currentFilter === 'free' && uni.fees === 'free');
+    const matchSearch = searchText === '' ||
+      uni.name.toLowerCase().includes(searchText) ||
+      uni.city.toLowerCase().includes(searchText) ||
+      uni.prog.toLowerCase().includes(searchText);
+    if (!matchFilter || !matchSearch) return;
+
+    const item = document.createElement('div');
+    item.className = 'uni-item' + (activeIndex === i ? ' active' : '');
+    item.innerHTML = `
+      <div class="uni-rank ${TIER_CLASS[uni.tier]}">${uni.rank}</div>
+      <div class="uni-info">
+        <div class="uni-name">${uni.name}</div>
+        <div class="uni-prog">${uni.prog} · ${uni.city}</div>
+        <div class="uni-tags">
+          ${feesDisplay(uni.fees)}
+          ${jobsDisplay(uni.jobs)}
+          ${semDisplay(uni.duration)}
+        </div>
+      </div>`;
+    item.addEventListener('click', () => setActive(i));
+    list.appendChild(item);
+  });
+}
+
+const sidebar = document.getElementById('sidebar');
+const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+const mobileListToggle = document.getElementById('mobileListToggle');
+const toggleIcon = document.getElementById('toggleIcon');
+const toggleLabel = document.getElementById('toggleLabel');
+const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+function openSidebar() {
+  if (!isMobile()) return;
+  sidebar.classList.add('open');
+  sidebarBackdrop.classList.add('visible');
+  mobileListToggle.classList.add('active');
+  mobileListToggle.setAttribute('aria-expanded', 'true');
+  toggleIcon.textContent = '✕';
+  toggleLabel.textContent = 'Close List';
+  setTimeout(() => map.invalidateSize(), 320);
+}
+
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  sidebarBackdrop.classList.remove('visible');
+  mobileListToggle.classList.remove('active');
+  mobileListToggle.setAttribute('aria-expanded', 'false');
+  toggleIcon.textContent = '☰';
+  toggleLabel.textContent = 'University List';
+  setTimeout(() => map.invalidateSize(), 320);
+}
+
+function toggleSidebar() {
+  sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+}
+
+mobileListToggle.addEventListener('click', toggleSidebar);
+sidebarBackdrop.addEventListener('click', closeSidebar);
+document.getElementById('sidebarHandle').addEventListener('click', toggleSidebar);
+
+function setActive(i) {
+  activeIndex = i;
+  const uni = UNIS[i];
+  map.setView([uni.lat, uni.lng], isMobile() ? 10 : 12, { animate: true });
+  markers[i].openPopup();
+  renderList();
+  if (isMobile()) closeSidebar();
+  const items = document.querySelectorAll('.uni-item');
+  items.forEach(el => { if (el.classList.contains('active')) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+}
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active', 'active-green', 'active-blue'));
+    currentFilter = btn.dataset.filter;
+    btn.classList.add('active');
+    renderList();
+  });
+});
+
+// Search
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchText = e.target.value.toLowerCase().trim();
+  renderList();
+});
+
+renderList();
+
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    closeSidebar();
+    sidebar.classList.remove('open');
+    sidebarBackdrop.classList.remove('visible');
+  }
+  map.invalidateSize();
+});
+
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => map.invalidateSize(), 300);
+});
+</script>
+</body>
+</html>
