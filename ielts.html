@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Grammar — 30-Day Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── TOKENS ── */
+  :root {
+    --bg: #F7F8FA;
+    --surface: #FFFFFF;
+    --surface2: #F0F2F5;
+    --border: #E2E5EA;
+    --border2: #CDD1D8;
+    --text: #111318;
+    --text2: #4B5160;
+    --text3: #8891A0;
+    --accent: #4A6CF7;
+    --accent-soft: #EEF1FE;
+    --accent-mid: #C5CFFE;
+    --green: #16A071;
+    --green-soft: #E4F6F0;
+    --red: #D63B2A;
+    --red-soft: #FDECEA;
+    --amber: #C07B10;
+    --amber-soft: #FEF3DE;
+    --purple: #7B50E8;
+    --purple-soft: #F0EBFD;
+    --teal: #1190A8;
+    --teal-soft: #E3F6FA;
+    --coral: #D6553A;
+    --coral-soft: #FDF0ED;
+    --shadow: 0 1px 4px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
+    --shadow-hover: 0 4px 20px rgba(74,108,247,.15);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  [data-theme="dark"] {
+    --bg: #0E1117;
+    --surface: #161B25;
+    --surface2: #1E2433;
+    --border: #2A3044;
+    --border2: #3A4460;
+    --text: #E8EBF2;
+    --text2: #9AA3B8;
+    --text3: #5A6480;
+    --accent: #6B8AFA;
+    --accent-soft: #1A2150;
+    --accent-mid: #2E3D80;
+    --green: #2BC08A;
+    --green-soft: #0D2A20;
+    --red: #F06B5B;
+    --red-soft: #2A1210;
+    --amber: #F0A830;
+    --amber-soft: #2A1E08;
+    --purple: #A882F5;
+    --purple-soft: #1E1540;
+    --teal: #38C0DB;
+    --teal-soft: #0C2530;
+    --coral: #F0836A;
+    --coral-soft: #2A1510;
+    --shadow: 0 1px 4px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+    --shadow-hover: 0 4px 20px rgba(107,138,250,.2);
+  }
+
+  /* ── RESET ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background .25s, color .25s;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LAYOUT ── */
+  .app { max-width: 780px; margin: 0 auto; padding: 0 16px 80px; }
+
+  /* ── HEADER ── */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    margin: 0 -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background .25s, border-color .25s;
+  }
+  .header-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    padding: 4px 8px;
+    border-radius: 6px;
+    line-height: 1;
+  }
+  .logo-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+  }
+  .logo-sub {
+    font-size: 12px;
+    color: var(--text3);
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .theme-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all .15s;
+    flex-shrink: 0;
+  }
+  .theme-btn:hover { border-color: var(--border2); color: var(--text); }
+
+  /* ── PROGRESS ── */
+  .progress-section {
+    padding: 20px 0 0;
+  }
+  .progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .progress-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+  }
+  .progress-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 99px;
+    transition: width .5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+
+  /* ── TABS ── */
+  .tabs-wrap {
+    position: sticky;
+    top: 65px;
+    z-index: 90;
+    background: var(--bg);
+    padding: 12px 0 0;
+    margin: 0 -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    transition: background .25s;
+  }
+  .tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 99px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    background: var(--surface);
+    transition: all .15s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .tab:hover { border-color: var(--border2); color: var(--text); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(74,108,247,.35);
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; padding-top: 4px; }
+  .panel.show { display: block; }
+
+  /* ── WEEK HEADERS ── */
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .week-header::before, .week-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── CARDS GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    cursor: pointer;
+    transition: all .18s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: transparent;
+    transition: background .18s;
+  }
+  .card:hover {
+    border-color: var(--border2);
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+  .card:hover::before { background: var(--accent); }
+  .card.done {
+    border-color: var(--green);
+    background: var(--green-soft);
+  }
+  .card.done::before { background: var(--green); }
+  .card-day {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text3);
+    margin-bottom: 5px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 8px;
+  }
+  .done .card-title { color: var(--green); }
+  .done-icon {
+    display: none;
+    position: absolute;
+    top: 10px; right: 10px;
+    font-size: 12px;
+    color: var(--green);
+  }
+  .done .done-icon { display: block; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .03em;
+    padding: 2px 7px;
+    border-radius: 99px;
+    line-height: 1.6;
+  }
+  .b-blue { background: var(--accent-soft); color: var(--accent); }
+  .b-purple { background: var(--purple-soft); color: var(--purple); }
+  .b-teal { background: var(--teal-soft); color: var(--teal); }
+  .b-coral { background: var(--coral-soft); color: var(--coral); }
+  .b-amber { background: var(--amber-soft); color: var(--amber); }
+
+  /* ── DETAIL PANEL ── */
+  .detail {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 10px 0 16px;
+    animation: slideIn .2s ease;
+  }
+  .detail.show { display: block; }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .detail h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .detail h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── RULE TEXT ── */
+  .rule {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.65;
+    margin: 8px 0 4px;
+  }
+  .rule strong { color: var(--text); font-weight: 600; }
+
+  /* ── EXAMPLE ── */
+  .ex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: var(--surface2);
+    border-left: 3px solid var(--accent-mid);
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    margin: 5px 0;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  /* ── GOOD / BAD ── */
+  .good { color: var(--green); font-weight: 600; }
+  .bad  { color: var(--red);   font-weight: 600; }
+
+  /* ── TABLE ── */
+  .row-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 10px 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .row-table th {
+    text-align: left;
+    background: var(--surface2);
+    color: var(--text2);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .row-table td {
+    padding: 8px 12px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .row-table tr:last-child td { border-bottom: none; }
+  .row-table tr:hover td { background: var(--surface2); }
+  @media (max-width: 560px) {
+    .row-table { font-size: 12px; }
+    .row-table th, .row-table td { padding: 7px 8px; }
+  }
+
+  /* ── BUTTON ROW ── */
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .btn:hover { border-color: var(--border2); color: var(--text); }
+  .btn-done {
+    background: var(--green-soft);
+    color: var(--green);
+    border-color: var(--green);
+    font-weight: 600;
+  }
+  .btn-done:hover { opacity: .85; }
+
+  /* ── SECTION HEADERS (non-plan panels) ── */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 20px 0 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  /* ── ADVANCED BLOCKS ── */
+  .adv-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .adv-block h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .adv-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── MISTAKES TABLE ── */
+  .mistakes-note {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 14px;
+    padding: 10px 14px;
+    background: var(--amber-soft);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--amber);
+  }
+
+  /* ── BOOKS ── */
+  .book-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    transition: box-shadow .15s;
+  }
+  .book-card:hover { box-shadow: var(--shadow); }
+  .book-card.featured { border-color: var(--green); }
+  .book-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text3);
+    margin-bottom: 5px;
+  }
+  .book-card.featured .book-label { color: var(--green); }
+  .book-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .book-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* ── TENSES RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .tense-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .tense-table-wrap .row-table { min-width: 520px; }
+  }
+
+  /* ── SCROLL TO TOP ── */
+  .fab {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(74,108,247,.4);
+    transition: all .15s;
+    z-index: 200;
+  }
+  .fab:hover { transform: translateY(-2px); }
+
+  /* ── EMPTY STATE ── */
+  .congrats {
+    text-align: center;
+    padding: 28px 16px;
+    display: none;
+  }
+  .congrats.show { display: block; }
+  .congrats .emoji { font-size: 40px; margin-bottom: 8px; }
+  .congrats h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .congrats p { font-size: 14px; color: var(--text2); }
+</style>
+</head>
+<body>
+
+<!-- STICKY HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-badge">IELTS</span>
+      <div>
+        <div class="logo-title">Grammar Guide</div>
+        <div class="logo-sub">30-Day Study Plan · Band 7+ Target</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle dark/light mode">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-header">
+      <span class="progress-label">Progress</span>
+      <span class="progress-count" id="prog-count">0 / 20 topics</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-wrap">
+    <div class="tabs">
+      <span class="tab active" onclick="switchTab('plan', this)">📅 30-Day Plan</span>
+      <span class="tab" onclick="switchTab('tenses', this)">🕐 12 Tenses</span>
+      <span class="tab" onclick="switchTab('advanced', this)">🎯 Band 8+</span>
+      <span class="tab" onclick="switchTab('mistakes', this)">⚠️ Mistakes</span>
+      <span class="tab" onclick="switchTab('books', this)">📚 Books</span>
+    </div>
+  </div>
+
+  <!-- ══════════ 30-DAY PLAN ══════════ -->
+  <div id="panel-plan" class="panel show">
+
+    <!-- WEEK 1 -->
+    <div class="week-header">Week 1 — Foundation</div>
+    <div class="grid">
+      <div class="card" id="c1" onclick="openCard(1)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 1</div>
+        <div class="card-title">Parts of Speech</div>
+        <span class="badge b-blue">Foundation</span>
+      </div>
+      <div class="card" id="c2" onclick="openCard(2)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 2</div>
+        <div class="card-title">Present Tenses</div>
+        <span class="badge b-blue">All skills</span>
+      </div>
+      <div class="card" id="c3" onclick="openCard(3)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 3</div>
+        <div class="card-title">Past Tenses</div>
+        <span class="badge b-blue">All skills</span>
+      </div>
+      <div class="card" id="c4" onclick="openCard(4)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 4</div>
+        <div class="card-title">Future Tenses</div>
+        <span class="badge b-blue">All skills</span>
+      </div>
+      <div class="card" id="c5" onclick="openCard(5)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 5</div>
+        <div class="card-title">Subject–Verb Agreement</div>
+        <span class="badge b-blue">All skills</span>
+      </div>
+    </div>
+
+    <div id="d1" class="detail">
+      <h3>Parts of Speech</h3>
+      <table class="row-table">
+        <tr><th>Type</th><th>Examples</th></tr>
+        <tr><td>Noun</td><td>book, student, city</td></tr>
+        <tr><td>Pronoun</td><td>he, she, they, it</td></tr>
+        <tr><td>Verb</td><td>go, eat, study, is</td></tr>
+        <tr><td>Adjective</td><td>beautiful, large, important</td></tr>
+        <tr><td>Adverb</td><td>quickly, carefully, very</td></tr>
+        <tr><td>Preposition</td><td>in, on, at, by, of</td></tr>
+        <tr><td>Conjunction</td><td>and, but, because, although</td></tr>
+      </table>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(1)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(1)">Close</button>
+      </div>
+    </div>
+
+    <div id="d2" class="detail">
+      <h3>Present Tenses</h3>
+      <p class="rule"><strong>Present Simple</strong> — habits, facts, general truths</p>
+      <div class="ex">I study English every day.</div>
+      <p class="rule"><strong>Present Continuous</strong> — happening now or temporary</p>
+      <div class="ex">I am studying English now.</div>
+      <p class="rule"><strong>Present Perfect</strong> — past action with present relevance</p>
+      <div class="ex">I have studied English for 2 years.</div>
+      <p class="rule"><strong>Present Perfect Continuous</strong> — ongoing action from past to now</p>
+      <div class="ex">I have been studying English since 2024.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(2)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(2)">Close</button>
+      </div>
+    </div>
+
+    <div id="d3" class="detail">
+      <h3>Past Tenses</h3>
+      <p class="rule"><strong>Past Simple</strong> — completed action at a specific time</p>
+      <div class="ex">I studied English yesterday.</div>
+      <p class="rule"><strong>Past Continuous</strong> — action in progress at a past time</p>
+      <div class="ex">I was studying when he called.</div>
+      <p class="rule"><strong>Past Perfect</strong> — action completed before another past action</p>
+      <div class="ex">I had finished before he arrived.</div>
+      <p class="rule"><strong>Past Perfect Continuous</strong> — ongoing action before a past point</p>
+      <div class="ex">I had been studying for 3 hours before dinner.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(3)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(3)">Close</button>
+      </div>
+    </div>
+
+    <div id="d4" class="detail">
+      <h3>Future Tenses</h3>
+      <p class="rule"><strong>Future Simple</strong> — prediction or instant decision</p>
+      <div class="ex">I will study tomorrow.</div>
+      <p class="rule"><strong>Future Continuous</strong> — action in progress at a future time</p>
+      <div class="ex">I will be studying at 8 PM.</div>
+      <p class="rule"><strong>Future Perfect</strong> — action completed before a future point</p>
+      <div class="ex">I will have finished by next week.</div>
+      <p class="rule"><strong>Future Perfect Continuous</strong> — duration up to a future point</p>
+      <div class="ex">I will have been studying for 2 years by 2027.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(4)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(4)">Close</button>
+      </div>
+    </div>
+
+    <div id="d5" class="detail">
+      <h3>Subject–Verb Agreement</h3>
+      <div class="ex"><span class="good">✔</span> He plays football.</div>
+      <div class="ex"><span class="bad">✗</span> He play football.</div>
+      <div class="ex"><span class="good">✔</span> The number of students has increased.</div>
+      <div class="ex"><span class="good">✔</span> A number of students have withdrawn.</div>
+      <div class="ex"><span class="good">✔</span> The committee has made its decision.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(5)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(5)">Close</button>
+      </div>
+    </div>
+
+    <!-- WEEK 2 -->
+    <div class="week-header">Week 2 — Building Blocks</div>
+    <div class="grid">
+      <div class="card" id="c6" onclick="openCard(6)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 6</div>
+        <div class="card-title">Articles (a/an/the)</div>
+        <span class="badge b-purple">All skills</span>
+      </div>
+      <div class="card" id="c7" onclick="openCard(7)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 7</div>
+        <div class="card-title">Countable & Uncountable</div>
+        <span class="badge b-purple">Writing</span>
+      </div>
+      <div class="card" id="c8" onclick="openCard(8)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 8</div>
+        <div class="card-title">Modal Verbs</div>
+        <span class="badge b-purple">All skills</span>
+      </div>
+      <div class="card" id="c9" onclick="openCard(9)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 9</div>
+        <div class="card-title">Question Forms</div>
+        <span class="badge b-purple">Speaking</span>
+      </div>
+      <div class="card" id="c10" onclick="openCard(10)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 10</div>
+        <div class="card-title">Conjunctions</div>
+        <span class="badge b-purple">All skills</span>
+      </div>
+    </div>
+
+    <div id="d6" class="detail">
+      <h3>Articles — a / an / the / zero</h3>
+      <p class="rule"><strong>a/an</strong> = first mention or non-specific &nbsp;·&nbsp; <strong>the</strong> = specific or already known &nbsp;·&nbsp; <strong>no article</strong> = general plural/uncountable</p>
+      <div class="ex">I saw a dog. The dog was black. (a = first mention → the = known)</div>
+      <div class="ex">I ate an apple. (an before vowel sound)</div>
+      <div class="ex">Education is essential for development. (no article — general)</div>
+      <div class="ex">The internet has changed communication. (unique thing — use the)</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(6)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(6)">Close</button>
+      </div>
+    </div>
+
+    <div id="d7" class="detail">
+      <h3>Countable & Uncountable Nouns</h3>
+      <p class="rule"><strong>Countable:</strong> book, student, apple — can be plural. Use many/few.</p>
+      <p class="rule"><strong>Uncountable:</strong> water, information, advice, furniture — no plural. Use much/little.</p>
+      <div class="ex"><span class="bad">✗</span> many informations &nbsp;&nbsp; <span class="good">✔</span> much information</div>
+      <div class="ex"><span class="bad">✗</span> many advices &nbsp;&nbsp; <span class="good">✔</span> a lot of advice</div>
+      <div class="ex"><span class="bad">✗</span> two furnitures &nbsp;&nbsp; <span class="good">✔</span> two pieces of furniture</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(7)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(7)">Close</button>
+      </div>
+    </div>
+
+    <div id="d8" class="detail">
+      <h3>Modal Verbs</h3>
+      <table class="row-table">
+        <tr><th>Modal</th><th>Use</th><th>Example</th></tr>
+        <tr><td>can</td><td>ability</td><td>I can swim.</td></tr>
+        <tr><td>could</td><td>past ability</td><td>I could swim at age 5.</td></tr>
+        <tr><td>may / might</td><td>possibility</td><td>It might rain tomorrow.</td></tr>
+        <tr><td>must</td><td>obligation</td><td>You must submit the form.</td></tr>
+        <tr><td>should</td><td>advice</td><td>You should study harder.</td></tr>
+        <tr><td>would</td><td>hypothetical</td><td>I would travel if I could.</td></tr>
+      </table>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(8)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(8)">Close</button>
+      </div>
+    </div>
+
+    <div id="d9" class="detail">
+      <h3>Question Forms — important for Speaking</h3>
+      <div class="ex">Where do you live?</div>
+      <div class="ex">Why are you learning English?</div>
+      <div class="ex">How long have you studied English?</div>
+      <div class="ex">What would you do if you had more time?</div>
+      <p class="rule" style="margin-top:12px"><strong>Indirect questions</strong> — word order is NOT inverted.</p>
+      <div class="ex"><span class="bad">✗</span> I want to know where does she live.</div>
+      <div class="ex"><span class="good">✔</span> I want to know where she lives.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(9)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(9)">Close</button>
+      </div>
+    </div>
+
+    <div id="d10" class="detail">
+      <h3>Conjunctions</h3>
+      <p class="rule"><strong>Coordinating (FANBOYS):</strong> for, and, nor, but, or, yet, so</p>
+      <div class="ex">Technology creates jobs, but it also displaces workers.</div>
+      <p class="rule" style="margin-top:12px"><strong>Subordinating:</strong> because, although, while, since, whereas, unless, even though</p>
+      <div class="ex">Although it was raining, we went outside.</div>
+      <div class="ex">Since the population is ageing, healthcare costs are rising.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(10)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(10)">Close</button>
+      </div>
+    </div>
+
+    <!-- WEEK 3 -->
+    <div class="week-header">Week 3 — Core IELTS Grammar</div>
+    <div class="grid">
+      <div class="card" id="c11" onclick="openCard(11)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 11</div>
+        <div class="card-title">Conditionals</div>
+        <span class="badge b-teal">All skills</span>
+      </div>
+      <div class="card" id="c12" onclick="openCard(12)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 12</div>
+        <div class="card-title">Passive Voice</div>
+        <span class="badge b-teal">Writing</span>
+      </div>
+      <div class="card" id="c13" onclick="openCard(13)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 13</div>
+        <div class="card-title">Reported Speech</div>
+        <span class="badge b-teal">All skills</span>
+      </div>
+      <div class="card" id="c14" onclick="openCard(14)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 14</div>
+        <div class="card-title">Relative Clauses</div>
+        <span class="badge b-teal">Writing</span>
+      </div>
+      <div class="card" id="c15" onclick="openCard(15)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 15</div>
+        <div class="card-title">Comparisons</div>
+        <span class="badge b-teal">Writing T1</span>
+      </div>
+    </div>
+
+    <div id="d11" class="detail">
+      <h3>Conditionals</h3>
+      <table class="row-table">
+        <tr><th>Type</th><th>Structure</th><th>Example</th></tr>
+        <tr><td>Zero</td><td>if + present, present</td><td>If you heat water, it boils.</td></tr>
+        <tr><td>First</td><td>if + present, will</td><td>If it rains, I will stay home.</td></tr>
+        <tr><td>Second</td><td>if + past, would</td><td>If I were rich, I would travel.</td></tr>
+        <tr><td>Third</td><td>if + past perfect, would have</td><td>If I had studied, I would have passed.</td></tr>
+        <tr><td>Mixed</td><td>if + past perfect, would</td><td>If I had studied medicine, I would be a doctor now.</td></tr>
+      </table>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(11)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(11)">Close</button>
+      </div>
+    </div>
+
+    <div id="d12" class="detail">
+      <h3>Passive Voice</h3>
+      <p class="rule"><strong>Structure:</strong> Subject + be + past participle. Use when the doer is unknown or unimportant.</p>
+      <div class="ex">Active: The company built the bridge.</div>
+      <div class="ex">Passive: The bridge was built by the company.</div>
+      <div class="ex">The data was collected from 500 participants.</div>
+      <div class="ex">More funding should be allocated to public health.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(12)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(12)">Close</button>
+      </div>
+    </div>
+
+    <div id="d13" class="detail">
+      <h3>Reported Speech</h3>
+      <p class="rule">Tense shifts back one step: <strong>Present → Past &nbsp;·&nbsp; Will → Would &nbsp;·&nbsp; Can → Could</strong></p>
+      <div class="ex">Direct: He said, "I am tired."</div>
+      <div class="ex">Reported: He said that he was tired.</div>
+      <div class="ex">Direct: She said, "I will come tomorrow."</div>
+      <div class="ex">Reported: She said that she would come the next day.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(13)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(13)">Close</button>
+      </div>
+    </div>
+
+    <div id="d14" class="detail">
+      <h3>Relative Clauses</h3>
+      <p class="rule"><strong>Defining</strong> (no commas) — who/that/which — restricts meaning.</p>
+      <div class="ex">The man who lives next door is a doctor.</div>
+      <div class="ex">The book that I bought is interesting.</div>
+      <p class="rule" style="margin-top:12px"><strong>Non-defining</strong> (with commas) — who/which — adds extra info.</p>
+      <div class="ex">Professor Lee, who chairs the department, has written 30 papers.</div>
+      <p class="rule" style="margin-top:12px"><strong>where</strong> = place &nbsp;·&nbsp; <strong>when</strong> = time &nbsp;·&nbsp; <strong>whose</strong> = possession</p>
+      <div class="ex">The city where I live is crowded.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(14)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(14)">Close</button>
+      </div>
+    </div>
+
+    <div id="d15" class="detail">
+      <h3>Comparatives & Superlatives</h3>
+      <p class="rule"><strong>Comparative:</strong> adjective + -er / more + adjective + than</p>
+      <div class="ex">Dhaka is bigger than Khulna.</div>
+      <div class="ex">Urban areas are more densely populated than rural ones.</div>
+      <p class="rule" style="margin-top:12px"><strong>Superlative:</strong> the + adjective + -est / the most + adjective</p>
+      <div class="ex">Dhaka is the biggest city in Bangladesh.</div>
+      <p class="rule" style="margin-top:12px"><strong>As … as</strong> (equal comparison)</p>
+      <div class="ex">The 2020 rate was not as high as in 2019.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(15)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(15)">Close</button>
+      </div>
+    </div>
+
+    <!-- WEEK 4 -->
+    <div class="week-header">Week 4 — Advanced & Writing Structures</div>
+    <div class="grid">
+      <div class="card" id="c16" onclick="openCard(16)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 16</div>
+        <div class="card-title">Complex Sentences</div>
+        <span class="badge b-coral">Band 7+</span>
+      </div>
+      <div class="card" id="c17" onclick="openCard(17)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 17</div>
+        <div class="card-title">Linking Words</div>
+        <span class="badge b-coral">Writing</span>
+      </div>
+      <div class="card" id="c18" onclick="openCard(18)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 18</div>
+        <div class="card-title">Gerunds & Infinitives</div>
+        <span class="badge b-coral">Writing</span>
+      </div>
+      <div class="card" id="c19" onclick="openCard(19)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 19</div>
+        <div class="card-title">Advanced Grammar</div>
+        <span class="badge b-coral">Band 8+</span>
+      </div>
+      <div class="card" id="c20" onclick="openCard(20)">
+        <span class="done-icon">✓</span>
+        <div class="card-day">Day 20</div>
+        <div class="card-title">IELTS Writing Structures</div>
+        <span class="badge b-coral">Writing T2</span>
+      </div>
+    </div>
+
+    <div id="d16" class="detail">
+      <h3>Complex Sentences — Band 7+</h3>
+      <p class="rule">Combine a main clause with one or more subordinate clauses.</p>
+      <div class="ex">Although I was tired, I completed my homework because the deadline was approaching.</div>
+      <div class="ex">Since technology has improved communication, businesses that operate globally have become more efficient.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(16)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(16)">Close</button>
+      </div>
+    </div>
+
+    <div id="d17" class="detail">
+      <h3>Linking Words</h3>
+      <table class="row-table">
+        <tr><th>Function</th><th>Words</th></tr>
+        <tr><td>Addition</td><td>furthermore, moreover, in addition, additionally</td></tr>
+        <tr><td>Contrast</td><td>however, nevertheless, on the other hand, whereas</td></tr>
+        <tr><td>Cause / Effect</td><td>therefore, thus, as a result, consequently, owing to</td></tr>
+        <tr><td>Example</td><td>for instance, for example, such as, in particular</td></tr>
+        <tr><td>Conclusion</td><td>in conclusion, to sum up, overall, in summary</td></tr>
+      </table>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(17)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(17)">Close</button>
+      </div>
+    </div>
+
+    <div id="d18" class="detail">
+      <h3>Gerunds & Infinitives</h3>
+      <p class="rule"><strong>Gerund (verb + -ing)</strong> — used as subject or after: enjoy, avoid, consider, suggest</p>
+      <div class="ex">I enjoy reading. / Reducing pollution is a global priority.</div>
+      <p class="rule" style="margin-top:12px"><strong>Infinitive (to + verb)</strong> — after: want, need, decide, plan, hope + adjectives</p>
+      <div class="ex">I want to study. / It is important to consider the impact.</div>
+      <p class="rule" style="margin-top:12px"><strong>Meaning changes</strong> with stop / remember / try</p>
+      <div class="ex">She stopped to think. (paused in order to think)</div>
+      <div class="ex">She stopped thinking. (no longer thought about it)</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(18)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(18)">Close</button>
+      </div>
+    </div>
+
+    <div id="d19" class="detail">
+      <h3>Advanced Grammar — Band 8+</h3>
+      <p class="rule"><strong>Inversion</strong> — negative adverb at front for emphasis</p>
+      <div class="ex">Never have I seen such a beautiful place.</div>
+      <div class="ex">Not only does technology save time, but it also reduces costs.</div>
+      <p class="rule" style="margin-top:12px"><strong>Cleft sentences</strong> — emphasise one part</p>
+      <div class="ex">What I enjoy most is reading books.</div>
+      <div class="ex">It is education that makes the biggest difference.</div>
+      <p class="rule" style="margin-top:12px"><strong>Participle clauses</strong> — shorten complex sentences</p>
+      <div class="ex">Having completed the exam, I felt relieved.</div>
+      <div class="ex">Students studying abroad often face challenges. (reduced relative clause)</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(19)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(19)">Close</button>
+      </div>
+    </div>
+
+    <div id="d20" class="detail">
+      <h3>IELTS Writing Structures</h3>
+      <p class="rule"><strong>Opinion / Argument</strong></p>
+      <div class="ex">I believe that technology has improved our lives significantly.</div>
+      <div class="ex">In my opinion, the benefits of globalisation outweigh the drawbacks.</div>
+      <p class="rule" style="margin-top:12px"><strong>Advantage / Disadvantage</strong></p>
+      <div class="ex">One major advantage is that it creates employment opportunities.</div>
+      <div class="ex">A significant drawback is the environmental impact.</div>
+      <p class="rule" style="margin-top:12px"><strong>Discussion (both sides)</strong></p>
+      <div class="ex">On the one hand, remote work offers greater flexibility.</div>
+      <div class="ex">On the other hand, it can lead to social isolation.</div>
+      <div class="btn-row">
+        <button class="btn btn-done" onclick="markDone(20)">✓ Mark done</button>
+        <button class="btn" onclick="closeCard(20)">Close</button>
+      </div>
+    </div>
+
+    <div class="congrats" id="congrats">
+      <div class="emoji">🎉</div>
+      <h2>All 20 topics done!</h2>
+      <p>You're ready. Go get that Band 7+, Rafid.</p>
+    </div>
+
+  </div><!-- /panel-plan -->
+
+  <!-- ══════════ 12 TENSES ══════════ -->
+  <div id="panel-tenses" class="panel">
+    <div class="section-title">All 12 Tenses at a Glance</div>
+    <div class="tense-table-wrap">
+      <table class="row-table">
+        <tr><th>Tense</th><th>Structure</th><th>Example</th></tr>
+        <tr><td>Present Simple</td><td>V / V+s</td><td>I study every day.</td></tr>
+        <tr><td>Present Continuous</td><td>am/is/are + V-ing</td><td>I am studying now.</td></tr>
+        <tr><td>Present Perfect</td><td>have/has + V3</td><td>I have studied for 2 years.</td></tr>
+        <tr><td>Present Perfect Continuous</td><td>have/has been + V-ing</td><td>I have been studying since 2024.</td></tr>
+        <tr><td>Past Simple</td><td>V2</td><td>I studied yesterday.</td></tr>
+        <tr><td>Past Continuous</td><td>was/were + V-ing</td><td>I was studying when he called.</td></tr>
+        <tr><td>Past Perfect</td><td>had + V3</td><td>I had finished before he arrived.</td></tr>
+        <tr><td>Past Perfect Continuous</td><td>had been + V-ing</td><td>I had been studying for 3 hours.</td></tr>
+        <tr><td>Future Simple</td><td>will + V</td><td>I will study tomorrow.</td></tr>
+        <tr><td>Future Continuous</td><td>will be + V-ing</td><td>I will be studying at 8 PM.</td></tr>
+        <tr><td>Future Perfect</td><td>will have + V3</td><td>I will have finished by next week.</td></tr>
+        <tr><td>Future Perfect Continuous</td><td>will have been + V-ing</td><td>I will have been studying for 2 years by 2027.</td></tr>
+      </table>
+    </div>
+    <p class="rule" style="margin-top:16px; padding:12px 14px; background:var(--surface2); border-radius:var(--radius-sm);">
+      <strong>Key:</strong> V = base verb &nbsp;·&nbsp; V2 = past form (studied) &nbsp;·&nbsp; V3 = past participle (studied / gone / written) &nbsp;·&nbsp; V-ing = present participle
+    </p>
+  </div>
+
+  <!-- ══════════ ADVANCED ══════════ -->
+  <div id="panel-advanced" class="panel">
+    <div class="section-title">Band 8+ Advanced Structures</div>
+    <p class="rule" style="margin-bottom:16px">Use these to impress examiners — but only when they sound natural, not forced.</p>
+
+    <div class="adv-block">
+      <h4><span class="adv-num">1</span> Inversion</h4>
+      <p class="rule">Negative adverb moved to front for emphasis — requires auxiliary before subject.</p>
+      <div class="ex">Never have I seen such a beautiful place.</div>
+      <div class="ex">Not only does technology save time, but it also reduces costs.</div>
+      <div class="ex">Rarely do governments prioritise long-term solutions.</div>
+    </div>
+
+    <div class="adv-block">
+      <h4><span class="adv-num">2</span> Cleft Sentences</h4>
+      <p class="rule">Emphasise one part of a sentence using "What … is" or "It is … that".</p>
+      <div class="ex">What I enjoy most is reading books.</div>
+      <div class="ex">It is education that makes the biggest difference to society.</div>
+      <div class="ex">What concerns me most is the lack of government action.</div>
+    </div>
+
+    <div class="adv-block">
+      <h4><span class="adv-num">3</span> Participle Clauses</h4>
+      <p class="rule">Shorten two clauses into one, making sentences more concise and academic.</p>
+      <div class="ex">Having completed the exam, I felt relieved. (= After I had completed…)</div>
+      <div class="ex">Faced with rising costs, many families struggle. (= Because they are faced with…)</div>
+    </div>
+
+    <div class="adv-block">
+      <h4><span class="adv-num">4</span> Reduced Relative Clauses</h4>
+      <p class="rule">Drop "who/that is" when the meaning is clear.</p>
+      <div class="ex">Students studying abroad often face challenges. (= Students who study abroad…)</div>
+      <div class="ex">The policy introduced in 2018 was highly controversial. (= The policy that was introduced…)</div>
+    </div>
+  </div>
+
+  <!-- ══════════ MISTAKES ══════════ -->
+  <div id="panel-mistakes" class="panel">
+    <div class="section-title">Most Common IELTS Grammar Mistakes</div>
+    <div class="mistakes-note">⚠️ These are the mistakes that cost Bangladeshi students the most marks. Memorise them.</div>
+    <table class="row-table">
+      <tr><th>Wrong ✗</th><th>Correct ✔</th><th>Rule</th></tr>
+      <tr><td class="bad">He go to school.</td><td class="good">He goes to school.</td><td>3rd person singular +s</td></tr>
+      <tr><td class="bad">I am agree.</td><td class="good">I agree.</td><td>agree is not an adjective</td></tr>
+      <tr><td class="bad">She have a car.</td><td class="good">She has a car.</td><td>3rd person → has</td></tr>
+      <tr><td class="bad">Many advices.</td><td class="good">Much advice.</td><td>advice is uncountable</td></tr>
+      <tr><td class="bad">Many informations.</td><td class="good">Much information.</td><td>information is uncountable</td></tr>
+      <tr><td class="bad">People is happy.</td><td class="good">People are happy.</td><td>people is plural</td></tr>
+      <tr><td class="bad">The life is short.</td><td class="good">Life is short.</td><td>no article for general concepts</td></tr>
+      <tr><td class="bad">I have went there.</td><td class="good">I have gone there.</td><td>use past participle with have</td></tr>
+      <tr><td class="bad">Despite of the rain…</td><td class="good">Despite the rain…</td><td>despite needs no "of"</td></tr>
+      <tr><td class="bad">I enjoy to read.</td><td class="good">I enjoy reading.</td><td>enjoy + gerund, not infinitive</td></tr>
+      <tr><td class="bad">More better</td><td class="good">Better / much better</td><td>never double comparative</td></tr>
+      <tr><td class="bad">According to my opinion</td><td class="good">In my opinion</td><td>according to = source, not opinion</td></tr>
+    </table>
+  </div>
+
+  <!-- ══════════ BOOKS ══════════ -->
+  <div id="panel-books" class="panel">
+    <div class="section-title">Recommended Books</div>
+
+    <div class="book-card">
+      <div class="book-label">Beginner → Intermediate</div>
+      <div class="book-title">Essential Grammar in Use — Raymond Murphy</div>
+      <div class="book-desc">Start here if basics feel shaky. Cambridge. Clear rules + exercises on every page. Good if you need to revisit fundamentals before IELTS prep.</div>
+    </div>
+
+    <div class="book-card featured">
+      <div class="book-label">⭐ Most recommended for IELTS</div>
+      <div class="book-title">English Grammar in Use — Raymond Murphy (Intermediate)</div>
+      <div class="book-desc">The #1 book for IELTS grammar. Use it as a reference — go to the topic you need. Don't read cover to cover. Keep it on your desk.</div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-label">IELTS-specific practice</div>
+      <div class="book-title">Cambridge Grammar for IELTS — Hopkins & Cullen</div>
+      <div class="book-desc">Written by Cambridge (who make the actual test). Includes listening audio and model writing answers. Very close to real exam style.</div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-label">Target: Band 7+</div>
+      <div class="book-title">Advanced Grammar in Use — Martin Hewings</div>
+      <div class="book-desc">For inversion, cleft sentences, and complex passives. Use after finishing Murphy's intermediate book. Good for Band 7–8 grammar range.</div>
+    </div>
+
+    <div class="book-card">
+      <div class="book-label">Alternative option</div>
+      <div class="book-title">Understanding & Using English Grammar — Betty Azar</div>
+      <div class="book-desc">Great for tenses and sentence structure. Used in universities worldwide. More systematic than Murphy — good if you prefer drills.</div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- FAB -->
+<button class="fab" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<script>
+  const done = new Set();
+
+  function switchTab(t, el) {
+    document.querySelectorAll('.tab').forEach(e => e.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(e => e.classList.remove('show'));
+    el.classList.add('active');
+    document.getElementById('panel-' + t).classList.add('show');
+    // Close any open details
+    document.querySelectorAll('.detail.show').forEach(e => e.classList.remove('show'));
+  }
+
+  function openCard(n) {
+    const d = document.getElementById('d' + n);
+    if (!d) return;
+    const isOpen = d.classList.contains('show');
+    document.querySelectorAll('.detail.show').forEach(e => e.classList.remove('show'));
+    if (!isOpen) {
+      d.classList.add('show');
+      // Smooth scroll to the detail on mobile
+      setTimeout(() => {
+        d.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 50);
+    }
+  }
+
+  function closeCard(n) {
+    const d = document.getElementById('d' + n);
+    if (d) d.classList.remove('show');
+  }
+
+  function markDone(n) {
+    done.add(n);
+    const c = document.getElementById('c' + n);
+    if (c) c.classList.add('done');
+    closeCard(n);
+    const pct = Math.round(done.size / 20 * 100);
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-count').textContent = done.size + ' / 20 topics';
+    if (done.size === 20) {
+      document.getElementById('congrats').classList.add('show');
+    }
+  }
+
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
+  }
+
+  // Respect system preference on load
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('theme-btn').textContent = '☀️';
+  }
+</script>
+</body>
+</html>
