@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="নির্ভীক ’১২ ইফতার মাহফিল ২০২৭ — Bogura Zilla School Alumni Iftar">
+  <meta name="theme-color" content="#0d4f3c">
+  <title>নির্ভীক ’১২ ইফতার মাহফিল ২০২৭</title>
+  <link rel="icon" href="assets/nirbhik-logo.png" type="image/png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- CDN Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+</head>
+
+<body>
+  <!-- Decorative background elements -->
+  <div class="bg-decor" aria-hidden="true">
+    <div class="crescent crescent-1"></div>
+    <div class="crescent crescent-2"></div>
+    <div class="lantern lantern-1">🏮</div>
+    <div class="lantern lantern-2">🏮</div>
+    <div class="lantern lantern-3">🏮</div>
+    <div class="stars" id="stars"></div>
+  </div>
+
+  <!-- Toast notification container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="loading-overlay hidden" aria-hidden="true">
+    <div class="spinner"></div>
+    <p>প্রসেসিং...</p>
+  </div>
+
+  <!-- ========== NAVBAR ========== -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-brand" aria-label="নির্ভীক ’১২ ইফতার মাহফিল">
+        <img src="assets/nirbhik-logo-dark.png" alt="নির্ভীক ’১২" class="nav-logo-batch logo-for-light">
+        <img src="assets/nirbhik-logo.png" alt="নির্ভীক ’১২" class="nav-logo-batch logo-for-dark">
+      </a>
+      <nav class="nav-links" id="nav-links">
+        <a href="#info">তথ্য</a>
+        <a href="#register">রেজিস্ট্রেশন</a>
+        <a href="#participants">অংশগ্রহণকারী</a>
+        <a href="#ticket-section" id="nav-ticket" class="hidden">টিকেট</a>
+        <a href="#admin" id="nav-admin" class="hidden">অ্যাডমিন</a>
+      </nav>
+      <div class="nav-actions">
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Dark mode toggle" title="থিম পরিবর্তন">
+          <span class="icon-sun">☀</span>
+          <span class="icon-moon">☾</span>
+        </button>
+        <button type="button" class="icon-btn" id="menu-toggle" aria-label="Menu" aria-expanded="false">
+          <span class="hamburger"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="hero">
+      <div class="hero-glow"></div>
+      <div class="container hero-content">
+        <p class="hero-eyebrow fade-up delay-1">رمضان كريم · মাহে রমজান</p>
+        <h1 class="hero-title fade-up delay-1">মাহে রমজান</h1>
+        <h1 class="hero-title fade-up delay-1">উপলক্ষে</h1>
+        <h1 class="hero-title fade-up delay-1">ইফতার মাহফিল</h1>
+        <p class="hero-subtitle fade-up delay-2">২০২৭</p>
+        <p class="hero-subtitle fade-up delay-2">নির্ভীক’১২ | বগুড়া জিলা স্কুল</p>
+
+        <div class="countdown fade-up delay-3" id="countdown" aria-label="Event countdown">
+          <div class="countdown-item">
+            <span class="countdown-value" id="cd-days">00</span>
+            <span class="countdown-label">দিন</span>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-item">
+            <span class="countdown-value" id="cd-hours">00</span>
+            <span class="countdown-label">ঘণ্টা</span>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-item">
+            <span class="countdown-value" id="cd-mins">00</span>
+            <span class="countdown-label">মিনিট</span>
+          </div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-item">
+            <span class="countdown-value" id="cd-secs">00</span>
+            <span class="countdown-label">সেকেন্ড</span>
+          </div>
+        </div>
+
+        <div class="hero-cta fade-up delay-4">
+          <a href="#register" class="btn btn-primary">রেজিস্ট্রেশন করুন</a>
+          <button type="button" class="btn btn-ghost" id="btn-share-event">শেয়ার করুন</button>
+        </div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <span></span>
+      </div>
+    </section>
+
+    <!-- Mobile sticky CTA -->
+    <a href="#register" class="mobile-cta" id="mobile-cta">
+      <span>রেজিস্ট্রেশন করুন</span>
+      <span class="mobile-cta-fee">৩০০৳</span>
+    </a>
+
+    <!-- ========== EVENT INFO ========== -->
+    <section class="section reveal" id="info">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Event Details</p>
+          <h2 class="section-title">অনুষ্ঠানের তথ্য</h2>
+          <div class="ornament" aria-hidden="true"><span></span></div>
+          <p class="section-desc">নির্ভীক ’১২ ব্যাচের বার্ষিক ইফতার মাহফিলে আপনাকে স্বাগতম জানাই</p>
+        </header>
+
+        <div class="info-grid">
+          <article class="glass-card info-card">
+            <div class="info-icon">📅</div>
+            <h3>তারিখ</h3>
+            <p>19 March 2027</p>
+          </article>
+          <article class="glass-card info-card">
+            <div class="info-icon">🕐</div>
+            <h3>সময়</h3>
+            <p>5:00 PM</p>
+          </article>
+          <article class="glass-card info-card">
+            <div class="info-icon">📍</div>
+            <h3>স্থান</h3>
+            <p>বগুড়া জিলা স্কুল খেলার মাঠ</p>
+          </article>
+          <article class="glass-card info-card">
+            <div class="info-icon">💰</div>
+            <h3>রেজিস্ট্রেশন ফি</h3>
+            <p>300 BDT</p>
+          </article>
+          <article class="glass-card info-card info-card-wide">
+            <div class="info-icon">⏰</div>
+            <h3>শেষ রেজিস্ট্রেশন তারিখ</h3>
+            <p>18 March 2027</p>
+            <span class="info-bn">অনুষ্ঠানের আগের দিন পর্যন্ত</span>
+          </article>
+        </div>
+
+        <div class="share-bar glass-card">
+          <p>অনুষ্ঠানের লিংক শেয়ার করুন</p>
+          <div class="share-actions">
+            <button type="button" class="btn btn-sm btn-outline" id="btn-copy-link">লিংক কপি</button>
+            <button type="button" class="btn btn-sm btn-whatsapp" id="btn-whatsapp">WhatsApp</button>
+            <button type="button" class="btn btn-sm btn-outline" id="btn-share-native">শেয়ার</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== REGISTRATION ========== -->
+    <section class="section section-alt reveal" id="register">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Join Us</p>
+          <h2 class="section-title">রেজিস্ট্রেশন ফর্ম</h2>
+          <div class="ornament" aria-hidden="true"><span></span></div>
+          <p class="section-desc">সকল তথ্য সঠিকভাবে পূরণ করুন। নিজ সেকশনের নম্বরে পেমেন্ট করে Transaction ID দিন।</p>
+        </header>
+
+        <div class="contact-block glass-card" id="contact-block">
+          <h3 class="contact-heading">📌 রেজিস্ট্রেশনের জন্য যোগাযোগ</h3>
+          <p class="contact-hint">নিজ সেকশনের আয়োজকের কাছে <strong>৩০০ টাকা</strong> Send Money করুন (bKash / Nagad)
+          </p>
+          <div class="contact-grid">
+            <article class="contact-card" data-section="A">
+              <span class="section-pill">সেকশন A</span>
+              <p class="contact-name">রাফিদ আল রিদওয়ান</p>
+              <p class="contact-pay">bKash / Nagad</p>
+              <a class="contact-phone" href="tel:01721914666">01721914666</a>
+              <button type="button" class="btn btn-sm btn-outline btn-copy-phone" data-phone="01721914666">নম্বর
+                কপি</button>
+            </article>
+            <article class="contact-card" data-section="B">
+              <span class="section-pill">সেকশন B</span>
+              <p class="contact-name">ফররুখ আহমেদ নাইম</p>
+              <p class="contact-pay">bKash / Nagad</p>
+              <a class="contact-phone" href="tel:01740388856">01740388856</a>
+              <button type="button" class="btn btn-sm btn-outline btn-copy-phone" data-phone="01740388856">নম্বর
+                কপি</button>
+            </article>
+            <article class="contact-card" data-section="C">
+              <span class="section-pill">সেকশন C</span>
+              <p class="contact-name">মোঃ তৌহিদুল ইসলাম</p>
+              <p class="contact-pay">bKash / Nagad</p>
+              <a class="contact-phone" href="tel:01965809747">01965809747</a>
+              <button type="button" class="btn btn-sm btn-outline btn-copy-phone" data-phone="01965809747">নম্বর
+                কপি</button>
+            </article>
+            <article class="contact-card" data-section="D">
+              <span class="section-pill">সেকশন D</span>
+              <p class="contact-name">সাইফ উদ্দিন</p>
+              <p class="contact-pay">bKash</p>
+              <a class="contact-phone" href="tel:01521116350">01521116350</a>
+              <button type="button" class="btn btn-sm btn-outline btn-copy-phone" data-phone="01521116350">নম্বর
+                কপি</button>
+            </article>
+          </div>
+        </div>
+
+        <form class="glass-card form-card" id="registration-form" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="fullName">পূর্ণ নাম <span class="req">*</span></label>
+              <input type="text" id="fullName" name="fullName" placeholder="আপনার পূর্ণ নাম" required
+                autocomplete="name">
+              <span class="field-error" id="err-fullName"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="mobile">মোবাইল নম্বর <span class="req">*</span></label>
+              <input type="tel" id="mobile" name="mobile" placeholder="01XXXXXXXXX" required autocomplete="tel"
+                inputmode="numeric" maxlength="11">
+              <span class="field-error" id="err-mobile"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="section">সেকশন <span class="req">*</span></label>
+              <select id="section" name="section" required>
+                <option value="">নির্বাচন করুন</option>
+                <option value="A">Section A</option>
+                <option value="B">Section B</option>
+                <option value="C">Section C</option>
+                <option value="D">Section D</option>
+              </select>
+              <span class="field-error" id="err-section"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="profession">বর্তমান পেশা <span class="req">*</span></label>
+              <input type="text" id="profession" name="profession" placeholder="যেমন: সফটওয়্যার ইঞ্জিনিয়ার" required>
+              <span class="field-error" id="err-profession"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="location">বর্তমান অবস্থান <span class="req">*</span></label>
+              <input type="text" id="location" name="location" placeholder="যেমন: ঢাকা, বাংলাদেশ" required>
+              <span class="field-error" id="err-location"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="paymentMethod">পেমেন্ট মাধ্যম <span class="req">*</span></label>
+              <select id="paymentMethod" name="paymentMethod" required>
+                <option value="">নির্বাচন করুন</option>
+                <option value="bKash">bKash</option>
+                <option value="Nagad">Nagad</option>
+              </select>
+              <span class="field-error" id="err-paymentMethod"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="transactionId">Transaction ID <span class="req">*</span></label>
+              <input type="text" id="transactionId" name="transactionId" placeholder="পেমেন্টের Transaction ID" required
+                autocomplete="off">
+              <span class="field-error" id="err-transactionId"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="paymentNumber">যে নম্বর থেকে পেমেন্ট করেছেন <span class="req">*</span></label>
+              <input type="tel" id="paymentNumber" name="paymentNumber" placeholder="আপনার bKash/Nagad নম্বর" required
+                inputmode="numeric" maxlength="11" autocomplete="off">
+              <span class="field-error" id="err-paymentNumber"></span>
+            </div>
+
+            <div class="form-group form-group-full">
+              <label for="message">বার্তা <span class="optional">(ঐচ্ছিক)</span></label>
+              <textarea id="message" name="message" rows="3" placeholder="কোনো বিশেষ বার্তা থাকলে লিখুন..."></textarea>
+            </div>
+          </div>
+
+          <div class="payment-note glass-inner" id="payment-note">
+            <strong>পেমেন্ট নির্দেশনা:</strong> উপরের তালিকা থেকে <strong>নিজ সেকশনের</strong> নম্বরে <strong>৩০০
+              টাকা</strong> Send Money করুন, তারপর Transaction ID এখানে দিন।
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="btn-submit">
+            রেজিস্ট্রেশন সম্পন্ন করুন
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ========== TICKET ========== -->
+    <section class="section hidden" id="ticket-section">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Your Pass</p>
+          <h2 class="section-title">আপনার টিকেট</h2>
+          <!-- <p class="section-desc">টিকেটটি ডাউনলোড বা প্রিন্ট করে অনুষ্ঠানে সাথে রাখুন</p> -->
+        </header>
+
+        <div class="ticket-wrap">
+          <div class="ticket" id="ticket" aria-label="Event ticket">
+            <div class="ticket-left">
+              <div class="ticket-brand">
+                <img src="assets/nirbhik-logo.png" alt="নির্ভীক ’১২" class="ticket-logo-batch">
+              </div>
+              <h3 class="ticket-event">ইফতার মাহফিল ২০২৭</h3>
+              <div class="ticket-details">
+                <div class="ticket-row">
+                  <span class="ticket-label">নাম</span>
+                  <span class="ticket-value" id="ticket-name">—</span>
+                </div>
+                <div class="ticket-row">
+                  <span class="ticket-label">সেকশন</span>
+                  <span class="ticket-value" id="ticket-section-val">—</span>
+                </div>
+                <div class="ticket-row">
+                  <span class="ticket-label">মোবাইল</span>
+                  <span class="ticket-value" id="ticket-mobile">—</span>
+                </div>
+                <div class="ticket-row">
+                  <span class="ticket-label">তারিখ</span>
+                  <span class="ticket-value">19 March 2027 · 5:00 PM</span>
+                </div>
+                <div class="ticket-row">
+                  <span class="ticket-label">স্থান</span>
+                  <span class="ticket-value">Bogura Zilla School Playground</span>
+                </div>
+              </div>
+              <div class="ticket-id-bar">
+                <span>Ticket ID</span>
+                <strong id="ticket-id">BZS12-2027-0000</strong>
+              </div>
+            </div>
+            <div class="ticket-perforation" aria-hidden="true"></div>
+            <div class="ticket-right">
+              <div id="ticket-qr" class="ticket-qr"></div>
+              <p class="ticket-qr-hint">স্ক্যান করুন</p>
+              <p class="ticket-admit">ADMIT ONE</p>
+            </div>
+          </div>
+
+          <div class="ticket-actions">
+            <button type="button" class="btn btn-primary" id="btn-download-ticket">টিকেট ডাউনলোড</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PARTICIPANTS ========== -->
+    <section class="section section-alt reveal" id="participants">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Attendees</p>
+          <h2 class="section-title">অংশগ্রহণকারীগণ</h2>
+          <div class="ornament" aria-hidden="true"><span></span></div>
+          <p class="section-desc">
+            মোট রেজিস্ট্রেশন: <strong id="reg-count">0</strong> জন
+          </p>
+        </header>
+
+        <!-- <div class="filter-bar glass-card">
+          <div class="form-group filter-search">
+            <label for="search-name" class="sr-only">নাম দিয়ে খুঁজুন</label>
+            <input type="search" id="search-name" placeholder="নাম দিয়ে খুঁজুন..." autocomplete="off">
+          </div>
+          <div class="form-group filter-section">
+            <label for="filter-section" class="sr-only">সেকশন ফিল্টার</label>
+            <select id="filter-section">
+              <option value="">সব সেকশন</option>
+              <option value="A">Section A</option>
+              <option value="B">Section B</option>
+              <option value="C">Section C</option>
+              <option value="D">Section D</option>
+            </select>
+          </div>
+        </div> -->
+
+        <!-- <div class="participants-list" id="participants-list">
+        </div>
+        <p class="empty-state hidden" id="participants-empty">এখনো কোনো রেজিস্ট্রেশন নেই। প্রথমজন হোন!</p> -->
+      </div>
+    </section>
+
+    <!-- ========== ADMIN DASHBOARD ========== -->
+    <section class="section hidden" id="admin">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-eyebrow">Admin</p>
+          <h2 class="section-title">অ্যাডমিন ড্যাশবোর্ড</h2>
+          <p class="section-desc">রেজিস্ট্রেশন পরিসংখ্যান ও ব্যবস্থাপনা</p>
+        </header>
+
+        <div class="admin-stats" id="admin-stats">
+          <article class="glass-card stat-card">
+            <span class="stat-value" id="stat-total">0</span>
+            <span class="stat-label">মোট রেজিস্ট্রেশন</span>
+          </article>
+          <article class="glass-card stat-card">
+            <span class="stat-value" id="stat-a">0</span>
+            <span class="stat-label">Section A</span>
+          </article>
+          <article class="glass-card stat-card">
+            <span class="stat-value" id="stat-b">0</span>
+            <span class="stat-label">Section B</span>
+          </article>
+          <article class="glass-card stat-card">
+            <span class="stat-value" id="stat-c">0</span>
+            <span class="stat-label">Section C</span>
+          </article>
+          <article class="glass-card stat-card">
+            <span class="stat-value" id="stat-d">0</span>
+            <span class="stat-label">Section D</span>
+          </article>
+        </div>
+
+        <div class="admin-actions glass-card">
+          <button type="button" class="btn btn-primary" id="btn-export-csv">CSV এক্সপোর্ট</button>
+          <button type="button" class="btn btn-danger" id="btn-clear-all">সব রেজিস্ট্রেশন মুছুন</button>
+        </div>
+
+        <div class="admin-table-wrap glass-card">
+          <table class="admin-table" id="admin-table">
+            <thead>
+              <tr>
+                <th>Ticket ID</th>
+                <th>নাম</th>
+                <th>মোবাইল</th>
+                <th>সেকশন</th>
+                <th>পেশা</th>
+                <th>লোকেশন</th>
+                <th>পেমেন্ট</th>
+                <th>Trx ID</th>
+                <th>সময়</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/bzs.png" alt="Bogura Zilla School" class="footer-logo-school">
+        <img src="assets/nirbhik-logo.png" alt="নির্ভীক ’১২" class="footer-logo-batch">
+        <div>
+          <strong>ব্যাচ ১২</strong>
+          <p>বগুড়া জিলা স্কুল, বগুড়া </p>
+        </div>
+      </div>
+      <p class="footer-copy">© 2027 নির্ভীক ’১২ ইফতার মাহফিল · All rights reserved</p>
+    </div>
+  </footer>
+
+  <!-- Print-only ticket clone -->
+  <div id="print-area" class="print-area" aria-hidden="true"></div>
+
+  <script src="script.js" defer></script>
+</body>
+
+</html>
