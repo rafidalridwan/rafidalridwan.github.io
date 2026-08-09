@@ -4,17 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Rafid Al Ridwan is a senior software engineer with a passion for building scalable and efficient systems.">
+  <meta name="keywords" content="Rafid Al Ridwan, senior software engineer, software engineer, software development, software architecture, software design, software engineering, software development, software architecture, software design, software engineering">
+  <meta name="author" content="Rafid Al Ridwan">
+  <meta name="robots" content="index, follow">
   <script>
     (function () {
       try {
         var t = localStorage.getItem('portfolio-theme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-          document.documentElement.setAttribute('data-theme', 'light');
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        }
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'dark');
       }
@@ -22,6 +20,8 @@
   </script>
 
   <title>Rafid Al Ridwan — Senior Software Engineer</title>
+  <link rel="icon" href="assets/r.png" type="image/png" sizes="any">
+  <link rel="apple-touch-icon" href="assets/r.png">
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
     rel="stylesheet">
@@ -148,6 +148,150 @@
       color: #ffffff;
     }
 
+    /* ── THEME / LOCALE MOTION ── */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.48s;
+      animation-timing-function: var(--ease-smooth);
+    }
+
+    html.theme-switching::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      pointer-events: none;
+      background: radial-gradient(circle at var(--theme-ox, 50%) var(--theme-oy, 12%),
+          color-mix(in srgb, var(--accent) 28%, transparent),
+          transparent 55%),
+        var(--bg);
+      animation: themeWash 0.55s var(--ease-out) forwards;
+    }
+
+    @keyframes themeWash {
+      0% { opacity: 0; }
+      30% { opacity: 0.42; }
+      100% { opacity: 0; }
+    }
+
+    body.locale-out #hero,
+    body.locale-out section,
+    body.locale-out footer {
+      opacity: 0.55;
+      transform: translateY(6px);
+      filter: blur(1.5px);
+      transition: opacity 0.22s var(--ease-soft), transform 0.22s var(--ease-soft), filter 0.22s var(--ease-soft);
+    }
+
+    body.locale-in #hero,
+    body.locale-in section,
+    body.locale-in footer {
+      animation: localeIn 0.45s var(--ease-out) both;
+    }
+
+    @keyframes localeIn {
+      from {
+        opacity: 0.55;
+        transform: translateY(8px);
+        filter: blur(1.5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+    }
+
+    .theme-toggle.is-pop svg,
+    .lang-switch button.is-pop {
+      animation: controlPop 0.45s var(--ease-out);
+    }
+
+    @keyframes controlPop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.18); }
+      100% { transform: scale(1); }
+    }
+
+    .site-toast {
+      position: fixed;
+      left: 50%;
+      bottom: max(1.35rem, env(safe-area-inset-bottom, 0px));
+      z-index: 10050;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      max-width: min(92vw, 360px);
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--glass-strong) 88%, var(--surface));
+      color: var(--text);
+      box-shadow: 0 10px 36px var(--shadow);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 1.3;
+      transform: translate(-50%, 120%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.45s var(--ease-out), opacity 0.35s var(--ease-soft);
+    }
+
+    .site-toast.is-visible {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .site-toast.is-leaving {
+      transform: translate(-50%, 110%);
+      opacity: 0;
+      transition-duration: 0.32s, 0.28s;
+    }
+
+    .site-toast__icon {
+      flex-shrink: 0;
+      width: 1.35rem;
+      height: 1.35rem;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      color: var(--accent);
+      font-size: 0.78rem;
+      line-height: 1;
+    }
+
+    .site-toast__msg {
+      min-width: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html.theme-switching::after,
+      body.locale-out #hero,
+      body.locale-out section,
+      body.locale-out footer,
+      body.locale-in #hero,
+      body.locale-in section,
+      body.locale-in footer,
+      .theme-toggle.is-pop svg,
+      .lang-switch button.is-pop {
+        animation: none !important;
+        filter: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+
+      .site-toast {
+        transition: opacity 0.15s linear;
+        transform: translate(-50%, 0);
+      }
+    }
+
     /* ── NOISE OVERLAY ── */
     body::before {
       content: '';
@@ -211,13 +355,34 @@
     }
 
     .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: 0.08em;
-      color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
       text-decoration: none;
-      transition: color var(--duration-fast) var(--ease-smooth), opacity var(--duration-fast) var(--ease-smooth);
+      line-height: 0;
+      transition: opacity var(--duration-fast) var(--ease-smooth);
+    }
+
+    .nav-logo:hover {
+      opacity: 0.85;
+    }
+
+    .nav-logo img {
+      display: block;
+      height: 2rem;
+      width: auto;
+    }
+
+    .nav-logo img.nav-logo-light {
+      display: none;
+    }
+
+    html[data-theme="light"] .nav-logo img.nav-logo-dark {
+      display: none;
+    }
+
+    html[data-theme="light"] .nav-logo img.nav-logo-light {
+      display: block;
     }
 
     .nav-links {
@@ -1731,8 +1896,8 @@
         font-size: 16px;
       }
 
-      .nav-logo {
-        font-size: 1.05rem;
+      .nav-logo img {
+        height: 1.75rem;
       }
 
       #hero {
@@ -1919,7 +2084,7 @@
         style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0;">
         <span style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600;" data-i18n="resume.label">Resume — Rafid Al Ridwan</span>
         <div style="display:flex;gap:0.75rem;align-items:center;">
-          <a id="resume-download" href="/RAfidAlRidwan.pdf" download="RafidAlRidwan_Resume.pdf"
+          <a id="resume-download" href="assets/RAfidAlRidwan.pdf" download="RafidAlRidwan_Resume.pdf"
             style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5em 1.2em;font-family:'Source Sans 3',system-ui,sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;background:var(--accent);color:var(--btn-on-accent);border:1px solid var(--accent);transition:background 0.22s,color 0.22s;cursor:pointer;"
             onmouseover="this.style.background='transparent';this.style.color='var(--accent)';"
             onmouseout="this.style.background='var(--accent)';this.style.color='var(--btn-on-accent)';">
@@ -1943,7 +2108,10 @@
 
   <!-- NAV -->
   <nav>
-    <a class="nav-logo" href="#hero">RAR</a>
+    <a class="nav-logo" href="#hero" aria-label="Rafid Al Ridwan">
+      <img class="nav-logo-dark" src="assets/rar.png" alt="RAR" width="120" height="40" decoding="async">
+      <img class="nav-logo-light" src="assets/rar-light.png" alt="RAR" width="120" height="40" decoding="async">
+    </a>
     <button type="button" class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-panel">
       <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
@@ -2380,6 +2548,46 @@
     </svg>
   </a>
 
+  <div id="site-toast" class="site-toast" role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="site-toast__icon" aria-hidden="true"></span>
+    <span class="site-toast__msg"></span>
+  </div>
+
+  <script>
+    // Smooth toast feedback
+    window.PortfolioToast = (() => {
+      const el = document.getElementById('site-toast');
+      const iconEl = el?.querySelector('.site-toast__icon');
+      const msgEl = el?.querySelector('.site-toast__msg');
+      let hideTimer = 0;
+      let leaveTimer = 0;
+
+      const show = (message, icon = '✦') => {
+        if (!el || !msgEl || !iconEl || !message) return;
+        clearTimeout(hideTimer);
+        clearTimeout(leaveTimer);
+        iconEl.textContent = icon;
+        msgEl.textContent = message;
+        el.hidden = false;
+        el.classList.remove('is-leaving');
+        // restart enter animation cleanly
+        el.classList.remove('is-visible');
+        void el.offsetWidth;
+        el.classList.add('is-visible');
+        hideTimer = window.setTimeout(() => {
+          el.classList.add('is-leaving');
+          el.classList.remove('is-visible');
+          leaveTimer = window.setTimeout(() => {
+            el.classList.remove('is-leaving');
+            el.hidden = true;
+          }, 320);
+        }, 2200);
+      };
+
+      return { show };
+    })();
+  </script>
+
 
 
 
@@ -2390,6 +2598,16 @@
       const toggle = document.getElementById('theme-toggle');
       const nav = document.querySelector('nav');
       const menuBtn = document.querySelector('.nav-toggle');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const toastTheme = (theme) => {
+        const lang = root.lang === 'de' ? 'de' : 'en';
+        const msg = theme === 'light'
+          ? (lang === 'de' ? 'Hellmodus aktiviert' : 'Light mode on')
+          : (lang === 'de' ? 'Dunkelmodus aktiviert' : 'Dark mode on');
+        const icon = theme === 'light' ? '☀' : '☾';
+        window.PortfolioToast?.show(msg, icon);
+      };
 
       const applyTheme = (theme) => {
         root.setAttribute('data-theme', theme);
@@ -2400,10 +2618,43 @@
         }
       };
 
+      const popControl = (node) => {
+        if (!node || reduceMotion) return;
+        node.classList.remove('is-pop');
+        void node.offsetWidth;
+        node.classList.add('is-pop');
+        window.setTimeout(() => node.classList.remove('is-pop'), 480);
+      };
+
+      const switchTheme = (theme, event) => {
+        if (root.getAttribute('data-theme') === theme) return;
+
+        if (event && toggle) {
+          const rect = toggle.getBoundingClientRect();
+          root.style.setProperty('--theme-ox', `${rect.left + rect.width / 2}px`);
+          root.style.setProperty('--theme-oy', `${rect.top + rect.height / 2}px`);
+        }
+
+        const run = () => applyTheme(theme);
+
+        if (!reduceMotion && document.startViewTransition) {
+          document.startViewTransition(run);
+        } else if (!reduceMotion) {
+          root.classList.add('theme-switching');
+          run();
+          window.setTimeout(() => root.classList.remove('theme-switching'), 560);
+        } else {
+          run();
+        }
+
+        popControl(toggle);
+        toastTheme(theme);
+      };
+
       if (!root.getAttribute('data-theme')) applyTheme('dark');
 
-      toggle?.addEventListener('click', () => {
-        applyTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+      toggle?.addEventListener('click', (event) => {
+        switchTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light', event);
       });
 
       const closeMenu = () => {
@@ -2654,33 +2905,78 @@
         }
       };
 
-      const applyLanguage = (lang) => {
+      const applyLanguage = (lang, { animate = false } = {}) => {
         const dict = translations[lang] || translations.en;
         const years = (window.PortfolioExp && window.PortfolioExp.completedYears()) || 5;
-        document.documentElement.lang = lang;
-        document.title = dict["doc.title"] || document.title;
+        const current = document.documentElement.lang;
+        if (animate && current === lang) return;
 
-        document.querySelectorAll("[data-i18n]").forEach((el) => {
-          const key = el.getAttribute("data-i18n");
-          if (dict[key] == null) return;
-          // Role durations are computed live — skip overwriting those
-          if (el.hasAttribute("data-exp-from")) return;
-          el.textContent = String(dict[key]).replace(/\{\{years\}\}/g, String(years));
-        });
+        const commit = () => {
+          document.documentElement.lang = lang;
+          document.title = dict["doc.title"] || document.title;
 
-        document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
-          const key = el.getAttribute("data-i18n-aria");
-          if (dict[key] != null) el.setAttribute("aria-label", dict[key]);
-        });
+          document.querySelectorAll("[data-i18n]").forEach((el) => {
+            const key = el.getAttribute("data-i18n");
+            if (dict[key] == null) return;
+            // Role durations are computed live — skip overwriting those
+            if (el.hasAttribute("data-exp-from")) return;
+            el.textContent = String(dict[key]).replace(/\{\{years\}\}/g, String(years));
+          });
 
-        document.querySelectorAll(".lang-switch [data-lang]").forEach((btn) => {
-          const active = btn.getAttribute("data-lang") === lang;
-          btn.classList.toggle("is-active", active);
-          btn.setAttribute("aria-pressed", active ? "true" : "false");
-        });
+          document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+            const key = el.getAttribute("data-i18n-aria");
+            if (dict[key] != null) el.setAttribute("aria-label", dict[key]);
+          });
 
-        if (window.PortfolioExp) window.PortfolioExp.applyRoleDurations(lang);
-        try { localStorage.setItem("portfolio-lang", lang); } catch (_) {}
+          document.querySelectorAll(".lang-switch [data-lang]").forEach((btn) => {
+            const active = btn.getAttribute("data-lang") === lang;
+            btn.classList.toggle("is-active", active);
+            btn.setAttribute("aria-pressed", active ? "true" : "false");
+          });
+
+          if (window.PortfolioExp) window.PortfolioExp.applyRoleDurations(lang);
+          try { localStorage.setItem("portfolio-lang", lang); } catch (_) {}
+        };
+
+        const toastLang = () => {
+          const msg = lang === "de" ? "Sprache: Deutsch" : "Language: English";
+          const icon = lang === "de" ? "DE" : "EN";
+          window.PortfolioToast?.show(msg, icon);
+        };
+
+        const popBtn = document.querySelector(`.lang-switch [data-lang="${lang}"]`);
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (!animate || reduceMotion) {
+          commit();
+          if (animate) {
+            if (popBtn) {
+              popBtn.classList.remove("is-pop");
+              void popBtn.offsetWidth;
+              popBtn.classList.add("is-pop");
+              window.setTimeout(() => popBtn.classList.remove("is-pop"), 480);
+            }
+            toastLang();
+          }
+          return;
+        }
+
+        const body = document.body;
+        body.classList.remove("locale-in");
+        body.classList.add("locale-out");
+        window.setTimeout(() => {
+          commit();
+          body.classList.remove("locale-out");
+          body.classList.add("locale-in");
+          if (popBtn) {
+            popBtn.classList.remove("is-pop");
+            void popBtn.offsetWidth;
+            popBtn.classList.add("is-pop");
+            window.setTimeout(() => popBtn.classList.remove("is-pop"), 480);
+          }
+          toastLang();
+          window.setTimeout(() => body.classList.remove("locale-in"), 480);
+        }, 200);
       };
 
       const saved = (() => {
@@ -2691,7 +2987,7 @@
         : ((navigator.language || "").toLowerCase().startsWith("de") ? "de" : "en");
 
       document.querySelectorAll(".lang-switch [data-lang]").forEach((btn) => {
-        btn.addEventListener("click", () => applyLanguage(btn.getAttribute("data-lang")));
+        btn.addEventListener("click", () => applyLanguage(btn.getAttribute("data-lang"), { animate: true }));
       });
 
       if (window.PortfolioExp) window.PortfolioExp.applyExperienceTargets();
@@ -2707,7 +3003,7 @@
       var modal = document.getElementById('resume-modal');
       var iframe = document.getElementById('resume-iframe');
       if (!iframe.src || iframe.src === window.location.href) {
-        iframe.src = './RAfidAlRidwan.pdf#toolbar=0';
+        iframe.src = './assets/RAfidAlRidwan.pdf#toolbar=0';
       }
       modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
