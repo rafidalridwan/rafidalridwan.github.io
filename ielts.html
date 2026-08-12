@@ -298,6 +298,30 @@
 
     .panel.show {
       display: block;
+      animation: panelIn .34s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    @keyframes panelIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .panel.show {
+        animation: none;
+      }
+
+      .modal-backdrop,
+      .detail {
+        transition: none;
+      }
     }
 
     /* ── WEEK HEADERS ── */
@@ -441,26 +465,28 @@
 
     /* ── DETAIL MODAL ── */
     .modal-backdrop {
-      display: none;
       position: fixed;
       inset: 0;
       z-index: 900;
       background: rgba(15, 18, 28, .48);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
-      animation: fadeIn .18s ease;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .28s ease, visibility .28s ease;
     }
 
     .modal-backdrop.show {
-      display: block;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
 
     .detail {
-      display: none;
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
       z-index: 950;
       width: min(720px, calc(100vw - 32px));
       max-height: min(85vh, 900px);
@@ -474,44 +500,22 @@
       padding: 20px;
       margin: 0;
       box-shadow: var(--shadow-hover);
-      animation: modalIn .2s ease;
       -webkit-overflow-scrolling: touch;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate(-50%, calc(-50% + 18px)) scale(.97);
+      transition:
+        opacity .28s ease,
+        transform .34s cubic-bezier(.22, 1, .36, 1),
+        visibility .28s ease;
     }
 
     .detail.show {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes modalIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -46%);
-      }
-
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-      }
-    }
-
-    @keyframes sheetIn {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
     }
 
     .detail h3 {
@@ -1322,7 +1326,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-        transform: none;
         width: 100%;
         max-width: 100%;
         max-height: min(92dvh, 92vh);
@@ -1330,8 +1333,12 @@
         border-left: 1px solid var(--border);
         border-top: 3px solid var(--accent);
         padding: 16px 14px calc(16px + env(safe-area-inset-bottom, 0px));
-        animation: sheetIn .22s ease forwards;
         box-sizing: border-box;
+        transform: translateY(110%);
+      }
+
+      .detail.show {
+        transform: translateY(0);
       }
 
       .detail h3 {
@@ -2764,6 +2771,14 @@
           </span>
           <span class="book-action">Read</span>
         </a>
+        <a class="book-link" href="books/Kiran%20Makkars%20Speaking%20Cue%20Card%20Jan-Apr%202026%20First%20Version.pdf" target="_blank" rel="noopener">
+          <span class="book-num">★</span>
+          <span class="book-meta">
+            <span class="book-title">Kiran Makkar’s Speaking Cue Cards</span>
+            <span class="book-sub">Jan–Apr 2026 · Speaking · PDF</span>
+          </span>
+          <span class="book-action">Read</span>
+        </a>
       </div>
     </div>
 
@@ -2866,57 +2881,37 @@
           <p>চার মডিউলের বাস্তবসম্মত টার্গেট, ধাপে ধাপে প্র্যাকটিস পদ্ধতি এবং এক মাসের দৈনিক রুটিন — মোবাইলেও সহজে পড়ার জন্য সাজানো।</p>
         </div>
 
-        <div class="section-title" style="font-family:'Noto Sans Bengali',Inter,sans-serif;text-transform:none;letter-spacing:0">রেফারেন্স ভিডিও</div>
-        <div class="video-refs">
-          <a class="book-link" href="https://www.youtube.com/watch?v=Wd7yKNfvX4g" target="_blank" rel="noopener">
-            <span class="book-num">01</span>
-            <span class="book-meta">
-              <span class="book-title">IELTS-এ 7.0 পাওয়ার সহজ রুটিন</span>
-              <span class="book-sub">IELTS Mahir · Part 1 · YouTube</span>
-            </span>
-            <span class="book-action">Watch</span>
-          </a>
-          <a class="book-link" href="https://www.youtube.com/watch?v=Iaz8NDm6Iek" target="_blank" rel="noopener">
-            <span class="book-num">02</span>
-            <span class="book-meta">
-              <span class="book-title">IELTS-এ 7.0 পাওয়ার সহজ রুটিন (Part-2)</span>
-              <span class="book-sub">IELTS Mahir · Part 2 · YouTube</span>
-            </span>
-            <span class="book-action">Watch</span>
-          </a>
-        </div>
-
         <div class="section-title" style="font-family:'Noto Sans Bengali',Inter,sans-serif;text-transform:none;letter-spacing:0">গাইডলাইন টপিক</div>
         <div class="routine-topics">
-          <button type="button" class="routine-topic" onclick="openCard('r1')">
+          <button type="button" class="routine-topic" onclick="openCard('r6')">
             <div class="card-day">01</div>
+            <div class="card-title">এক মাসের দৈনিক রুটিন</div>
+            <span class="badge b-blue">Main</span>
+          </button>
+          <button type="button" class="routine-topic" onclick="openCard('r1')">
+            <div class="card-day">02</div>
             <div class="card-title">মূল স্কোরিং স্ট্র্যাটেজি</div>
             <span class="badge b-blue">Strategy</span>
           </button>
           <button type="button" class="routine-topic" onclick="openCard('r2')">
-            <div class="card-day">02</div>
+            <div class="card-day">03</div>
             <div class="card-title">Listening (টার্গেট: ৭)</div>
             <span class="badge b-teal">Listening</span>
           </button>
           <button type="button" class="routine-topic" onclick="openCard('r3')">
-            <div class="card-day">03</div>
+            <div class="card-day">04</div>
             <div class="card-title">Reading (টার্গেট: ৬.৫)</div>
             <span class="badge b-purple">Reading</span>
           </button>
           <button type="button" class="routine-topic" onclick="openCard('r4')">
-            <div class="card-day">04</div>
+            <div class="card-day">05</div>
             <div class="card-title">Writing (টার্গেট: ৬.৫)</div>
             <span class="badge b-coral">Writing</span>
           </button>
           <button type="button" class="routine-topic" onclick="openCard('r5')">
-            <div class="card-day">05</div>
+            <div class="card-day">06</div>
             <div class="card-title">Speaking (টার্গেট: ৭)</div>
             <span class="badge b-amber">Speaking</span>
-          </button>
-          <button type="button" class="routine-topic" onclick="openCard('r6')">
-            <div class="card-day">06</div>
-            <div class="card-title">একমাসের দৈনিক রুটিন</div>
-            <span class="badge b-blue">Routine</span>
           </button>
           <button type="button" class="routine-topic" onclick="openCard('r7')">
             <div class="card-day">07</div>
@@ -3035,7 +3030,7 @@
         </div>
 
         <div id="dr6" class="detail routine-detail">
-          <h3>৬. একমাসের সমন্বিত দৈনিক রুটিন</h3>
+          <h3>১. এক মাসের দৈনিক রুটিন (মূল রুটিন)</h3>
           <div class="routine-table-wrap">
             <table class="routine-table">
               <thead>
@@ -3104,6 +3099,26 @@
             <button class="btn" onclick="closeCard('r7')">Close</button>
           </div>
         </div>
+
+        <div class="section-title" style="font-family:'Noto Sans Bengali',Inter,sans-serif;text-transform:none;letter-spacing:0">রেফারেন্স ভিডিও</div>
+        <div class="video-refs">
+          <a class="book-link" href="https://www.youtube.com/watch?v=Wd7yKNfvX4g" target="_blank" rel="noopener">
+            <span class="book-num">01</span>
+            <span class="book-meta">
+              <span class="book-title">IELTS-এ 7.0 পাওয়ার সহজ রুটিন</span>
+              <span class="book-sub">IELTS Mahir · Part 1 · YouTube</span>
+            </span>
+            <span class="book-action">Watch</span>
+          </a>
+          <a class="book-link" href="https://www.youtube.com/watch?v=Iaz8NDm6Iek" target="_blank" rel="noopener">
+            <span class="book-num">02</span>
+            <span class="book-meta">
+              <span class="book-title">IELTS-এ 7.0 পাওয়ার সহজ রুটিন (Part-2)</span>
+              <span class="book-sub">IELTS Mahir · Part 2 · YouTube</span>
+            </span>
+            <span class="book-action">Watch</span>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -3122,24 +3137,31 @@
     }
 
     function switchTab(t, el) {
+      if (el.classList.contains('active')) return;
       document.querySelectorAll('.tab').forEach(e => e.classList.remove('active'));
       document.querySelectorAll('.panel').forEach(e => e.classList.remove('show'));
       el.classList.add('active');
-      document.getElementById('panel-' + t).classList.add('show');
+      const panel = document.getElementById('panel-' + t);
+      // Restart enter animation even if panel was previously shown
+      void panel.offsetWidth;
+      panel.classList.add('show');
       el.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'smooth' });
       closeAllCards();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function openCard(n) {
       const d = document.getElementById('d' + n);
       if (!d) return;
       const isOpen = d.classList.contains('show');
-      closeAllCards();
-      if (!isOpen) {
-        d.classList.add('show');
-        document.getElementById('modal-backdrop').classList.add('show');
-        document.body.style.overflow = 'hidden';
+      if (isOpen) {
+        closeAllCards();
+        return;
       }
+      document.querySelectorAll('.detail.show').forEach(e => e.classList.remove('show'));
+      d.classList.add('show');
+      document.getElementById('modal-backdrop').classList.add('show');
+      document.body.style.overflow = 'hidden';
     }
 
     function closeCard(n) {
