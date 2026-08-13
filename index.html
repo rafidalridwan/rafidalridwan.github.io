@@ -31,22 +31,24 @@
       --bg: #0b0c0e;
       --surface: #111316;
       --border: #1e2128;
-      --accent: #c8f04d;
-      --accent2: #4df0c8;
-      --accent-rgb: 200, 240, 77;
-      --accent-glow: 220, 255, 150;
+      --accent: #2fbdff;
+      --accent2: #ff7582;
+      --accent-rgb: 47, 189, 255;
+      --accent2-rgb: 255, 117, 130;
+      --accent-glow: 255, 117, 130;
+      --accent-gradient: linear-gradient(45deg, #2fbdff, #ff7582);
       --muted: #8b93a3;
       --text: #f5f6f8;
       --text-dim: #c2c7d1;
-      --glass: rgba(255, 255, 255, 0.045);
-      --glass-strong: rgba(255, 255, 255, 0.08);
-      --glass-hover: rgba(var(--accent-rgb), 0.12);
+      --glass: rgba(24, 26, 28, 0.1);
+      --glass-strong: rgba(24, 26, 28, 0.1);
+      --glass-hover: rgba(24, 26, 28, 0.18);
       --glass-border: rgba(255, 255, 255, 0.12);
-      --glass-blur: 16px;
-      --nav-bg: rgba(11, 12, 14, 0.35);
-      --nav-bg-scrolled: rgba(11, 12, 14, 0.55);
+      --glass-blur: 5px;
+      --nav-bg: rgba(24, 26, 28, 0.1);
+      --nav-bg-scrolled: rgba(24, 26, 28, 0.1);
       --shadow: rgba(0, 0, 0, 0.28);
-      --btn-on-accent: #0b0c0e;
+      --btn-on-accent: #ffffff;
       --skill-hover: #15181e;
       --ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -54,6 +56,8 @@
       --duration-fast: 0.28s;
       --duration-normal: 0.5s;
       --duration-slow: 0.85s;
+      --nav-morph-duration: 1.15s;
+      --nav-morph-ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     html[data-theme="light"] {
@@ -61,20 +65,22 @@
       --bg: #f2f4ee;
       --surface: #ffffff;
       --border: #d4dacb;
-      --accent: #4f7310;
-      --accent2: #0b8574;
-      --accent-rgb: 79, 115, 16;
-      --accent-glow: 140, 180, 70;
+      --accent: #2fbdff;
+      --accent2: #ff7582;
+      --accent-rgb: 47, 189, 255;
+      --accent2-rgb: 255, 117, 130;
+      --accent-glow: 255, 117, 130;
+      --accent-gradient: linear-gradient(45deg, #2fbdff, #ff7582);
       --muted: #5e6658;
       --text: #151914;
       --text-dim: #3a4238;
-      --glass: rgba(255, 255, 255, 0.58);
-      --glass-strong: rgba(255, 255, 255, 0.82);
-      --glass-hover: rgba(var(--accent-rgb), 0.1);
+      --glass: rgba(24, 26, 28, 0.1);
+      --glass-strong: rgba(24, 26, 28, 0.1);
+      --glass-hover: rgba(24, 26, 28, 0.18);
       --glass-border: rgba(21, 25, 20, 0.11);
-      --glass-blur: 18px;
-      --nav-bg: rgba(255, 255, 255, 0.42);
-      --nav-bg-scrolled: rgba(255, 255, 255, 0.62);
+      --glass-blur: 5px;
+      --nav-bg: rgba(24, 26, 28, 0.1);
+      --nav-bg-scrolled: rgba(24, 26, 28, 0.1);
       --shadow: rgba(21, 25, 20, 0.08);
       --btn-on-accent: #ffffff;
       --skill-hover: rgba(255, 255, 255, 0.72);
@@ -322,33 +328,91 @@
       right: 0;
       z-index: 100;
       display: flex;
+      justify-content: center;
+      padding: 0;
+      background: transparent;
+      border: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: none;
+      transition: padding var(--nav-morph-duration) var(--nav-morph-ease);
+    }
+
+    .nav-inner {
+      display: flex;
       align-items: center;
       justify-content: space-between;
+      width: 100%;
       padding: 1.2rem 3rem;
       border-bottom: 1px solid var(--glass-border);
       background: var(--nav-bg);
-      backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
       transition:
-        background-color var(--duration-slow) var(--ease-soft),
-        border-color var(--duration-slow) var(--ease-soft),
-        box-shadow var(--duration-slow) var(--ease-soft),
-        color var(--duration-slow) var(--ease-soft);
+        max-width var(--nav-morph-duration) var(--nav-morph-ease),
+        width var(--nav-morph-duration) var(--nav-morph-ease),
+        padding var(--nav-morph-duration) var(--nav-morph-ease),
+        margin var(--nav-morph-duration) var(--nav-morph-ease),
+        border-radius var(--nav-morph-duration) var(--nav-morph-ease),
+        gap var(--nav-morph-duration) var(--nav-morph-ease),
+        background-color var(--nav-morph-duration) var(--nav-morph-ease),
+        border-color var(--nav-morph-duration) var(--nav-morph-ease),
+        box-shadow var(--nav-morph-duration) var(--nav-morph-ease);
     }
 
-    nav.nav--scrolled {
+    @media (min-width: 901px) {
+      .nav-links,
+      .nav-right {
+        transition: gap var(--nav-morph-duration) var(--nav-morph-ease);
+      }
+
+      nav.nav--scrolled {
+        padding: 1rem 1.5rem 0;
+        transition: padding var(--nav-morph-duration) var(--nav-morph-ease);
+      }
+
+      nav.nav--scrolled .nav-inner {
+        width: fit-content;
+        max-width: min(680px, calc(100% - 3rem));
+        justify-content: center;
+        gap: 1.35rem;
+        padding: 0.6rem 1.15rem;
+        border-radius: 999px;
+        border-bottom: 1px solid var(--glass-border);
+        margin: 0 auto;
+        background: var(--nav-bg-scrolled);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          0 12px 40px var(--shadow);
+      }
+
+      nav.nav--scrolled .nav-links {
+        gap: 1rem;
+      }
+
+      nav.nav--scrolled .nav-links a {
+        font-size: 0.82rem;
+      }
+
+      nav.nav--scrolled .nav-right {
+        gap: 0.85rem;
+      }
+
+      nav.nav--scrolled .nav-logo img {
+        height: 1.65rem;
+      }
+    }
+
+    nav.nav--scrolled .nav-inner {
       background: var(--nav-bg-scrolled);
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        0 12px 40px var(--shadow);
     }
 
-    html[data-theme="light"] nav {
+    html[data-theme="light"] .nav-inner {
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
     }
 
-    html[data-theme="light"] nav.nav--scrolled {
+    html[data-theme="light"] nav.nav--scrolled .nav-inner {
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.8),
         0 12px 32px var(--shadow);
@@ -371,6 +435,7 @@
       display: block;
       height: 2rem;
       width: auto;
+      transition: height var(--nav-morph-duration) var(--nav-morph-ease);
     }
 
     .nav-logo img.nav-logo-light {
@@ -398,7 +463,9 @@
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      transition: color var(--duration-normal) var(--ease-soft);
+      transition:
+        color var(--duration-normal) var(--ease-soft),
+        font-size var(--nav-morph-duration) var(--nav-morph-ease);
       position: relative;
     }
 
@@ -409,7 +476,7 @@
       bottom: -4px;
       width: 100%;
       height: 1px;
-      background: var(--accent);
+      background: var(--accent-gradient);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform var(--duration-normal) var(--ease-smooth);
@@ -455,7 +522,8 @@
     }
 
     .lang-switch button.is-active {
-      background: var(--accent);
+      background: var(--accent-gradient);
+      background-image: var(--accent-gradient);
       color: var(--btn-on-accent);
     }
 
@@ -561,10 +629,10 @@
     #hero {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
       align-items: center;
       padding: 8rem 3rem 4rem;
-      gap: 4rem;
+      gap: 3.5rem;
       position: relative;
     }
 
@@ -582,6 +650,236 @@
     .hero-content {
       position: relative;
       z-index: 1;
+    }
+
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 360px;
+      margin-left: auto;
+      animation: fadeUp 1s 0.2s var(--ease-out) both;
+    }
+
+    .hero-visual::before {
+      content: '';
+      position: absolute;
+      top: 6%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 78%;
+      height: 58%;
+      background: var(--accent-gradient);
+      filter: blur(64px);
+      opacity: 0.28;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    html[data-theme="light"] .hero-visual::before {
+      opacity: 0.18;
+    }
+
+    .hero-card {
+      position: relative;
+      z-index: 1;
+      padding: 3px;
+      border-radius: 26px;
+      background: var(--accent-gradient);
+      box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.28),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+      transition:
+        transform var(--duration-normal) var(--ease-smooth),
+        box-shadow var(--duration-slow) var(--ease-soft);
+    }
+
+    @media (hover: hover) and (min-width: 901px) {
+      .hero-card:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 26px 56px rgba(0, 0, 0, 0.34),
+          0 0 0 1px rgba(255, 255, 255, 0.08);
+      }
+    }
+
+    .hero-portrait {
+      position: relative;
+      margin: 0;
+      aspect-ratio: 3 / 4;
+      overflow: hidden;
+      border-radius: 23px;
+      background: var(--surface);
+    }
+
+    .hero-portrait img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 52% 10%;
+    }
+
+    .hero-card-body {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+      margin: 0;
+      padding: 4.25rem 0.9rem 0.85rem;
+      background: linear-gradient(
+        to top,
+        rgba(8, 10, 12, 0.92) 0%,
+        rgba(8, 10, 12, 0.62) 46%,
+        transparent 100%
+      );
+    }
+
+    html[data-theme="light"] .hero-card-body {
+      background: linear-gradient(
+        to top,
+        rgba(16, 18, 20, 0.88) 0%,
+        rgba(16, 18, 20, 0.52) 48%,
+        transparent 100%
+      );
+    }
+
+    .hero-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.7rem;
+      padding: 0.55rem 0.6rem 0.55rem 0.75rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .hero-card-body .contact-row {
+      margin: 0;
+      min-width: 0;
+      gap: 0.12rem;
+    }
+
+    .hero-card-body .contact-item {
+      font-size: 0.7rem;
+      font-weight: 500;
+      line-height: 1.25;
+      gap: 0.38rem;
+      align-items: center;
+      color: rgba(245, 246, 248, 0.92);
+    }
+
+    .hero-card-body .contact-item .ico {
+      width: 12px;
+      flex-shrink: 0;
+      font-size: 0.66rem;
+      text-align: center;
+      color: #2fbdff;
+    }
+
+    .hero-card-body .social-links {
+      margin: 0;
+      padding: 0;
+      border: none;
+      gap: 0.32rem;
+      flex-wrap: nowrap;
+      flex-shrink: 0;
+    }
+
+    .hero-card-body .social-link {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.16);
+      color: #f5f6f8;
+    }
+
+    .hero-card-body .social-link:hover {
+      background: var(--accent-gradient);
+      border-color: transparent;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .hero-card-body .social-link svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .hero-stats-card {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 1.05rem 0.35rem 1.05rem;
+      background: rgba(24, 26, 28, 0.1);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 10px 28px rgba(0, 0, 0, 0.16);
+    }
+
+    .hero-stats-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 18%;
+      right: 18%;
+      height: 2px;
+      background: var(--accent-gradient);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      align-items: center;
+      gap: 0;
+    }
+
+    .hero-stat {
+      padding: 0.15rem 1rem;
+      text-align: center;
+      background: none;
+      border: none;
+      border-radius: 0;
+    }
+
+    html[data-theme="light"] .hero-stat {
+      background: none;
+    }
+
+    .hero-stat-divider {
+      width: 1px;
+      height: 2.4rem;
+      background: var(--glass-border);
+      justify-self: center;
+    }
+
+    .hero-stat .stat-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-stat .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.85rem;
+      color: var(--text);
+      line-height: 1;
     }
 
     .hero-tag {
@@ -608,7 +906,11 @@
 
     h1 em {
       font-style: italic;
-      color: var(--accent);
+      background: var(--accent-gradient);
+      background-image: var(--accent-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .hero-sub {
@@ -652,9 +954,10 @@
     }
 
     .btn-primary {
-      background: var(--accent);
+      background: var(--accent-gradient);
+      background-image: var(--accent-gradient);
       color: var(--btn-on-accent);
-      border-color: var(--accent);
+      border-color: transparent;
     }
 
     .btn-primary:hover {
@@ -673,14 +976,14 @@
       border-color: var(--muted);
     }
 
-    /* Hero right: stat panel */
+    /* Hero profile card (legacy panel styles reused in card body) */
     .hero-panel {
       position: relative;
       z-index: 1;
       border: 1px solid var(--glass-border);
       background: var(--glass);
-      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.06),
         0 12px 40px rgba(0, 0, 0, 0.25);
@@ -709,7 +1012,7 @@
       left: 2rem;
       right: 2rem;
       height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      background: var(--accent-gradient);
     }
 
     .panel-title {
@@ -886,8 +1189,8 @@
 
     .skill-block {
       background: var(--glass);
-      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.05),
@@ -956,8 +1259,8 @@
 
     .project-card {
       background: var(--glass);
-      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.05),
@@ -979,7 +1282,7 @@
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      background: var(--accent-gradient);
       transform: scaleX(0);
       transform-origin: left;
       transition:
@@ -1005,6 +1308,14 @@
     .project-card:hover .project-name,
     .project-card:hover .project-name a {
       color: var(--accent);
+    }
+
+    html[data-theme="light"] .project-card:hover {
+      background: var(--glass);
+    }
+
+    html[data-theme="light"] #education .journey-item:hover .journey-card {
+      background: var(--glass);
     }
 
     .project-role {
@@ -1123,15 +1434,15 @@
 
     .journey-item.is-current .journey-dot,
     .journey-item:hover .journey-dot {
-      background: var(--accent);
+      background: var(--accent-gradient);
       transform: scale(1.15);
       box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0.22);
     }
 
     .journey-card {
       background: var(--glass);
-      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.05),
@@ -1180,8 +1491,9 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--btn-on-accent);
-      background: var(--accent);
-      border: 1px solid var(--accent);
+      background: var(--accent-gradient);
+      background-image: var(--accent-gradient);
+      border: 1px solid transparent;
     }
 
     .journey-duration {
@@ -1274,8 +1586,8 @@
       justify-content: center;
       text-decoration: none;
       background: var(--glass-strong);
-      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: 50%;
       box-shadow:
@@ -1349,8 +1661,8 @@
       text-align: left;
       color: var(--text);
       background: var(--glass-strong);
-      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.06),
@@ -1452,8 +1764,8 @@
       width: min(100%, 440px);
       padding: 2rem;
       background: var(--glass-strong);
-      backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-      -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
@@ -1477,7 +1789,7 @@
       left: 2rem;
       right: 2rem;
       height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      background: var(--accent-gradient);
     }
 
     #wa-confirm-modal .wa-modal__dialog::before {
@@ -1530,8 +1842,9 @@
     }
 
     .ext-modal__confirm {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--accent-gradient);
+      background-image: var(--accent-gradient);
+      border-color: transparent;
       color: var(--btn-on-accent);
     }
 
@@ -1583,7 +1896,7 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 1200px) {
-      nav {
+      .nav-inner {
         padding: 1rem 1.25rem;
       }
 
@@ -1634,19 +1947,34 @@
         font-size: 1rem;
       }
 
-      .hero-panel {
-        padding: 1.5rem;
-        max-width: 100%;
+      .hero-visual {
+        max-width: none;
+        margin: 0 auto;
+        width: min(100%, 340px);
       }
 
-      .hero-panel::before {
-        left: 1.25rem;
-        right: 1.25rem;
+      .hero-card-body {
+        padding: 3.5rem 0.75rem 0.75rem;
+      }
+
+      .hero-card-meta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.55rem;
+        padding: 0.6rem 0.7rem;
+      }
+
+      .hero-card-body .social-links {
+        justify-content: flex-start;
       }
     }
 
     @media (max-width: 900px) {
       nav {
+        padding: 0;
+      }
+
+      .nav-inner {
         padding: 0.75rem 1rem;
         align-items: center;
         gap: 0.65rem;
@@ -1670,7 +1998,7 @@
         display: flex;
       }
 
-      nav.is-open {
+      nav.is-open .nav-inner {
         background: var(--nav-bg-scrolled);
       }
 
@@ -2085,9 +2413,9 @@
         <span style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600;" data-i18n="resume.label">Resume — Rafid Al Ridwan</span>
         <div style="display:flex;gap:0.75rem;align-items:center;">
           <a id="resume-download" href="assets/RAfidAlRidwan.pdf" download="RafidAlRidwan_Resume.pdf"
-            style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5em 1.2em;font-family:'Source Sans 3',system-ui,sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;background:var(--accent);color:var(--btn-on-accent);border:1px solid var(--accent);transition:background 0.22s,color 0.22s;cursor:pointer;"
-            onmouseover="this.style.background='transparent';this.style.color='var(--accent)';"
-            onmouseout="this.style.background='var(--accent)';this.style.color='var(--btn-on-accent)';">
+            style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5em 1.2em;font-family:'Source Sans 3',system-ui,sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;background:var(--accent-gradient);background-image:var(--accent-gradient);color:var(--btn-on-accent);border:1px solid transparent;transition:background 0.22s,color 0.22s;cursor:pointer;"
+            onmouseover="this.style.background='transparent';this.style.backgroundImage='none';this.style.color='var(--accent)';"
+            onmouseout="this.style.background='var(--accent-gradient)';this.style.backgroundImage='var(--accent-gradient)';this.style.color='var(--btn-on-accent)';">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 4h14v-2H5v2z" />
             </svg>
@@ -2108,6 +2436,7 @@
 
   <!-- NAV -->
   <nav>
+    <div class="nav-inner">
     <a class="nav-logo" href="#hero" aria-label="Rafid Al Ridwan">
       <img class="nav-logo-dark" src="assets/rar.png" alt="RAR" width="120" height="40" decoding="async">
       <img class="nav-logo-light" src="assets/rar-light.png" alt="RAR" width="120" height="40" decoding="async">
@@ -2137,6 +2466,7 @@
         </button>
       </div>
     </div>
+    </div>
   </nav>
 
   <!-- HERO -->
@@ -2154,58 +2484,66 @@
       </div>
     </div>
 
-    <div class="hero-panel">
-      <div class="panel-title" data-i18n="panel.title">// quick profile</div>
-      <div class="stat-row">
-        <div class="stat-label" data-i18n="panel.years">Years of experience</div>
-        <div class="stat-value"><span class="stat-counter" data-exp-start="2021-04-01" data-target="5">0</span>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <figure class="hero-portrait">
+          <img src="assets/rafid.png" alt="Portrait of Rafid Al Ridwan" width="768" height="1024" decoding="async" fetchpriority="high">
+          <figcaption class="hero-card-body">
+            <div class="hero-card-meta">
+              <div class="contact-row">
+                <div class="contact-item"><span class="ico">@</span> rafidalridwan@gmail.com</div>
+                <div class="contact-item"><span class="ico">📞</span> +880 1721-914666</div>
+                <div class="contact-item"><span class="ico">📍</span> Mohammadpur, Dhaka-1207</div>
+              </div>
+              <div class="social-links" aria-label="Social profiles" data-i18n-aria="social.aria">
+            <a class="social-link" href="https://github.com/rafidalridwan" target="_blank" rel="noopener noreferrer"
+              aria-label="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.12-1.5-1.12-1.5-.92-.64.07-.63.07-.63 1.02.07 1.56 1.07 1.56 1.07.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.74 0 0 .84-.27 2.75 1.05A9.2 9.2 0 0 1 12 6.84c.85.004 1.71.12 2.51.35 1.91-1.32 2.75-1.05 2.75-1.05.55 1.42.2 2.48.1 2.74.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.49A10.06 10.06 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+              </svg>
+            </a>
+            <a class="social-link" href="https://www.linkedin.com/in/rafidalridwan/" target="_blank"
+              rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22 0H2C.9 0 0 .9 0 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2z" />
+              </svg>
+            </a>
+            <a class="social-link" href="https://www.facebook.com/ra.al.rid/" target="_blank" rel="noopener noreferrer"
+              aria-label="Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07c0 6.02 4.39 11.02 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.27h3.32l-.53 3.49h-2.79v8.44C19.61 23.09 24 18.09 24 12.07z" />
+              </svg>
+            </a>
+            <a class="social-link social-link--whatsapp" href="https://wa.me/8801721914666" target="_blank"
+              rel="noopener noreferrer" aria-label="WhatsApp 01721914666">
+              <svg viewBox="0 0 32 32" aria-hidden="true">
+                <path
+                  d="M19.11 17.64c-.26-.13-1.55-.76-1.79-.85-.24-.09-.42-.13-.6.13-.18.26-.69.85-.85 1.02-.16.17-.31.2-.57.07-.26-.13-1.1-.4-2.09-1.27-.77-.68-1.29-1.52-1.44-1.78-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.44.09-.17.04-.33-.02-.46-.07-.13-.6-1.45-.82-1.99-.21-.5-.43-.43-.6-.44h-.51c-.17 0-.44.07-.67.33-.23.26-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.71 4.3 3.8.6.26 1.08.42 1.45.54.61.19 1.17.16 1.61.1.49-.07 1.55-.63 1.77-1.24.22-.61.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3Z" />
+                <path
+                  d="M27.21 4.78A15.83 15.83 0 0 0 16 0C7.18 0 0 7.18 0 16c0 2.82.74 5.58 2.14 8.02L0 32l8.2-2.1A15.93 15.93 0 0 0 16 32c8.82 0 16-7.18 16-16 0-4.27-1.66-8.28-4.79-11.22ZM16 29.29c-2.43 0-4.81-.65-6.89-1.87l-.49-.29-4.86 1.24 1.3-4.73-.32-.5A13.24 13.24 0 0 1 2.72 16C2.72 8.68 8.68 2.72 16 2.72c3.53 0 6.84 1.37 9.33 3.87A13.1 13.1 0 0 1 29.29 16c0 7.32-5.96 13.29-13.29 13.29Z" />
+              </svg>
+            </a>
+              </div>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="hero-stats-card">
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="stat-label" data-i18n="panel.years">Years of experience</span>
+            <div class="stat-value"><span class="stat-counter" data-exp-start="2021-04-01" data-target="5">0</span></div>
+          </div>
+          <span class="hero-stat-divider" aria-hidden="true"></span>
+          <div class="hero-stat">
+            <span class="stat-label" data-i18n="panel.projects">Projects shipped</span>
+            <div class="stat-value"><span class="stat-counter" data-target="50">0</span><span class="stat-suffix">+</span></div>
+          </div>
         </div>
-      </div>
-      <div class="stat-row">
-        <div class="stat-label" data-i18n="panel.projects">Projects shipped</div>
-        <div class="stat-value"><span class="stat-counter" data-target="50">0</span><span class="stat-suffix">+</span>
-        </div>
-      </div>
-      <!-- <div class="stat-row">
-        <div class="stat-label">CGPA (B.Sc CSE)</div>
-        <div class="stat-value">3.<span>62</span></div>
-      </div> -->
-      <div class="contact-row">
-        <div class="contact-item"><span class="ico">@</span> rafidalridwan@gmail.com</div>
-        <div class="contact-item"><span class="ico">📞</span> +880 1721-914666</div>
-        <div class="contact-item"><span class="ico">📍</span> Mohammadpur, Dhaka-1207</div>
-      </div>
-      <div class="social-links" aria-label="Social profiles" data-i18n-aria="social.aria">
-        <a class="social-link" href="https://github.com/rafidalridwan" target="_blank" rel="noopener noreferrer"
-          aria-label="GitHub">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.12-1.5-1.12-1.5-.92-.64.07-.63.07-.63 1.02.07 1.56 1.07 1.56 1.07.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.74 0 0 .84-.27 2.75 1.05A9.2 9.2 0 0 1 12 6.84c.85.004 1.71.12 2.51.35 1.91-1.32 2.75-1.05 2.75-1.05.55 1.42.2 2.48.1 2.74.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.59.69.49A10.06 10.06 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
-          </svg>
-        </a>
-        <a class="social-link" href="https://www.linkedin.com/in/rafidalridwan/" target="_blank"
-          rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.55V9h3.57v11.45zM22 0H2C.9 0 0 .9 0 2v20c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2z" />
-          </svg>
-        </a>
-        <a class="social-link" href="https://www.facebook.com/ra.al.rid/" target="_blank" rel="noopener noreferrer"
-          aria-label="Facebook">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07c0 6.02 4.39 11.02 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.27h3.32l-.53 3.49h-2.79v8.44C19.61 23.09 24 18.09 24 12.07z" />
-          </svg>
-        </a>
-        <a class="social-link social-link--whatsapp" href="https://wa.me/8801721914666" target="_blank"
-          rel="noopener noreferrer" aria-label="WhatsApp 01721914666">
-          <svg viewBox="0 0 32 32" aria-hidden="true">
-            <path
-              d="M19.11 17.64c-.26-.13-1.55-.76-1.79-.85-.24-.09-.42-.13-.6.13-.18.26-.69.85-.85 1.02-.16.17-.31.2-.57.07-.26-.13-1.1-.4-2.09-1.27-.77-.68-1.29-1.52-1.44-1.78-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.15.17-.26.26-.44.09-.17.04-.33-.02-.46-.07-.13-.6-1.45-.82-1.99-.21-.5-.43-.43-.6-.44h-.51c-.17 0-.44.07-.67.33-.23.26-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.71 4.3 3.8.6.26 1.08.42 1.45.54.61.19 1.17.16 1.61.1.49-.07 1.55-.63 1.77-1.24.22-.61.22-1.13.15-1.24-.06-.11-.24-.17-.5-.3Z" />
-            <path
-              d="M27.21 4.78A15.83 15.83 0 0 0 16 0C7.18 0 0 7.18 0 16c0 2.82.74 5.58 2.14 8.02L0 32l8.2-2.1A15.93 15.93 0 0 0 16 32c8.82 0 16-7.18 16-16 0-4.27-1.66-8.28-4.79-11.22ZM16 29.29c-2.43 0-4.81-.65-6.89-1.87l-.49-.29-4.86 1.24 1.3-4.73-.32-.5A13.24 13.24 0 0 1 2.72 16C2.72 8.68 8.68 2.72 16 2.72c3.53 0 6.84 1.37 9.33 3.87A13.1 13.1 0 0 1 29.29 16c0 7.32-5.96 13.29-13.29 13.29Z" />
-          </svg>
-        </a>
       </div>
     </div>
   </section>
@@ -3403,8 +3741,8 @@
         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       const styles = getComputedStyle(document.documentElement);
-      const accent = (styles.getPropertyValue('--accent') || '#c8f04d').trim();
-      const accent2 = (styles.getPropertyValue('--accent2') || '#4df0c8').trim();
+      const accent = (styles.getPropertyValue('--accent') || '#2fbdff').trim();
+      const accent2 = (styles.getPropertyValue('--accent2') || '#ff7582').trim();
 
       const hexToRgb = (hex) => {
         const h = hex.replace('#', '').trim();
