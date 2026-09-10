@@ -143,6 +143,13 @@
         display: none !important;
       }
 
+      html.loader-revealing::after,
+      #page-loader.is-done,
+      #page-loader.is-done::after,
+      #page-loader.is-done .term {
+        animation: none !important;
+      }
+
       html.is-loading {
         overflow: auto;
       }
@@ -228,130 +235,178 @@
       overflow: hidden;
     }
 
-    /* ── PAGE LOADER ── */
+    /* ── PAGE LOADER (Linux terminal) ── */
     #page-loader {
       position: fixed;
       inset: 0;
       z-index: 20000;
       display: grid;
       place-items: center;
-      padding: 1.5rem;
-      background: color-mix(in srgb, var(--bg) 48%, transparent);
-      backdrop-filter: blur(28px) saturate(1.2);
-      -webkit-backdrop-filter: blur(28px) saturate(1.2);
-      color: var(--text);
-      transition:
-        opacity 0.55s var(--ease-out),
-        visibility 0.55s var(--ease-out),
-        filter 0.55s var(--ease-out);
+      padding: 1.25rem;
+      background: #000;
+      color: #d7dbe2;
+      font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      overflow: hidden;
     }
 
     #page-loader::before {
       content: '';
       position: absolute;
       inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse 55% 50% at 50% 48%, black, transparent);
-      opacity: 0.22;
       pointer-events: none;
+      opacity: 0.16;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0 2px,
+        rgba(255, 255, 255, 0.03) 2px 3px
+      );
+      z-index: 0;
+    }
+
+    #page-loader::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -4%;
+      height: 16%;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      background: linear-gradient(180deg,
+        transparent,
+        rgba(var(--accent-rgb), 0.2),
+        transparent);
+      mix-blend-mode: screen;
+    }
+
+    .term {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 42rem);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #0b0d10;
+      box-shadow:
+        0 0 0 1px rgba(var(--accent-rgb), 0.08),
+        0 24px 60px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+
+    .term__bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.85rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #12151a;
+    }
+
+    .term__dots {
+      display: inline-flex;
+      gap: 0.35rem;
+    }
+
+    .term__dots span {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      background: #3a3f49;
+    }
+
+    .term__dots span:nth-child(1) { background: #ff5f57; }
+    .term__dots span:nth-child(2) { background: #febc2e; }
+    .term__dots span:nth-child(3) { background: #28c840; }
+
+    .term__title {
+      color: rgba(215, 219, 226, 0.7);
+      font-size: 0.72rem;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .term__body {
+      min-height: 16rem;
+      max-height: min(52vh, 22rem);
+      padding: 0.95rem 1rem 1.1rem;
+      overflow: hidden;
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+
+    .term-line {
+      margin: 0 0 0.2rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .term-line.is-cmd { color: #e8ecf2; }
+    .term-line.is-out { color: rgba(215, 219, 226, 0.72); }
+    .term-line.is-ok { color: var(--accent); font-weight: 600; }
+    .term-line.is-dim { color: rgba(215, 219, 226, 0.42); }
+
+    .term-prompt {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .term-cursor {
+      display: inline-block;
+      width: 0.55ch;
+      height: 1em;
+      margin-left: 1px;
+      vertical-align: -0.1em;
+      background: var(--accent);
+      animation: loaderBlink 0.85s steps(1) infinite;
     }
 
     #page-loader.is-done {
-      opacity: 0;
-      visibility: hidden;
-      filter: blur(10px);
+      animation: loaderTerminalWipe 1.05s cubic-bezier(0.65, 0, 0.35, 1) forwards;
       pointer-events: none;
     }
 
-    .loader-stage {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      width: min(100%, 22rem);
+    #page-loader.is-done .term {
+      animation: loaderStageOut 0.4s var(--ease-out) forwards;
     }
 
-    .loader-kicker {
-      font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin-bottom: 1.35rem;
+    #page-loader.is-done::after {
+      animation: loaderScanBeam 0.85s var(--ease-out) forwards;
     }
 
-    .loader-mark {
-      margin-bottom: 1.1rem;
+    html.loader-revealing::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 19999;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0 3px,
+        rgba(var(--accent-rgb), 0.035) 3px 4px
+      );
+      animation: pageScanFade 0.95s var(--ease-out) forwards;
     }
 
-    .loader-glyph {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45rem;
-      font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-      font-size: 2.6rem;
-      font-weight: 600;
-      line-height: 1;
-      color: var(--accent);
+    @keyframes loaderTerminalWipe {
+      0% { opacity: 1; clip-path: inset(0 0 0 0); }
+      100% { opacity: 1; visibility: hidden; clip-path: inset(0 0 100% 0); }
     }
 
-    .loader-glyph span:not(.loader-caret) {
-      background-image: var(--accent-gradient);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    @keyframes loaderStageOut {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-10px); }
     }
 
-    .loader-caret {
-      width: 3px;
-      height: 1.05em;
-      border-radius: 1px;
-      background: var(--accent-gradient);
-      animation: loaderBlink 0.85s steps(1) infinite;
+    @keyframes loaderScanBeam {
+      0% { opacity: 0; top: -8%; }
+      18% { opacity: 1; }
+      100% { opacity: 0; top: 108%; }
     }
 
-    .loader-status {
-      min-height: 1.5em;
-      font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-      font-size: 0.86rem;
-      color: var(--text-dim);
-      letter-spacing: 0.02em;
-    }
-
-    .loader-blink {
-      color: var(--accent);
-      animation: loaderBlink 0.85s steps(1) infinite;
-    }
-
-    .loader-track {
-      margin-top: 1.35rem;
-      width: min(100%, 11.5rem);
-      height: 2px;
-      overflow: hidden;
-      background: var(--border);
-    }
-
-    .loader-fill {
-      width: 100%;
-      height: 100%;
-      background: var(--accent-gradient);
-      transform-origin: left;
-      transform: scaleX(0);
-      animation: loaderFill 2.1s var(--ease-out) forwards;
-    }
-
-    .loader-meta {
-      margin-top: 0.85rem;
-      font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-      font-size: 0.64rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--muted);
+    @keyframes pageScanFade {
+      0% { opacity: 0.5; }
+      100% { opacity: 0; }
     }
 
     @keyframes loaderBlink {
@@ -359,8 +414,16 @@
       50%, 100% { opacity: 0; }
     }
 
-    @keyframes loaderFill {
-      to { transform: scaleX(1); }
+    @media (max-width: 560px) {
+      .term__body {
+        min-height: 14rem;
+        font-size: 0.74rem;
+        padding: 0.8rem 0.75rem 0.95rem;
+      }
+
+      .term__title {
+        font-size: 0.64rem;
+      }
     }
 
     @keyframes localeIn {
@@ -3376,18 +3439,12 @@
   <div id="cursor-ring" aria-hidden="true"></div>
 
   <div id="page-loader" role="status" aria-live="polite" aria-busy="true" aria-label="Loading portfolio">
-    <div class="loader-stage">
-      <!-- <p class="loader-kicker" id="loader-kicker">// thinking like an engineer</p> -->
-      <div class="loader-mark" aria-hidden="true">
-        <div class="loader-glyph">
-          <span>{</span>
-          <span class="loader-caret"></span>
-          <span>}</span>
-        </div>
+    <div class="term" aria-hidden="true">
+      <div class="term__bar">
+        <span class="term__dots"><span></span><span></span><span></span></span>
+        <span class="term__title" id="term-title">rafid@portfolio: ~</span>
       </div>
-      <p class="loader-status"><span id="loader-text"></span><span class="loader-blink">_</span></p>
-      <div class="loader-track"><div class="loader-fill"></div></div>
-      <!-- <p class="loader-meta" id="loader-meta">compiling portfolio</p> -->
+      <div class="term__body" id="term-body"></div>
     </div>
   </div>
 
@@ -3395,10 +3452,9 @@
     (() => {
       const root = document.documentElement;
       const loader = document.getElementById('page-loader');
-      const textEl = document.getElementById('loader-text');
-      const kickerEl = document.getElementById('loader-kicker');
-      const metaEl = document.getElementById('loader-meta');
-      if (!loader) return;
+      const bodyEl = document.getElementById('term-body');
+      const titleEl = document.getElementById('term-title');
+      if (!loader || !bodyEl) return;
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const lang = (() => {
@@ -3406,38 +3462,92 @@
         catch (_) { return 'en'; }
       })();
 
-      const copy = lang === 'de' ? {
-        kicker: '// denken wie ein Ingenieur',
-        meta: 'portfolio wird kompiliert',
-        lines: [
-          'Problemraum kartieren',
-          'Datenfluss nachverfolgen',
-          'Architektur komponieren',
-          'bereit.'
-        ]
-      } : {
-        kicker: '// thinking like an engineer',
-        meta: 'compiling portfolio',
-        lines: [
-          'mapping the problem space',
-          'tracing data through the system',
-          'composing a cleaner architecture',
-          'ready.'
-        ]
-      };
+      const promptUser = 'rafid@linux';
+      const promptHost = lang === 'de' ? 'portfolio' : 'portfolio';
 
-      if (kickerEl) kickerEl.textContent = copy.kicker;
-      if (metaEl) metaEl.textContent = copy.meta;
+      if (titleEl) titleEl.textContent = `${promptUser}@${promptHost}: ~`;
       loader.setAttribute('aria-label', lang === 'de' ? 'Portfolio wird geladen' : 'Loading portfolio');
 
+      const script = lang === 'de' ? [
+        { type: 'cmd', text: 'whoami' },
+        { type: 'out', text: 'rafidalridwan' },
+        { type: 'cmd', text: 'uname -a' },
+        { type: 'out', text: 'Linux portfolio 6.8.0-generic x86_64 GNU/Linux' },
+        { type: 'cmd', text: 'cd ~/rafidalridwan.github.io && ls' },
+        { type: 'out', text: 'index.html  assets/  README.md' },
+        { type: 'cmd', text: 'make build' },
+        { type: 'dim', text: '[ 18%] Module kompilieren...' },
+        { type: 'dim', text: '[ 46%] Assets bundeln...' },
+        { type: 'dim', text: '[ 72%] Optimieren...' },
+        { type: 'dim', text: '[100%] Linken...' },
+        { type: 'ok', text: 'Compile complete.' },
+        { type: 'ok', text: 'exit code 0' },
+        { type: 'cmd', text: './serve --open' }
+      ] : [
+        { type: 'cmd', text: 'whoami' },
+        { type: 'out', text: 'rafidalridwan' },
+        { type: 'cmd', text: 'uname -a' },
+        { type: 'out', text: 'Linux portfolio 6.8.0-generic x86_64 GNU/Linux' },
+        { type: 'cmd', text: 'cd ~/rafidalridwan.github.io && ls' },
+        { type: 'out', text: 'index.html  assets/  README.md' },
+        { type: 'cmd', text: 'make build' },
+        { type: 'dim', text: '[ 18%] Compiling modules...' },
+        { type: 'dim', text: '[ 46%] Bundling assets...' },
+        { type: 'dim', text: '[ 72%] Optimizing...' },
+        { type: 'dim', text: '[100%] Linking...' },
+        { type: 'ok', text: 'Compile complete.' },
+        { type: 'ok', text: 'exit code 0' },
+        { type: 'cmd', text: './serve --open' }
+      ];
+
+      const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+      const addLine = (html, className = 'is-out') => {
+        const line = document.createElement('p');
+        line.className = `term-line ${className}`;
+        line.innerHTML = html;
+        bodyEl.appendChild(line);
+        bodyEl.scrollTop = bodyEl.scrollHeight;
+        return line;
+      };
+
+      const typeCommand = async (cmd) => {
+        const line = addLine('', 'is-cmd');
+        const prompt = `<span class="term-prompt">${promptUser}@${promptHost}</span>:<span style="color:#6cb6ff">~</span>$ `;
+        line.innerHTML = prompt;
+        const textNode = document.createElement('span');
+        const cursor = document.createElement('span');
+        cursor.className = 'term-cursor';
+        line.appendChild(textNode);
+        line.appendChild(cursor);
+        for (const ch of cmd) {
+          textNode.textContent += ch;
+          bodyEl.scrollTop = bodyEl.scrollHeight;
+          await wait(18 + Math.random() * 28);
+        }
+        cursor.remove();
+      };
+
       let finished = false;
-      const finish = () => {
+      const finish = async () => {
         if (finished) return;
         finished = true;
-        loader.classList.add('is-done');
         loader.setAttribute('aria-busy', 'false');
         root.classList.remove('is-loading');
-        window.setTimeout(() => loader.remove(), 700);
+
+        if (reduceMotion) {
+          loader.classList.add('is-done');
+          loader.remove();
+          return;
+        }
+
+        await wait(420);
+        root.classList.add('loader-revealing');
+        loader.classList.add('is-done');
+        window.setTimeout(() => {
+          root.classList.remove('loader-revealing');
+          loader.remove();
+        }, 1100);
       };
 
       if (reduceMotion) {
@@ -3445,22 +3555,26 @@
         return;
       }
 
-      const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
-
-      const typeLine = async (line) => {
-        if (!textEl) return;
-        textEl.textContent = '';
-        for (const char of line) {
-          textEl.textContent += char;
-          await wait(22);
+      const runTerminal = async () => {
+        for (const step of script) {
+          if (finished) return;
+          if (step.type === 'cmd') {
+            await typeCommand(step.text);
+            await wait(120);
+          } else if (step.type === 'ok') {
+            addLine(step.text, 'is-ok');
+            await wait(220);
+          } else if (step.type === 'dim') {
+            addLine(step.text, 'is-dim');
+            await wait(160);
+          } else {
+            addLine(step.text, 'is-out');
+            await wait(140);
+          }
         }
-      };
-
-      const typeSequence = async () => {
-        for (let i = 0; i < copy.lines.length; i += 1) {
-          await typeLine(copy.lines[i]);
-          await wait(i === copy.lines.length - 1 ? 380 : 240);
-        }
+        addLine('<span class="term-prompt">✔</span> portfolio ready', 'is-ok');
+        await wait(380);
+        await finish();
       };
 
       const loaded = new Promise((resolve) => {
@@ -3468,13 +3582,8 @@
         else window.addEventListener('load', resolve, { once: true });
       });
 
-      Promise.all([
-        typeSequence(),
-        loaded,
-        wait(2100)
-      ]).then(finish);
-
-      window.setTimeout(finish, 7000);
+      Promise.all([runTerminal(), loaded]).catch(() => finish());
+      window.setTimeout(finish, 10000);
     })();
   </script>
 
