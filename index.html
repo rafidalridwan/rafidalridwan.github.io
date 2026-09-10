@@ -60,6 +60,9 @@
       --duration-slow: 0.85s;
       --nav-morph-duration: 1.15s;
       --nav-morph-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ptr-x: 50%;
+      --ptr-y: 35%;
+      --scroll-p: 0;
     }
 
     html[data-theme="light"] {
@@ -119,7 +122,21 @@
       .reveal.visible {
         opacity: 1;
         transform: none;
+        filter: none;
         will-change: auto;
+      }
+
+      #scroll-progress,
+      #pointer-glow,
+      #cursor-dot,
+      #cursor-ring {
+        display: none !important;
+      }
+
+      [data-parallax],
+      .tilt-ready,
+      .magnetic {
+        transform: none !important;
       }
 
       #page-loader {
@@ -460,6 +477,130 @@
       opacity: 0.22;
     }
 
+    /* ── SCROLL PROGRESS ── */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      z-index: 200;
+      pointer-events: none;
+      transform: scaleX(var(--scroll-p, 0));
+      transform-origin: left center;
+      background: var(--accent-gradient);
+      box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.45);
+      opacity: 0.95;
+      transition: opacity var(--duration-fast) var(--ease-soft);
+    }
+
+    /* ── POINTER GLOW ── */
+    #pointer-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.55;
+      background: radial-gradient(
+        520px circle at var(--ptr-x) var(--ptr-y),
+        rgba(var(--accent-rgb), 0.14),
+        transparent 58%
+      );
+      transition: opacity 0.4s var(--ease-soft);
+      mix-blend-mode: screen;
+    }
+
+    html[data-theme="light"] #pointer-glow {
+      opacity: 0.4;
+      mix-blend-mode: multiply;
+      background: radial-gradient(
+        480px circle at var(--ptr-x) var(--ptr-y),
+        rgba(var(--accent-rgb), 0.1),
+        transparent 60%
+      );
+    }
+
+    /* ── CUSTOM CIRCLE CURSOR ── */
+    #cursor-dot,
+    #cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 10050;
+      border-radius: 50%;
+      opacity: 0;
+      will-change: transform;
+    }
+
+    #cursor-dot {
+      width: 6px;
+      height: 6px;
+      margin: -3px 0 0 -3px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.65);
+      transition: opacity 0.2s var(--ease-soft), background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #cursor-ring {
+      width: 36px;
+      height: 36px;
+      margin: -18px 0 0 -18px;
+      border: 1.5px solid rgba(var(--accent-rgb), 0.85);
+      box-shadow:
+        0 0 0 0 rgba(var(--accent-rgb), 0.15),
+        inset 0 0 12px rgba(var(--accent-rgb), 0.08);
+      transition:
+        opacity 0.25s var(--ease-soft),
+        width 0.35s var(--ease-out),
+        height 0.35s var(--ease-out),
+        margin 0.35s var(--ease-out),
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.35s var(--ease-out);
+    }
+
+    html.has-custom-cursor,
+    html.has-custom-cursor * {
+      cursor: none !important;
+    }
+
+    html.has-custom-cursor #cursor-dot.is-on,
+    html.has-custom-cursor #cursor-ring.is-on {
+      opacity: 1;
+    }
+
+    html.has-custom-cursor #cursor-ring.is-hover {
+      width: 64px;
+      height: 64px;
+      margin: -32px 0 0 -32px;
+      border-color: rgba(var(--accent-rgb), 1);
+      background: rgba(var(--accent-rgb), 0.08);
+      box-shadow:
+        0 0 0 6px rgba(var(--accent-rgb), 0.08),
+        0 0 28px rgba(var(--accent-rgb), 0.28);
+    }
+
+    html.has-custom-cursor #cursor-dot.is-hover {
+      background: var(--accent2);
+      box-shadow: 0 0 14px rgba(var(--accent2-rgb), 0.55);
+    }
+
+    html.has-custom-cursor #cursor-ring.is-press {
+      width: 28px;
+      height: 28px;
+      margin: -14px 0 0 -14px;
+    }
+
+    html[data-theme="light"] #cursor-dot {
+      box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.45);
+    }
+
+    html[data-theme="light"] #cursor-ring {
+      border-color: rgba(var(--accent-rgb), 0.75);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
     /* ── BG DOT PARTICLES ── */
     #bg-particles {
       position: fixed;
@@ -641,11 +782,13 @@
     }
 
     .nav-links a:hover::after,
-    .nav-links a:focus-visible::after {
+    .nav-links a:focus-visible::after,
+    .nav-links a.is-active::after {
       transform: scaleX(1);
     }
 
-    .nav-links a:hover {
+    .nav-links a:hover,
+    .nav-links a.is-active {
       color: var(--accent);
     }
 
@@ -701,7 +844,12 @@
       background: var(--surface);
       color: var(--text-dim);
       cursor: pointer;
-      transition: color var(--duration-normal) var(--ease-soft), border-color var(--duration-normal) var(--ease-soft), background var(--duration-normal) var(--ease-soft);
+      transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+      transition:
+        color var(--duration-normal) var(--ease-soft),
+        border-color var(--duration-normal) var(--ease-soft),
+        background var(--duration-normal) var(--ease-soft),
+        transform var(--duration-normal) var(--ease-smooth);
     }
 
     .theme-toggle:hover {
@@ -798,19 +946,23 @@
 
     .hero-grid-bg {
       position: absolute;
-      inset: 0;
+      inset: -8%;
       background-image:
         linear-gradient(var(--border) 1px, transparent 1px),
         linear-gradient(90deg, var(--border) 1px, transparent 1px);
       background-size: 60px 60px;
       mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
       opacity: 0.5;
+      will-change: transform;
+      transform: translate3d(0, calc(var(--parallax-y, 0) * 1px), 0);
     }
 
     .hero-content {
       position: relative;
       z-index: 1;
       max-width: 40rem;
+      will-change: transform;
+      transform: translate3d(0, calc(var(--parallax-y, 0) * 1px), 0);
     }
 
     .hero-visual {
@@ -823,7 +975,9 @@
       max-width: 400px;
       margin: 0;
       justify-self: end;
-      animation: fadeUp 1s 0.2s var(--ease-out) both;
+      animation: fadeInSoft 1s 0.2s var(--ease-out) both;
+      will-change: transform;
+      transform: translate3d(0, calc(var(--parallax-y, 0) * 1px), 0);
     }
 
     .hero-visual::before {
@@ -839,6 +993,7 @@
       opacity: 0.28;
       pointer-events: none;
       z-index: 0;
+      animation: heroGlowPulse 5.5s var(--ease-soft) infinite;
     }
 
     html[data-theme="light"] .hero-visual::before {
@@ -899,6 +1054,11 @@
       box-shadow:
         0 18px 48px rgba(0, 0, 0, 0.28),
         0 0 0 1px rgba(255, 255, 255, 0.06);
+      transform:
+        translate3d(var(--mx, 0px), calc(var(--my, 0px) + var(--lift, 0px)), 0)
+        rotateX(var(--tilt-x, 0deg))
+        rotateY(var(--tilt-y, 0deg));
+      transform-style: preserve-3d;
       transition:
         transform var(--duration-normal) var(--ease-smooth),
         box-shadow var(--duration-slow) var(--ease-soft);
@@ -906,7 +1066,7 @@
 
     @media (hover: hover) and (min-width: 901px) {
       .hero-card:hover {
-        transform: translateY(-5px);
+        --lift: -5px;
         box-shadow:
           0 26px 56px rgba(0, 0, 0, 0.34),
           0 0 0 1px rgba(255, 255, 255, 0.08);
@@ -1150,6 +1310,7 @@
       text-decoration: none;
       border: 1px solid transparent;
       cursor: pointer;
+      transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) scale(var(--ms, 1));
       transition:
         color var(--duration-slow) var(--ease-soft),
         background-color var(--duration-slow) var(--ease-soft),
@@ -1159,7 +1320,7 @@
     }
 
     .btn:active {
-      transform: scale(0.97);
+      --ms: 0.97;
     }
 
     .btn-primary {
@@ -1167,6 +1328,7 @@
       background-image: var(--accent-gradient);
       color: var(--btn-on-accent);
       border-color: transparent;
+      box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0);
     }
 
     .btn-primary:hover {
@@ -1174,6 +1336,7 @@
       background-image: none;
       color: var(--accent);
       border-color: var(--accent);
+      box-shadow: 0 10px 28px rgba(var(--accent-rgb), 0.18);
     }
 
     .btn-ghost {
@@ -1345,8 +1508,10 @@
     footer .footer-social {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      margin: 0;
+      justify-content: center;
+      gap: 0.45rem;
+      margin: 0.15rem 0 0;
+      width: 100%;
     }
 
     footer .footer-social .social-link {
@@ -1382,6 +1547,8 @@
       letter-spacing: 0.12em;
       color: var(--accent);
       text-transform: uppercase;
+      transition: transform 0.5s var(--ease-out), opacity 0.5s var(--ease-soft);
+      transform: translate3d(0, calc(var(--parallax-y, 0) * 1px), 0);
     }
 
     .section-title {
@@ -1410,10 +1577,13 @@
       position: relative;
       overflow: hidden;
       isolation: isolate;
+      transform-style: preserve-3d;
       transition:
         border-color 0.35s var(--ease-smooth),
         transform 0.4s var(--ease-out),
-        box-shadow 0.4s var(--ease-out);
+        box-shadow 0.4s var(--ease-out),
+        opacity 0.9s var(--ease-out),
+        filter 0.95s var(--ease-out);
     }
 
     .skill-block::before {
@@ -1452,7 +1622,7 @@
 
     .skill-block:hover {
       border-color: rgba(var(--accent-rgb), 0.55);
-      transform: translateY(-4px);
+      --lift: -4px;
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
         0 0 0 1px rgba(var(--accent-rgb), 0.16),
@@ -1572,10 +1742,13 @@
       position: relative;
       overflow: hidden;
       isolation: isolate;
+      transform-style: preserve-3d;
       transition:
         border-color 0.35s var(--ease-smooth),
         transform 0.4s var(--ease-out),
-        box-shadow 0.4s var(--ease-out);
+        box-shadow 0.4s var(--ease-out),
+        opacity 0.9s var(--ease-out),
+        filter 0.95s var(--ease-out);
     }
 
     .project-card::before {
@@ -1614,7 +1787,7 @@
 
     .project-card:hover {
       border-color: rgba(var(--accent-rgb), 0.55);
-      transform: translateY(-4px);
+      --lift: -4px;
       box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
         0 0 0 1px rgba(var(--accent-rgb), 0.16),
@@ -1933,15 +2106,18 @@
     .footer-inner {
       padding: 1.05rem 3rem 0.95rem;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      gap: 1.25rem 2rem;
+      justify-content: center;
+      text-align: center;
+      gap: 0.85rem;
       flex-wrap: wrap;
     }
 
     .footer-brand {
       display: flex;
       align-items: baseline;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 0.4rem 0.55rem;
       min-width: 0;
@@ -1967,6 +2143,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+      justify-content: center;
       gap: 0.15rem 1.15rem;
       margin: 0;
       padding: 0;
@@ -1995,16 +2172,19 @@
 
     .footer-meta {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 0.65rem 1rem;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
     }
 
     .footer-contact {
       display: flex;
       align-items: center;
+      justify-content: center;
       flex-wrap: wrap;
-      gap: 0.35rem 0.7rem;
+      gap: 0.55rem 1.15rem;
     }
 
     footer a {
@@ -2017,22 +2197,58 @@
       color: var(--accent);
     }
 
-    .footer-contact a,
-    .footer-contact span {
+    .footer-contact a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
       color: var(--text-dim);
       font-size: 0.8rem;
       font-weight: 500;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .footer-contact a:hover {
+      color: var(--accent);
+    }
+
+    .footer-contact a:hover .footer-ico {
+      color: var(--accent);
+    }
+
+    .footer-ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 1em;
+      height: 1em;
+      color: var(--accent);
+    }
+
+    .footer-ico svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
     }
 
     .footer-bottom {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      gap: 0.75rem;
+      text-align: center;
+      gap: 0.25rem;
       padding: 0.7rem 3rem 0.9rem;
       border-top: 1px solid var(--border);
       color: var(--muted);
       font-size: 0.74rem;
+    }
+
+    .footer-bottom > div {
+      max-width: 100%;
+      overflow-wrap: anywhere;
     }
 
     /* ── WHATSAPP FLOAT BUTTON ── */
@@ -2328,32 +2544,75 @@
       from {
         opacity: 0;
         transform: translate3d(0, 28px, 0);
+        filter: blur(6px);
       }
 
       to {
         opacity: 1;
         transform: translate3d(0, 0, 0);
+        filter: blur(0);
       }
     }
 
+    @keyframes fadeInSoft {
+      from {
+        opacity: 0;
+        filter: blur(8px);
+      }
+
+      to {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    @keyframes heroGlowPulse {
+      0%, 100% { opacity: 0.22; transform: translateX(-50%) scale(1); }
+      50% { opacity: 0.38; transform: translateX(-50%) scale(1.08); }
+    }
+
     .reveal {
+      --rx: 0px;
+      --ry: 40px;
+      --rs: 0.985;
       opacity: 0;
-      transform: translate3d(0, 32px, 0);
+      filter: blur(10px);
+      transform:
+        translate3d(var(--rx), calc(var(--ry) + var(--lift, 0px)), 0)
+        scale(var(--rs))
+        rotateX(var(--tilt-x, 0deg))
+        rotateY(var(--tilt-y, 0deg));
       transition:
-        opacity var(--duration-slow) var(--ease-soft),
-        transform var(--duration-slow) var(--ease-soft);
+        opacity 0.9s var(--ease-out),
+        transform 0.95s var(--ease-out),
+        filter 0.95s var(--ease-out);
       transition-delay: var(--reveal-delay, 0s);
-      will-change: opacity, transform;
+      will-change: opacity, transform, filter;
+    }
+
+    .reveal.reveal-left {
+      --rx: -36px;
+      --ry: 24px;
+    }
+
+    .reveal.reveal-scale {
+      --rx: 0px;
+      --ry: 28px;
+      --rs: 0.92;
     }
 
     .reveal.visible {
+      --rx: 0px;
+      --ry: 0px;
+      --rs: 1;
       opacity: 1;
-      transform: translate3d(0, 0, 0);
+      filter: blur(0);
       will-change: auto;
     }
 
     .section-header.reveal {
-      transform: translate3d(0, 20px, 0);
+      --ry: 24px;
+      --rs: 0.99;
     }
 
     /* ── RESPONSIVE ── */
@@ -2435,7 +2694,13 @@
       }
 
       .hero-card-body .social-links {
-        justify-content: flex-start;
+        justify-content: center;
+      }
+
+      .hero-card-body .contact-item {
+        justify-content: center;
+        text-align: center;
+        overflow-wrap: anywhere;
       }
 
       .hero-stat .stat-label {
@@ -2643,18 +2908,29 @@
       }
 
       .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1.05rem 1.25rem 0.85rem;
-        gap: 0.85rem;
+        padding: 1.2rem 1.25rem 1rem;
+        gap: 1rem;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
       }
 
       .footer-brand {
         width: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        text-align: center;
+      }
+
+      .footer-brand-role {
+        letter-spacing: 0.08em;
       }
 
       .footer-nav {
         width: 100%;
+        justify-content: center;
         gap: 0.45rem 0.85rem;
       }
 
@@ -2667,21 +2943,78 @@
       .footer-meta {
         width: 100%;
         flex-direction: column;
-        align-items: flex-start;
-        gap: 0.6rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
       }
 
       .footer-contact {
+        width: 100%;
         flex-direction: column;
-        align-items: flex-start;
-        gap: 0.28rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+      }
+
+      .footer-contact a {
+        justify-content: center;
+        font-size: 0.86rem;
+        line-height: 1.35;
+        padding: 0.15rem 0.25rem;
+      }
+
+      .footer-ico {
+        width: 1.05em;
+        height: 1.05em;
+      }
+
+      footer .footer-social {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        margin-top: 0.15rem;
+        padding-top: 0.15rem;
+      }
+
+      footer .footer-social .social-link {
+        width: 40px;
+        height: 40px;
+      }
+
+      footer .footer-social .social-link svg {
+        width: 16px;
+        height: 16px;
       }
 
       .footer-bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.2rem;
-        padding: 0.7rem 1.25rem 0.85rem;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 0.3rem;
+        padding: 0.85rem 1.25rem 1rem;
+        line-height: 1.45;
+      }
+
+      /* Tone down motion on tablets/phones */
+      .hero-grid-bg,
+      .hero-content,
+      .hero-visual,
+      .section-num {
+        transform: none !important;
+        will-change: auto;
+      }
+
+      .reveal {
+        filter: blur(4px);
+      }
+
+      .reveal.visible {
+        filter: none;
+      }
+
+      #pointer-glow {
+        display: none !important;
       }
 
       .wa-modal {
@@ -2914,6 +3247,28 @@
         font-size: 1.05rem;
       }
 
+      .footer-brand-role {
+        font-size: 0.64rem;
+      }
+
+      .footer-contact a {
+        font-size: 0.82rem;
+      }
+
+      footer .footer-social {
+        gap: 0.5rem;
+      }
+
+      footer .footer-social .social-link {
+        width: 38px;
+        height: 38px;
+      }
+
+      .footer-bottom {
+        font-size: 0.7rem;
+        padding-bottom: 1.05rem;
+      }
+
       .whatsapp-float {
         right: max(0.7rem, env(safe-area-inset-right));
         bottom: max(0.7rem, env(safe-area-inset-bottom));
@@ -2943,6 +3298,15 @@
         gap: 0.35rem;
       }
 
+      .footer-contact a {
+        font-size: 0.78rem;
+      }
+
+      footer .footer-social .social-link {
+        width: 36px;
+        height: 36px;
+      }
+
       .journey-badge,
       .journey-duration {
         font-size: 0.7rem;
@@ -2959,7 +3323,21 @@
 
       .skill-block:hover,
       .project-card:hover {
+        --lift: 0px;
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
         box-shadow: var(--card-shadow);
+      }
+
+      #cursor-dot,
+      #cursor-ring,
+      #pointer-glow {
+        display: none !important;
+      }
+
+      html.has-custom-cursor,
+      html.has-custom-cursor * {
+        cursor: auto !important;
       }
 
       .skill-block:hover::before,
@@ -2991,6 +3369,11 @@
       #page-loader { display: none !important; }
     </style>
   </noscript>
+
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <div id="pointer-glow" aria-hidden="true"></div>
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
 
   <div id="page-loader" role="status" aria-live="polite" aria-busy="true" aria-label="Loading portfolio">
     <div class="loader-stage">
@@ -3163,21 +3546,21 @@
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-grid-bg"></div>
-    <div class="hero-content">
+    <div class="hero-grid-bg" data-parallax="0.32"></div>
+    <div class="hero-content" data-parallax="0.08">
       <span class="hero-tag" data-i18n="hero.tag">Senior Software Engineer</span>
       <h1>Rafid Al <em>Ridwan</em></h1>
       <p class="hero-sub" data-i18n="hero.sub">
         Senior Software Engineer with 5 years of experience building scalable digital products, optimizing high-volume systems, and delivering secure solutions across fintech, government, and enterprise platforms.
       </p>
       <div class="hero-cta">
-        <a href="mailto:rafidalridwan@gmail.com" class="btn btn-primary" data-i18n="hero.ctaPrimary">Get in Touch</a>
-        <a href="#projects" class="btn btn-ghost" data-i18n="hero.ctaSecondary">View Projects</a>
+        <a href="mailto:rafidalridwan@gmail.com" class="btn btn-primary magnetic" data-i18n="hero.ctaPrimary">Get in Touch</a>
+        <a href="#projects" class="btn btn-ghost magnetic" data-i18n="hero.ctaSecondary">View Projects</a>
       </div>
     </div>
 
-    <div class="hero-visual">
-      <div class="hero-card">
+    <div class="hero-visual" data-parallax="-0.12">
+      <div class="hero-card tilt-card">
         <figure class="hero-portrait">
           <img src="assets/rafid.png" alt="Portrait of Rafid Al Ridwan" width="768" height="1024" decoding="async" fetchpriority="high">
           <figcaption class="hero-card-body">
@@ -3247,7 +3630,7 @@
       <h2 class="section-title" data-i18n="skills.title">Technical Skills</h2>
     </div>
     <div class="skills-grid">
-      <div class="skill-block reveal">
+      <div class="skill-block reveal reveal-scale tilt-card">
         <div class="skill-block-title" data-i18n="skills.frontend">Front-end</div>
         <div class="skill-tags">
           <span class="tag">Next.js</span>
@@ -3263,7 +3646,7 @@
           <span class="tag">CSS</span>
         </div>
       </div>
-      <div class="skill-block reveal">
+      <div class="skill-block reveal reveal-scale tilt-card">
         <div class="skill-block-title" data-i18n="skills.backend">Back-end</div>
         <div class="skill-tags">
           <span class="tag">Laravel</span>
@@ -3274,7 +3657,7 @@
           <span class="tag">Python</span>
         </div>
       </div>
-      <div class="skill-block reveal">
+      <div class="skill-block reveal reveal-scale tilt-card">
         <div class="skill-block-title" data-i18n="skills.db">Database & DevOps</div>
         <div class="skill-tags">
           <span class="tag">MySQL</span>
@@ -3287,7 +3670,7 @@
           <span class="tag">CI/CD</span>
         </div>
       </div>
-      <div class="skill-block reveal">
+      <div class="skill-block reveal reveal-scale tilt-card">
         <div class="skill-block-title" data-i18n="skills.tools">Tools & Workflow</div>
         <div class="skill-tags">
           <span class="tag">GitHub</span>
@@ -3308,7 +3691,7 @@
     </div>
     <p class="section-lead reveal" data-i18n="exp.lead">A timeline of roles where I shipped production systems — from junior builds to senior full-stack ownership.</p>
     <div class="journey">
-      <article class="journey-item is-current reveal">
+      <article class="journey-item is-current reveal reveal-left">
         <div class="journey-marker" aria-hidden="true"><span class="journey-dot"></span></div>
         <div class="journey-card">
           <div class="journey-top">
@@ -3321,7 +3704,7 @@
           <p class="journey-desc" data-i18n="exp1.desc">Working as a full-stack engineer on large-scale enterprise web applications, contributing to architecture decisions, API design, and deployment pipelines in a fast-paced product environment.</p>
         </div>
       </article>
-      <article class="journey-item reveal">
+      <article class="journey-item reveal reveal-left">
         <div class="journey-marker" aria-hidden="true"><span class="journey-dot"></span></div>
         <div class="journey-card">
           <div class="journey-top">
@@ -3344,7 +3727,7 @@
     </div>
     <div class="projects-grid">
 
-      <div class="project-card reveal">
+      <div class="project-card reveal reveal-scale tilt-card">
         <div class="project-role" data-i18n="proj.roleBackend">Backend Developer</div>
         <div class="project-name"><a href="https://idlckickstart.com/" target="_blank" rel="noopener noreferrer">IDLC
             KickStart</a></div>
@@ -3358,7 +3741,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal">
+      <div class="project-card reveal reveal-scale tilt-card">
         <div class="project-role" data-i18n="proj.roleBackend">Backend Developer</div>
         <div class="project-name"><a href="#" target="_blank"
             rel="noopener noreferrer" data-i18n="proj2.name">Biometrics System — Saint Kitts & Nevis</a></div>
@@ -3372,7 +3755,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal">
+      <div class="project-card reveal reveal-scale tilt-card">
         <div class="project-role" data-i18n="proj.roleBackend">Backend Developer</div>
         <div class="project-name"><a href="https://www.bracbank.com/" target="_blank" rel="noopener noreferrer" data-i18n="proj3.name">Brac Bank Website</a></div>
         <p class="project-desc" data-i18n="proj3.desc">High-traffic banking website frontend with Next.js; built the API layer with Redis caching and a CMS panel using Laravel Blade.</p>
@@ -3383,7 +3766,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal">
+      <div class="project-card reveal reveal-scale tilt-card">
         <div class="project-role" data-i18n="proj.roleBackend">Backend Developer</div>
         <div class="project-name"><a href="https://nagad.com.bd/" target="_blank" rel="noopener noreferrer" data-i18n="proj4.name">Nagad Website</a></div>
         <p class="project-desc" data-i18n="proj4.desc">Official website for one of Bangladesh's leading MFS platforms. Built CMS panel and RESTful API with Laravel; utilized Redis caching within a microservices architecture.</p>
@@ -3396,7 +3779,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal">
+      <div class="project-card reveal reveal-scale tilt-card">
         <div class="project-role" data-i18n="proj.roleFull">Full Stack Engineer</div>
         <div class="project-name"><a href="https://rml.singularitybd.co/" target="_blank"
             rel="noopener noreferrer" data-i18n="proj5.name">Runner Credit Sales Management System</a></div>
@@ -3407,7 +3790,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal">
+      <div class="project-card reveal reveal-scale tilt-card">
         <div class="project-role" data-i18n="proj.roleFull">Full Stack Engineer</div>
         <div class="project-name"><a href="https://dettolhygienecurriculum.com/" target="_blank"
             rel="noopener noreferrer">Dettol Hygiene Curriculum</a></div>
@@ -3420,7 +3803,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal">
+      <div class="project-card reveal reveal-scale tilt-card">
         <div class="project-role" data-i18n="proj.roleFullDev">Full Stack Developer</div>
         <div class="project-name"><a href="https://p2a.academy/" target="_blank" rel="noopener noreferrer">P2A
             Academy</a></div>
@@ -3433,7 +3816,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal">
+      <div class="project-card reveal reveal-scale tilt-card">
         <div class="project-role" data-i18n="proj.roleBackend">Backend Developer</div>
         <div class="project-name"><a href="https://techvitalbd.com/" target="_blank" rel="noopener noreferrer">Tech
             Vital</a></div>
@@ -3456,7 +3839,7 @@
     </div>
     <p class="section-lead reveal" data-i18n="edu.lead">Academic path from school to CSE — the foundation behind the engineering work.</p>
     <div class="journey">
-      <article class="journey-item reveal">
+      <article class="journey-item reveal reveal-left">
         <div class="journey-marker" aria-hidden="true"><span class="journey-dot"></span></div>
         <div class="journey-card">
           <div class="journey-top">
@@ -3470,7 +3853,7 @@
           </div>
         </div>
       </article>
-      <article class="journey-item reveal">
+      <article class="journey-item reveal reveal-left">
         <div class="journey-marker" aria-hidden="true"><span class="journey-dot"></span></div>
         <div class="journey-card">
           <div class="journey-top">
@@ -3484,7 +3867,7 @@
           </div>
         </div>
       </article>
-      <article class="journey-item reveal">
+      <article class="journey-item reveal reveal-left">
         <div class="journey-marker" aria-hidden="true"><span class="journey-dot"></span></div>
         <div class="journey-card">
           <div class="journey-top">
@@ -3508,12 +3891,21 @@
         <div class="footer-brand-name">Rafid Al Ridwan</div>
         <div class="footer-brand-role" data-i18n="hero.tag">Senior Software Engineer</div>
       </div>
-      <div class="footer-meta">
-        <div class="footer-contact">
-          <a href="mailto:rafidalridwan@gmail.com">rafidalridwan@gmail.com</a>
-          <a href="tel:+8801721914666">+880 1721-914666</a>
-        </div>
-        <div class="footer-social" aria-label="Social profiles" data-i18n-aria="social.aria">
+      <div class="footer-contact">
+        <a href="mailto:rafidalridwan@gmail.com">
+          <span class="footer-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/></svg>
+          </span>
+          rafidalridwan@gmail.com
+        </a>
+        <a href="tel:+8801721914666">
+          <span class="footer-ico" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1L6.6 10.8z"/></svg>
+          </span>
+          +880 1721-914666
+        </a>
+      </div>
+      <div class="footer-social" aria-label="Social profiles" data-i18n-aria="social.aria">
         <a class="social-link" href="https://github.com/rafidalridwan" target="_blank" rel="noopener noreferrer"
           aria-label="GitHub">
           <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -3544,7 +3936,6 @@
               d="M27.21 4.78A15.83 15.83 0 0 0 16 0C7.18 0 0 7.18 0 16c0 2.82.74 5.58 2.14 8.02L0 32l8.2-2.1A15.93 15.93 0 0 0 16 32c8.82 0 16-7.18 16-16 0-4.27-1.66-8.28-4.79-11.22ZM16 29.29c-2.43 0-4.81-.65-6.89-1.87l-.49-.29-4.86 1.24 1.3-4.73-.32-.5A13.24 13.24 0 0 1 2.72 16C2.72 8.68 8.68 2.72 16 2.72c3.53 0 6.84 1.37 9.33 3.87A13.1 13.1 0 0 1 29.29 16c0 7.32-5.96 13.29-13.29 13.29Z" />
           </svg>
         </a>
-        </div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -4078,6 +4469,226 @@
       };
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+
+    // Modern motion: progress, parallax, magnetic, tilt, active nav, pointer glow
+    (() => {
+      const root = document.documentElement;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const finePointer = window.matchMedia('(pointer: fine)').matches;
+      const canHover = window.matchMedia('(hover: hover)').matches;
+
+      const setScrollProgress = () => {
+        const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+        root.style.setProperty('--scroll-p', String(Math.min(Math.max(window.scrollY / max, 0), 1)));
+      };
+
+      // Active section nav highlight
+      const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+      const sectionIds = navLinks
+        .map((a) => a.getAttribute('href'))
+        .filter((href) => href && href.length > 1)
+        .map((href) => href.slice(1));
+      const sections = sectionIds
+        .map((id) => document.getElementById(id))
+        .filter(Boolean);
+
+      const setActiveNav = (id) => {
+        navLinks.forEach((link) => {
+          const match = link.getAttribute('href') === `#${id}`;
+          link.classList.toggle('is-active', match);
+          if (match) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        });
+      };
+
+      if (sections.length) {
+        const sectionObserver = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter((e) => e.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          if (visible[0]?.target?.id) setActiveNav(visible[0].target.id);
+        }, { threshold: [0.18, 0.35, 0.55], rootMargin: '-22% 0px -45% 0px' });
+        sections.forEach((section) => sectionObserver.observe(section));
+      }
+
+      setScrollProgress();
+      window.addEventListener('scroll', setScrollProgress, { passive: true });
+      window.addEventListener('resize', setScrollProgress, { passive: true });
+
+      if (reduceMotion) return;
+
+      const isMobileLayout = () => window.matchMedia('(max-width: 900px)').matches;
+
+      // Hero + section number parallax (desktop only)
+      const parallaxEls = [...document.querySelectorAll('[data-parallax]')];
+      const sectionNums = [...document.querySelectorAll('.section-num')];
+      let parallaxRaf = 0;
+
+      const updateParallax = () => {
+        parallaxRaf = 0;
+        if (isMobileLayout()) {
+          parallaxEls.forEach((el) => el.style.setProperty('--parallax-y', '0'));
+          sectionNums.forEach((el) => el.style.setProperty('--parallax-y', '0'));
+          return;
+        }
+        const y = window.scrollY;
+        parallaxEls.forEach((el) => {
+          const depth = parseFloat(el.getAttribute('data-parallax') || '0') || 0;
+          el.style.setProperty('--parallax-y', (y * depth).toFixed(2));
+        });
+        sectionNums.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          const mid = rect.top + rect.height * 0.5 - window.innerHeight * 0.5;
+          el.style.setProperty('--parallax-y', (mid * -0.08).toFixed(2));
+        });
+      };
+
+      const queueParallax = () => {
+        if (parallaxRaf) return;
+        parallaxRaf = requestAnimationFrame(updateParallax);
+      };
+
+      updateParallax();
+      window.addEventListener('scroll', queueParallax, { passive: true });
+      window.addEventListener('resize', queueParallax, { passive: true });
+
+      if (!(finePointer && canHover)) return;
+
+      // Pointer glow + circle cursor
+      const glow = document.getElementById('pointer-glow');
+      const cursorDot = document.getElementById('cursor-dot');
+      const cursorRing = document.getElementById('cursor-ring');
+      const hoverSelector = 'a, button, .btn, .tag, .social-link, .project-card, .skill-block, .theme-toggle, .lang-switch button, .nav-toggle, .whatsapp-float, [role="button"], input, textarea, summary, label';
+      let glowRaf = 0;
+      let cursorRaf = 0;
+      let ptrX = window.innerWidth * 0.5;
+      let ptrY = window.innerHeight * 0.35;
+      let targetX = ptrX;
+      let targetY = ptrY;
+      let ringX = ptrX;
+      let ringY = ptrY;
+      let cursorVisible = false;
+      let dotScale = 1;
+      let targetDotScale = 1;
+
+      root.classList.add('has-custom-cursor');
+
+      const showCursor = () => {
+        if (cursorVisible) return;
+        cursorVisible = true;
+        cursorDot?.classList.add('is-on');
+        cursorRing?.classList.add('is-on');
+      };
+
+      const hideCursor = () => {
+        cursorVisible = false;
+        cursorDot?.classList.remove('is-on', 'is-hover');
+        cursorRing?.classList.remove('is-on', 'is-hover', 'is-press');
+        targetDotScale = 1;
+      };
+
+      const setHover = (on) => {
+        cursorDot?.classList.toggle('is-hover', on);
+        cursorRing?.classList.toggle('is-hover', on);
+        targetDotScale = on ? 0.35 : 1;
+      };
+
+      const tickGlow = () => {
+        ptrX += (targetX - ptrX) * 0.12;
+        ptrY += (targetY - ptrY) * 0.12;
+        root.style.setProperty('--ptr-x', `${ptrX.toFixed(1)}px`);
+        root.style.setProperty('--ptr-y', `${ptrY.toFixed(1)}px`);
+        if (Math.abs(targetX - ptrX) > 0.4 || Math.abs(targetY - ptrY) > 0.4) {
+          glowRaf = requestAnimationFrame(tickGlow);
+        } else {
+          glowRaf = 0;
+        }
+      };
+
+      const tickCursor = () => {
+        ringX += (targetX - ringX) * 0.18;
+        ringY += (targetY - ringY) * 0.18;
+        dotScale += (targetDotScale - dotScale) * 0.22;
+        if (cursorDot) {
+          cursorDot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) scale(${dotScale.toFixed(3)})`;
+        }
+        if (cursorRing) {
+          cursorRing.style.transform = `translate3d(${ringX.toFixed(2)}px, ${ringY.toFixed(2)}px, 0)`;
+        }
+        const moving =
+          Math.abs(targetX - ringX) > 0.2 ||
+          Math.abs(targetY - ringY) > 0.2 ||
+          Math.abs(targetDotScale - dotScale) > 0.01;
+        if (moving) {
+          cursorRaf = requestAnimationFrame(tickCursor);
+        } else {
+          cursorRaf = 0;
+        }
+      };
+
+      window.addEventListener('pointermove', (e) => {
+        if (e.pointerType && e.pointerType !== 'mouse') return;
+        targetX = e.clientX;
+        targetY = e.clientY;
+        showCursor();
+        if (glow) glow.style.opacity = '';
+        if (!glowRaf) glowRaf = requestAnimationFrame(tickGlow);
+        if (!cursorRaf) cursorRaf = requestAnimationFrame(tickCursor);
+
+        const hit = e.target?.closest?.(hoverSelector);
+        setHover(Boolean(hit));
+      }, { passive: true });
+
+      window.addEventListener('pointerdown', (e) => {
+        if (e.pointerType && e.pointerType !== 'mouse') return;
+        cursorRing?.classList.add('is-press');
+      }, { passive: true });
+
+      window.addEventListener('pointerup', () => {
+        cursorRing?.classList.remove('is-press');
+      }, { passive: true });
+
+      document.addEventListener('mouseleave', hideCursor);
+      window.addEventListener('blur', hideCursor);
+
+      // Magnetic buttons / controls
+      const magnets = document.querySelectorAll('.magnetic, .btn-primary, .btn-ghost, .theme-toggle');
+      magnets.forEach((el) => {
+        el.classList.add('magnetic');
+        const strength = el.classList.contains('theme-toggle') ? 10 : 14;
+        el.addEventListener('pointermove', (e) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - (rect.left + rect.width / 2);
+          const y = e.clientY - (rect.top + rect.height / 2);
+          el.style.setProperty('--mx', `${(x / rect.width) * strength}px`);
+          el.style.setProperty('--my', `${(y / rect.height) * strength}px`);
+        });
+        el.addEventListener('pointerleave', () => {
+          el.style.setProperty('--mx', '0px');
+          el.style.setProperty('--my', '0px');
+        });
+      });
+
+      // Soft 3D tilt on cards
+      const tiltCards = document.querySelectorAll('.tilt-card, .project-card, .skill-block, .hero-card');
+      tiltCards.forEach((el) => {
+        el.classList.add('tilt-ready');
+        const max = el.classList.contains('hero-card') ? 6 : 5;
+        el.addEventListener('pointermove', (e) => {
+          const rect = el.getBoundingClientRect();
+          const px = (e.clientX - rect.left) / rect.width;
+          const py = (e.clientY - rect.top) / rect.height;
+          const rx = ((0.5 - py) * max).toFixed(2);
+          const ry = ((px - 0.5) * max).toFixed(2);
+          el.style.setProperty('--tilt-x', `${rx}deg`);
+          el.style.setProperty('--tilt-y', `${ry}deg`);
+        });
+        el.addEventListener('pointerleave', () => {
+          el.style.setProperty('--tilt-x', '0deg');
+          el.style.setProperty('--tilt-y', '0deg');
+        });
+      });
     })();
 
     // Scroll reveal — staggered, smooth
