@@ -3,11 +3,31 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Rafid Al Ridwan is a senior software engineer with a passion for building scalable and efficient systems.">
-  <meta name="keywords" content="Rafid Al Ridwan, senior software engineer, software engineer, software development, software architecture, software design, software engineering, software development, software architecture, software design, software engineering">
+  <meta name="keywords" content="Rafid Al Ridwan, senior software engineer, software engineer, software development, software architecture, software design, software engineering">
   <meta name="author" content="Rafid Al Ridwan">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0b0c0e">
+  <link rel="canonical" href="https://rafidalridwan.github.io/">
+
+  <!-- Open Graph / social share -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Rafid Al Ridwan">
+  <meta property="og:title" content="Rafid Al Ridwan">
+  <meta property="og:description" content="Senior Software Engineer">
+  <meta property="og:url" content="https://rafidalridwan.github.io/">
+  <meta property="og:image" content="https://rafidalridwan.github.io/assets/og_image.png">
+  <meta property="og:image:secure_url" content="https://rafidalridwan.github.io/assets/og_image.png">
+  <meta property="og:image:alt" content="Rafid Al Ridwan — Senior Software Engineer">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1671">
+  <meta property="og:image:height" content="941">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rafid Al Ridwan">
+  <meta name="twitter:description" content="Senior Software Engineer">
+  <meta name="twitter:image" content="https://rafidalridwan.github.io/assets/og_image.png">
+
   <script>
     (function () {
       try {
@@ -16,16 +36,31 @@
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'dark');
       }
-      document.documentElement.classList.add('is-loading');
+      try {
+        if (sessionStorage.getItem('portfolio-seen') !== '1') {
+          document.documentElement.classList.add('is-loading');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('is-loading');
+      }
     })();
   </script>
 
   <title>Rafid Al Ridwan — Senior Software Engineer</title>
   <link rel="icon" href="assets/r.png" type="image/png" sizes="any">
   <link rel="apple-touch-icon" href="assets/r.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="assets/rafid.png" fetchpriority="high">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@400;500;600;700&family=Syne:wght@600;700&display=swap">
   <link
-    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
-    rel="stylesheet">
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@400;500;600;700&family=Syne:wght@600;700&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:wght@400;500;600;700&family=Syne:wght@600;700&display=swap"
+      rel="stylesheet">
+  </noscript>
   <style>
     :root {
       color-scheme: dark;
@@ -46,6 +81,7 @@
       --glass-hover: rgba(24, 26, 28, 0.18);
       --glass-border: rgba(255, 255, 255, 0.12);
       --glass-blur: 5px;
+      --nav-blur: 24px;
       --nav-bg: rgba(24, 26, 28, 0.1);
       --nav-bg-scrolled: rgba(24, 26, 28, 0.1);
       --shadow: rgba(0, 0, 0, 0.28);
@@ -85,6 +121,7 @@
       --glass-hover: rgba(255, 255, 255, 0.86);
       --glass-border: rgba(18, 32, 48, 0.1);
       --glass-blur: 8px;
+      --nav-blur: 28px;
       --nav-bg: rgba(255, 255, 255, 0.58);
       --nav-bg-scrolled: rgba(255, 255, 255, 0.78);
       --shadow: rgba(18, 28, 45, 0.08);
@@ -101,8 +138,18 @@
       padding: 0;
     }
 
+    img,
+    video,
+    canvas,
+    svg,
+    iframe {
+      max-width: 100%;
+    }
+
     html {
       scroll-behavior: smooth;
+      overflow-x: clip;
+      width: 100%;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -162,12 +209,18 @@
       font-size: 17px;
       font-weight: 400;
       line-height: 1.7;
-      overflow-x: hidden;
+      overflow-x: clip;
+      width: 100%;
+      min-width: 0;
       position: relative;
       z-index: 0;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
       transition: background-color var(--duration-slow) var(--ease-soft), color var(--duration-slow) var(--ease-soft);
+    }
+
+    body.nav-open {
+      overflow: hidden;
     }
 
     html[data-theme="light"] #bg-particles {
@@ -233,6 +286,10 @@
 
     html.is-loading {
       overflow: hidden;
+    }
+
+    html:not(.is-loading) #page-loader:not(.is-done) {
+      display: none !important;
     }
 
     /* ── PAGE LOADER (Linux terminal) ── */
@@ -670,6 +727,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
+      max-width: none;
       z-index: 0;
       pointer-events: none;
       opacity: 0.9;
@@ -684,7 +742,7 @@
       z-index: 100;
       display: flex;
       justify-content: center;
-      padding: 0;
+      padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) 0 env(safe-area-inset-left, 0px);
       background: transparent;
       border: none;
       backdrop-filter: none;
@@ -702,8 +760,8 @@
       border: 1px solid transparent;
       border-bottom-color: var(--glass-border);
       background: var(--nav-bg);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
+      backdrop-filter: blur(var(--nav-blur)) saturate(1.35);
+      -webkit-backdrop-filter: blur(var(--nav-blur)) saturate(1.35);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
       transition:
         max-width var(--nav-morph-duration) var(--nav-morph-ease),
@@ -730,7 +788,7 @@
 
       nav.nav--scrolled .nav-inner {
         width: fit-content;
-        max-width: min(680px, calc(100% - 3rem));
+        max-width: min(920px, calc(100% - 1.5rem));
         justify-content: center;
         gap: 1.35rem;
         padding: 0.6rem 1.15rem;
@@ -744,11 +802,12 @@
       }
 
       nav.nav--scrolled .nav-links {
-        gap: 1rem;
+        gap: 0.18rem;
       }
 
       nav.nav--scrolled .nav-links a {
         font-size: 0.82rem;
+        padding: 0.4em 0.78em;
       }
 
       nav.nav--scrolled .nav-right {
@@ -797,6 +856,7 @@
       display: block;
       height: 2rem;
       width: auto;
+      max-width: 140px;
       transition: height var(--nav-morph-duration) var(--nav-morph-ease);
     }
 
@@ -814,7 +874,8 @@
 
     .nav-links {
       display: flex;
-      gap: 2rem;
+      align-items: center;
+      gap: 0.28rem;
       list-style: none;
     }
 
@@ -825,34 +886,93 @@
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      transition:
-        color var(--duration-normal) var(--ease-soft),
-        font-size var(--nav-morph-duration) var(--nav-morph-ease);
       position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.48em 0.9em;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      line-height: 1.2;
+      white-space: nowrap;
+      isolation: isolate;
+      transition:
+        color 0.28s var(--ease-soft),
+        background 0.28s var(--ease-soft),
+        background-image 0.28s var(--ease-soft),
+        border-color 0.28s var(--ease-soft),
+        box-shadow 0.28s var(--ease-soft),
+        filter 0.28s var(--ease-soft),
+        font-size var(--nav-morph-duration) var(--nav-morph-ease);
     }
 
     .nav-links a::after {
       content: '';
       position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 100%;
-      height: 1px;
-      background: var(--accent-gradient);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform var(--duration-normal) var(--ease-smooth);
-    }
-
-    .nav-links a:hover::after,
-    .nav-links a:focus-visible::after,
-    .nav-links a.is-active::after {
-      transform: scaleX(1);
+      inset: 0;
+      border-radius: inherit;
+      background: rgba(var(--accent-rgb), 0.12);
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.28s var(--ease-soft);
+      pointer-events: none;
     }
 
     .nav-links a:hover,
-    .nav-links a.is-active {
+    .nav-links a:focus-visible {
       color: var(--accent);
+      border-color: rgba(var(--accent-rgb), 0.32);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 0 0 1px rgba(var(--accent-rgb), 0.08),
+        0 8px 20px rgba(var(--accent-rgb), 0.14);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
+      opacity: 1;
+    }
+
+    .nav-links a:focus-visible {
+      outline: 2px solid rgba(var(--accent-rgb), 0.7);
+      outline-offset: 2px;
+    }
+
+    .nav-links a.is-active {
+      color: var(--btn-on-accent);
+      background: var(--accent-gradient);
+      background-image: var(--accent-gradient);
+      border-color: transparent;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        0 8px 22px rgba(var(--accent-rgb), 0.32);
+    }
+
+    .nav-links a.is-active::after {
+      opacity: 0;
+    }
+
+    .nav-links a.is-active:hover,
+    .nav-links a.is-active:focus-visible {
+      color: var(--btn-on-accent);
+      border-color: transparent;
+      filter: brightness(1.08);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.34),
+        0 10px 26px rgba(var(--accent-rgb), 0.4);
+    }
+
+    html[data-theme="light"] .nav-links a:hover,
+    html[data-theme="light"] .nav-links a:focus-visible {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 8px 18px rgba(var(--accent-rgb), 0.12);
+    }
+
+    html[data-theme="light"] .nav-links a.is-active {
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 8px 18px rgba(var(--accent-rgb), 0.22);
     }
 
 
@@ -891,8 +1011,10 @@
       color: var(--btn-on-accent);
     }
 
-    .lang-switch button:not(.is-active):hover {
+    .lang-switch button:not(.is-active):hover,
+    .lang-switch button:not(.is-active):focus-visible {
       color: var(--accent);
+      background: rgba(var(--accent-rgb), 0.1);
     }
 
     .theme-toggle {
@@ -912,12 +1034,16 @@
         color var(--duration-normal) var(--ease-soft),
         border-color var(--duration-normal) var(--ease-soft),
         background var(--duration-normal) var(--ease-soft),
+        box-shadow var(--duration-normal) var(--ease-soft),
         transform var(--duration-normal) var(--ease-smooth);
     }
 
-    .theme-toggle:hover {
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible {
       color: var(--accent);
-      border-color: var(--accent);
+      border-color: rgba(var(--accent-rgb), 0.55);
+      background: rgba(var(--accent-rgb), 0.1);
+      box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.16);
     }
 
     .theme-toggle svg {
@@ -954,8 +1080,8 @@
       display: none;
       align-items: center;
       justify-content: center;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border: 1px solid var(--border);
       background: var(--surface);
       color: var(--text);
@@ -997,19 +1123,22 @@
     /* ── HERO ── */
     #hero {
       min-height: 100vh;
+      min-height: 100svh;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 400px);
       align-items: center;
-      column-gap: clamp(2rem, 4.5vw, 4.5rem);
+      column-gap: clamp(1.25rem, 4.5vw, 4.5rem);
       row-gap: 2.25rem;
-      padding: 8rem clamp(1.5rem, 5vw, 4.5rem) 4.5rem;
-      width: 100%;
+      padding: calc(7.5rem + env(safe-area-inset-top, 0px)) max(clamp(1.15rem, 5vw, 4.5rem), env(safe-area-inset-right, 0px)) 4.5rem max(clamp(1.15rem, 5vw, 4.5rem), env(safe-area-inset-left, 0px));
+      width: min(100%, 1440px);
+      margin-inline: auto;
       position: relative;
+      overflow-x: clip;
     }
 
     .hero-grid-bg {
       position: absolute;
-      inset: -8%;
+      inset: 0;
       background-image:
         linear-gradient(var(--border) 1px, transparent 1px),
         linear-gradient(90deg, var(--border) 1px, transparent 1px);
@@ -1024,6 +1153,7 @@
       position: relative;
       z-index: 1;
       max-width: 40rem;
+      min-width: 0;
       will-change: transform;
       transform: translate3d(0, calc(var(--parallax-y, 0) * 1px), 0);
     }
@@ -1149,6 +1279,7 @@
       display: block;
       width: 100%;
       height: 100%;
+      max-width: none;
       object-fit: cover;
       object-position: 52% 10%;
     }
@@ -1220,8 +1351,9 @@
       padding: 0;
       border: none;
       gap: 0.32rem;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       flex-shrink: 0;
+      justify-content: flex-end;
     }
 
     .hero-card-body .social-link {
@@ -1329,10 +1461,11 @@
 
     h1 {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-size: clamp(2.35rem, 5vw, 5.5rem);
       line-height: 1.05;
       letter-spacing: -0.02em;
       color: var(--text);
+      overflow-wrap: anywhere;
       animation: fadeUp 1s 0.1s var(--ease-out) both;
     }
 
@@ -1365,6 +1498,7 @@
     .btn {
       display: inline-block;
       padding: 0.8em 1.8em;
+      max-width: 100%;
       font-family: 'Source Sans 3', system-ui, sans-serif;
       font-size: 0.9rem;
       font-weight: 700;
@@ -1591,10 +1725,12 @@
 
     /* ── SECTION BASE ── */
     section {
-      padding: 6rem 3rem;
+      padding: 6rem max(clamp(1.15rem, 5vw, 3rem), env(safe-area-inset-right, 0px)) 6rem max(clamp(1.15rem, 5vw, 3rem), env(safe-area-inset-left, 0px));
       border-top: 1px solid var(--border);
       position: relative;
       z-index: 1;
+      width: min(100%, 1440px);
+      margin-inline: auto;
     }
 
     .section-header {
@@ -1616,9 +1752,16 @@
 
     .section-title {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-size: clamp(1.85rem, 3.5vw, 3rem);
       color: var(--text);
       line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+
+    .skill-block,
+    .project-card,
+    .journey-card {
+      min-width: 0;
     }
 
     /* ── SKILLS ── */
@@ -2103,11 +2246,12 @@
 
     .journey-role {
       font-family: 'Syne', sans-serif;
-      font-size: 1.28rem;
+      font-size: clamp(1.05rem, 2.4vw, 1.28rem);
       font-weight: 700;
       color: var(--text);
       margin-bottom: 0.25rem;
       line-height: 1.25;
+      overflow-wrap: anywhere;
     }
 
     .journey-org {
@@ -2685,7 +2829,7 @@
       }
 
       .nav-links {
-        gap: 1rem;
+        gap: 0.18rem;
       }
 
       .nav-links a {
@@ -2699,13 +2843,13 @@
       }
 
       #hero {
-        grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
         column-gap: 2.5rem;
-        padding: 7rem 2rem 3.5rem;
+        padding: calc(7rem + env(safe-area-inset-top, 0px)) 2rem 3.5rem;
       }
 
       section {
-        padding: 5rem 2rem;
+        padding: 5rem max(2rem, env(safe-area-inset-right, 0px)) 5rem max(2rem, env(safe-area-inset-left, 0px));
       }
 
       .whatsapp-float {
@@ -2725,7 +2869,7 @@
       #hero {
         grid-template-columns: 1fr;
         min-height: auto;
-        padding: 6.5rem 1.35rem 2.75rem;
+        padding: calc(6.5rem + env(safe-area-inset-top, 0px)) 1.35rem 2.75rem;
         gap: 2rem;
       }
 
@@ -2742,7 +2886,7 @@
         max-width: none;
         margin: 0 auto;
         justify-self: center;
-        width: min(100%, 340px);
+        width: min(92vw, 460px);
       }
 
       .hero-card-body {
@@ -2778,26 +2922,47 @@
 
     @media (max-width: 900px) {
       nav {
-        padding: 0;
+        padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) 0 env(safe-area-inset-left, 0px);
       }
 
       .nav-inner {
         padding: 0.75rem 1rem;
         align-items: center;
         gap: 0.65rem;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        position: relative;
+      }
+
+      nav.is-open::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: rgba(11, 12, 14, 0.52);
+        z-index: -1;
+      }
+
+      html[data-theme="light"] nav.is-open::before {
+        background: rgba(18, 28, 45, 0.28);
       }
 
       .nav-right {
         display: none;
+        position: absolute;
+        top: calc(100% - 1px);
+        left: 0;
+        right: 0;
         width: 100%;
         flex-direction: column;
         align-items: stretch;
         gap: 0.85rem;
-        max-height: min(70vh, 28rem);
+        max-height: min(78dvh, 32rem);
         overflow-y: auto;
-        padding: 0.75rem 0 0.25rem;
+        padding: 0.85rem 1rem 1.15rem;
         border-top: 1px solid var(--border);
+        background: var(--nav-bg-scrolled);
+        backdrop-filter: blur(var(--nav-blur)) saturate(1.35);
+        -webkit-backdrop-filter: blur(var(--nav-blur)) saturate(1.35);
+        box-shadow: 0 18px 40px var(--shadow);
         -webkit-overflow-scrolling: touch;
       }
 
@@ -2824,18 +2989,22 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 0.1rem;
+        align-items: stretch;
+        gap: 0.28rem;
       }
 
       .nav-links a {
-        display: block;
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
         font-size: 0.95rem;
         letter-spacing: 0.06em;
-        padding: 0.75rem 0.15rem;
+        padding: 0.82rem 0.95rem;
+        border-radius: 12px;
       }
 
       .nav-links a::after {
-        display: none;
+        border-radius: 12px;
       }
 
       .hero-cta {
@@ -2848,7 +3017,7 @@
       }
 
       section {
-        padding: 3.5rem 1.25rem;
+        padding: 3.5rem max(1.25rem, env(safe-area-inset-right, 0px)) 3.5rem max(1.25rem, env(safe-area-inset-left, 0px));
       }
 
       .section-header {
@@ -2871,7 +3040,7 @@
 
       .skills-grid,
       .projects-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.85rem;
       }
 
@@ -3139,7 +3308,7 @@
       }
 
       #hero {
-        padding: 5.5rem 1rem 2.25rem;
+        padding: calc(5.5rem + env(safe-area-inset-top, 0px)) 1rem 2.25rem;
         gap: 1.5rem;
       }
 
@@ -3186,7 +3355,7 @@
       }
 
       section {
-        padding: 2.75rem 1rem;
+        padding: 2.75rem max(1rem, env(safe-area-inset-right, 0px)) 2.75rem max(1rem, env(safe-area-inset-left, 0px));
       }
 
       .section-header {
@@ -3258,6 +3427,21 @@
       .hero-visual {
         width: 100%;
         max-width: 100%;
+      }
+
+      .hero-portrait {
+        aspect-ratio: 4 / 5;
+        max-height: min(44vh, 400px);
+      }
+
+      .skills-grid,
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card-body .social-links {
+        justify-content: flex-start;
+        padding-right: 2.6rem;
       }
 
       .hero-card {
@@ -3376,6 +3560,99 @@
       }
     }
 
+    @media (max-height: 540px) and (orientation: landscape) {
+      #hero {
+        grid-template-columns: minmax(0, 1.15fr) minmax(190px, 0.75fr);
+        min-height: auto;
+        align-items: center;
+        padding: calc(4.15rem + env(safe-area-inset-top, 0px)) 1.15rem 1.1rem;
+        column-gap: 1.1rem;
+        row-gap: 1rem;
+      }
+
+      h1 {
+        font-size: clamp(1.7rem, 5.5vw, 2.5rem);
+      }
+
+      .hero-tag {
+        margin-bottom: 0.55rem;
+        font-size: 0.68rem;
+      }
+
+      .hero-sub {
+        margin-top: 0.65rem;
+        font-size: 0.9rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .hero-cta {
+        margin-top: 0.9rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .hero-cta .btn {
+        width: auto;
+        padding: 0.55em 1.05em;
+        font-size: 0.78rem;
+      }
+
+      .hero-visual {
+        width: 100%;
+        max-width: 210px;
+        margin: 0;
+        justify-self: end;
+      }
+
+      .hero-portrait {
+        aspect-ratio: 3 / 4;
+        max-height: calc(100svh - 4.75rem);
+      }
+
+      .hero-card-body,
+      .hero-stats-card {
+        display: none;
+      }
+
+      .nav-inner {
+        padding: 0.45rem 0.85rem;
+      }
+
+      .whatsapp-float {
+        width: 40px;
+        height: 40px;
+        right: max(0.6rem, env(safe-area-inset-right));
+        bottom: max(0.6rem, env(safe-area-inset-bottom));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .whatsapp-tooltip {
+        right: 0;
+        left: auto;
+        top: auto;
+        bottom: calc(100% + 12px);
+        transform: translateY(8px);
+        white-space: nowrap;
+      }
+
+      .whatsapp-float.is-tooltip-visible .whatsapp-tooltip {
+        transform: translateY(0);
+      }
+
+      .whatsapp-tooltip::after {
+        right: 16px;
+        left: auto;
+        top: auto;
+        bottom: -4px;
+        transform: rotate(135deg);
+      }
+    }
+
     @media (hover: none) {
       .skill-block:hover,
       .project-card:hover,
@@ -3456,51 +3733,60 @@
       const titleEl = document.getElementById('term-title');
       if (!loader || !bodyEl) return;
 
+      const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const seen = (() => {
+        try { return sessionStorage.getItem('portfolio-seen') === '1'; }
+        catch (_) { return false; }
+      })();
+      const markSeen = () => {
+        try { sessionStorage.setItem('portfolio-seen', '1'); } catch (_) {}
+      };
       const lang = (() => {
         try { return localStorage.getItem('portfolio-lang') === 'de' ? 'de' : 'en'; }
         catch (_) { return 'en'; }
       })();
 
       const promptUser = 'rafid@linux';
-      const promptHost = lang === 'de' ? 'portfolio' : 'portfolio';
+      const promptHost = 'portfolio';
 
       if (titleEl) titleEl.textContent = `${promptUser}@${promptHost}: ~`;
       loader.setAttribute('aria-label', lang === 'de' ? 'Portfolio wird geladen' : 'Loading portfolio');
 
-      const script = lang === 'de' ? [
+      let finished = false;
+      const finish = async (instant) => {
+        if (finished) return;
+        finished = true;
+        markSeen();
+        loader.setAttribute('aria-busy', 'false');
+
+        if (instant || reduceMotion) {
+          loader.classList.add('is-done');
+          root.classList.remove('is-loading');
+          loader.remove();
+          return;
+        }
+
+        await wait(160);
+        root.classList.add('loader-revealing');
+        loader.classList.add('is-done');
+        root.classList.remove('is-loading');
+        window.setTimeout(() => {
+          root.classList.remove('loader-revealing');
+          loader.remove();
+        }, 1100);
+      };
+
+      if (reduceMotion || seen || !root.classList.contains('is-loading')) {
+        finish(true);
+        return;
+      }
+
+      const script = [
         { type: 'cmd', text: 'whoami' },
         { type: 'out', text: 'rafidalridwan' },
-        { type: 'cmd', text: 'uname -a' },
-        { type: 'out', text: 'Linux portfolio 6.8.0-generic x86_64 GNU/Linux' },
-        { type: 'cmd', text: 'cd ~/rafidalridwan.github.io && ls' },
-        { type: 'out', text: 'index.html  assets/  README.md' },
-        { type: 'cmd', text: 'make build' },
-        { type: 'dim', text: '[ 18%] Module kompilieren...' },
-        { type: 'dim', text: '[ 46%] Assets bundeln...' },
-        { type: 'dim', text: '[ 72%] Optimieren...' },
-        { type: 'dim', text: '[100%] Linken...' },
-        { type: 'ok', text: 'Compile complete.' },
-        { type: 'ok', text: 'exit code 0' },
-        { type: 'cmd', text: './serve --open' }
-      ] : [
-        { type: 'cmd', text: 'whoami' },
-        { type: 'out', text: 'rafidalridwan' },
-        { type: 'cmd', text: 'uname -a' },
-        { type: 'out', text: 'Linux portfolio 6.8.0-generic x86_64 GNU/Linux' },
-        { type: 'cmd', text: 'cd ~/rafidalridwan.github.io && ls' },
-        { type: 'out', text: 'index.html  assets/  README.md' },
-        { type: 'cmd', text: 'make build' },
-        { type: 'dim', text: '[ 18%] Compiling modules...' },
-        { type: 'dim', text: '[ 46%] Bundling assets...' },
-        { type: 'dim', text: '[ 72%] Optimizing...' },
-        { type: 'dim', text: '[100%] Linking...' },
-        { type: 'ok', text: 'Compile complete.' },
-        { type: 'ok', text: 'exit code 0' },
         { type: 'cmd', text: './serve --open' }
       ];
-
-      const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
       const addLine = (html, className = 'is-out') => {
         const line = document.createElement('p');
@@ -3523,67 +3809,29 @@
         for (const ch of cmd) {
           textNode.textContent += ch;
           bodyEl.scrollTop = bodyEl.scrollHeight;
-          await wait(18 + Math.random() * 28);
+          await wait(8 + Math.random() * 12);
         }
         cursor.remove();
       };
-
-      let finished = false;
-      const finish = async () => {
-        if (finished) return;
-        finished = true;
-        loader.setAttribute('aria-busy', 'false');
-        root.classList.remove('is-loading');
-
-        if (reduceMotion) {
-          loader.classList.add('is-done');
-          loader.remove();
-          return;
-        }
-
-        await wait(420);
-        root.classList.add('loader-revealing');
-        loader.classList.add('is-done');
-        window.setTimeout(() => {
-          root.classList.remove('loader-revealing');
-          loader.remove();
-        }, 1100);
-      };
-
-      if (reduceMotion) {
-        finish();
-        return;
-      }
 
       const runTerminal = async () => {
         for (const step of script) {
           if (finished) return;
           if (step.type === 'cmd') {
             await typeCommand(step.text);
-            await wait(120);
-          } else if (step.type === 'ok') {
-            addLine(step.text, 'is-ok');
-            await wait(220);
-          } else if (step.type === 'dim') {
-            addLine(step.text, 'is-dim');
-            await wait(160);
+            await wait(70);
           } else {
             addLine(step.text, 'is-out');
-            await wait(140);
+            await wait(90);
           }
         }
         addLine('<span class="term-prompt">✔</span> portfolio ready', 'is-ok');
-        await wait(380);
+        await wait(180);
         await finish();
       };
 
-      const loaded = new Promise((resolve) => {
-        if (document.readyState === 'complete') resolve();
-        else window.addEventListener('load', resolve, { once: true });
-      });
-
-      Promise.all([runTerminal(), loaded]).catch(() => finish());
-      window.setTimeout(finish, 10000);
+      runTerminal().catch(() => finish(true));
+      window.setTimeout(() => finish(), 2200);
     })();
   </script>
 
@@ -3622,8 +3870,8 @@
   <nav>
     <div class="nav-inner">
     <a class="nav-logo" href="#hero" aria-label="Rafid Al Ridwan">
-      <img class="nav-logo-dark" src="assets/rar.png" alt="RAR" width="120" height="40" decoding="async">
-      <img class="nav-logo-light" src="assets/rar-light.png" alt="RAR" width="120" height="40" decoding="async">
+      <img class="nav-logo-dark" src="assets/rar.png" alt="RAR" width="120" height="40" decoding="async" fetchpriority="low">
+      <img class="nav-logo-light" src="assets/rar-light.png" alt="RAR" width="120" height="40" decoding="async" loading="lazy" fetchpriority="low">
     </a>
     <button type="button" class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-panel">
       <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -3671,7 +3919,7 @@
     <div class="hero-visual" data-parallax="-0.12">
       <div class="hero-card tilt-card">
         <figure class="hero-portrait">
-          <img src="assets/rafid.png" alt="Portrait of Rafid Al Ridwan" width="768" height="1024" decoding="async" fetchpriority="high">
+          <img src="assets/rafid.png" alt="Portrait of Rafid Al Ridwan" width="768" height="1024" decoding="async" fetchpriority="high" loading="eager">
           <figcaption class="hero-card-body">
             <div class="hero-card-meta">
               <div class="contact-row">
@@ -4201,11 +4449,14 @@
         if (!nav || !menuBtn) return;
         nav.classList.remove('is-open');
         menuBtn.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('nav-open');
       };
 
       menuBtn?.addEventListener('click', () => {
-        const open = nav.classList.toggle('is-open');
+        const open = !nav.classList.contains('is-open');
+        nav.classList.toggle('is-open', open);
         menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.classList.toggle('nav-open', open);
       });
 
       nav?.querySelectorAll('.nav-links a').forEach((link) => {
@@ -4214,6 +4465,14 @@
 
       window.addEventListener('resize', () => {
         if (window.innerWidth > 900) closeMenu();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+      });
+
+      nav?.addEventListener('click', (e) => {
+        if (e.target === nav) closeMenu();
       });
     })();
   </script>
@@ -5209,11 +5468,8 @@
         mouse.y = -9999;
       };
 
-      window.addEventListener('mousemove', onMove, { passive: true });
-      window.addEventListener('mouseleave', onLeave, { passive: true });
-
       const particles = [];
-      let count = 140;
+      let count = 90;
       let linkDist = 120;
       let speedRange = 0.28;
       let radiusMin = 1.2;
@@ -5237,7 +5493,7 @@
         const isTablet = w > 600 && w <= 1024;
 
         if (isMobile) {
-          count = Math.min(130, Math.max(70, Math.floor((w * h) / 62000)));
+          count = Math.min(70, Math.max(40, Math.floor((w * h) / 72000)));
           speedRange = 0.2;
           radiusMin = 0.85;
           radiusMax = 1.8;
@@ -5245,7 +5501,7 @@
           alphaMax = 0.75;
           linkDist = 85;
         } else if (isTablet) {
-          count = Math.min(170, Math.max(90, Math.floor((w * h) / 52000)));
+          count = Math.min(110, Math.max(60, Math.floor((w * h) / 62000)));
           speedRange = 0.24;
           radiusMin = 1.05;
           radiusMax = 2.2;
@@ -5253,7 +5509,7 @@
           alphaMax = 0.8;
           linkDist = 105;
         } else {
-          count = Math.min(220, Math.max(120, Math.floor((w * h) / 42000)));
+          count = Math.min(140, Math.max(80, Math.floor((w * h) / 52000)));
           speedRange = 0.28;
           radiusMin = 1.35;
           radiusMax = 3;
@@ -5278,9 +5534,6 @@
           });
         }
       };
-
-      resize();
-      window.addEventListener('resize', resize, { passive: true });
 
       const draw = () => {
         ctx.clearRect(0, 0, w, h);
@@ -5349,19 +5602,49 @@
         ctx.globalCompositeOperation = 'source-over';
       };
 
-      if (prefersReducedMotion) {
-        draw();
-        return;
-      }
-
       const loop = () => {
+        if (document.hidden) {
+          rafId = 0;
+          return;
+        }
         draw();
         rafId = requestAnimationFrame(loop);
       };
 
-      rafId = requestAnimationFrame(loop);
-      // Basic cleanup if the page is ever re-rendered in-place.
-      window.addEventListener('beforeunload', () => cancelAnimationFrame(rafId));
+      const start = () => {
+        window.addEventListener('mousemove', onMove, { passive: true });
+        window.addEventListener('mouseleave', onLeave, { passive: true });
+        resize();
+        window.addEventListener('resize', resize, { passive: true });
+
+        if (prefersReducedMotion) {
+          draw();
+          return;
+        }
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            cancelAnimationFrame(rafId);
+            rafId = 0;
+          } else if (!rafId) {
+            rafId = requestAnimationFrame(loop);
+          }
+        });
+
+        rafId = requestAnimationFrame(loop);
+        window.addEventListener('beforeunload', () => cancelAnimationFrame(rafId));
+      };
+
+      const boot = () => {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(start, { timeout: 1200 });
+        } else {
+          window.setTimeout(start, 280);
+        }
+      };
+
+      if (document.readyState === 'complete') boot();
+      else window.addEventListener('load', boot, { once: true });
     })();
   </script>
 </body>
