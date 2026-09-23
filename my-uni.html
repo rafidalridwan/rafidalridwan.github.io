@@ -148,6 +148,48 @@
       color: #fff;
     }
 
+    .filter-toggle {
+      display: none;
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      color: var(--ink-soft);
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 650;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      cursor: pointer;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 36px;
+      white-space: nowrap;
+    }
+
+    .filter-toggle.is-open {
+      background: var(--accent-soft);
+      border-color: transparent;
+      color: var(--accent);
+    }
+
+    .filter-toggle-count {
+      display: none;
+      min-width: 1.15rem;
+      height: 1.15rem;
+      padding: 0 0.28rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      line-height: 1.15rem;
+      text-align: center;
+    }
+
+    .filter-toggle.has-active .filter-toggle-count {
+      display: inline-block;
+    }
+
     .filters {
       display: grid;
       grid-template-columns: minmax(160px, 1.4fr) repeat(4, minmax(110px, 0.85fr));
@@ -333,15 +375,96 @@
       inset: 0;
       z-index: 4;
       overflow: auto;
-      padding: 1rem;
+      padding: 0;
       background: rgba(232, 238, 244, 0.96);
       backdrop-filter: blur(8px);
       display: none;
       -webkit-overflow-scrolling: touch;
     }
 
-    .stage[data-view="list"] .list-panel { display: block; }
+    .stage[data-view="list"] .list-panel { display: flex; flex-direction: column; }
     .stage[data-view="list"] #map { visibility: hidden; pointer-events: none; }
+
+    .list-tabs {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 0.4rem;
+      padding: 0.75rem 1rem 0.65rem;
+      background: rgba(232, 238, 244, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      flex-shrink: 0;
+    }
+
+    .list-tabs::-webkit-scrollbar { display: none; }
+
+    .list-tab {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--surface-solid);
+      color: var(--ink-soft);
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 650;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+      transition: background 0.18s var(--ease), color 0.18s var(--ease), border-color 0.18s var(--ease);
+    }
+
+    .list-tab:hover {
+      border-color: rgba(var(--accent-rgb), 0.35);
+      color: var(--ink);
+    }
+
+    .list-tab.is-active {
+      background: var(--accent);
+      border-color: transparent;
+      color: #fff;
+    }
+
+    .list-tab-label-short { display: none; }
+
+    .list-tab-count {
+      font-size: 0.68rem;
+      font-weight: 800;
+      min-width: 1.2rem;
+      padding: 0.08rem 0.35rem;
+      border-radius: 999px;
+      background: var(--bg);
+      color: var(--muted);
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .list-tab.is-active .list-tab-count {
+      background: rgba(255, 255, 255, 0.22);
+      color: #fff;
+    }
+
+    .list-tab:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .list-body {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 0.85rem 1rem 1rem;
+      -webkit-overflow-scrolling: touch;
+    }
 
     .list-grid {
       display: flex;
@@ -356,19 +479,7 @@
     }
 
     .month-label {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      padding: 0.7rem 1rem 0.55rem;
-      margin: 0;
-      background: var(--bg);
-      border-bottom: 1px solid var(--line);
-      border-top: 1px solid var(--line);
-      color: var(--ink);
-    }
-
-    .month-label:first-child {
-      border-top: 0;
+      display: none;
     }
 
     .uni-item {
@@ -552,8 +663,8 @@
     }
 
     .detail-spinner {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
       border: 3px solid var(--line);
       border-top-color: var(--accent);
       border-radius: 50%;
@@ -657,34 +768,38 @@
 
     @media (max-width: 760px) {
       .topbar {
-        gap: 0.5rem;
-        padding: 0.55rem 0.7rem 0.65rem;
-        padding-top: max(0.55rem, env(safe-area-inset-top));
-        padding-left: max(0.7rem, env(safe-area-inset-left));
-        padding-right: max(0.7rem, env(safe-area-inset-right));
+        gap: 0.45rem;
+        padding: 0.5rem 0.65rem 0.55rem;
+        padding-top: max(0.5rem, env(safe-area-inset-top));
+        padding-left: max(0.65rem, env(safe-area-inset-left));
+        padding-right: max(0.65rem, env(safe-area-inset-right));
       }
 
       .top-row {
         display: grid;
-        grid-template-columns: 1fr auto;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: center;
-        gap: 0.35rem 0.6rem;
+        gap: 0.3rem 0.5rem;
       }
 
-      .brand { grid-column: 1; }
+      .brand {
+        grid-column: 1;
+        min-width: 0;
+      }
+
+      .brand-mark { font-size: 1.15rem; }
 
       .stats {
         grid-column: 1 / -1;
         grid-row: 2;
-        font-size: 0.68rem;
-        line-height: 1.3;
+        font-size: 0.66rem;
+        line-height: 1.35;
         white-space: normal;
         overflow: visible;
         text-overflow: unset;
       }
 
-      .stats strong { font-size: 0.8rem; }
-
+      .stats strong { font-size: 0.78rem; }
       .stats-full { display: none; }
       .stats-short { display: inline; }
 
@@ -692,32 +807,41 @@
         grid-column: 2;
         grid-row: 1;
         margin-left: 0;
+        gap: 0.35rem;
+        flex-wrap: nowrap;
       }
 
-      .view-toggle {
-        width: 100%;
+      .filter-toggle {
+        display: inline-flex;
+        padding: 0.4rem 0.65rem;
+        font-size: 0.76rem;
+        min-height: 34px;
       }
+
+      .view-toggle { width: auto; flex-shrink: 0; }
 
       .view-toggle button {
-        padding: 0.45rem 0.85rem;
-        font-size: 0.8rem;
-        min-height: 36px;
+        padding: 0.4rem 0.65rem;
+        font-size: 0.76rem;
+        min-height: 34px;
       }
 
       .filters {
-        display: grid;
+        display: none;
         grid-template-columns: 1fr 1fr;
         gap: 0.4rem;
         overflow: visible;
         margin: 0;
-        padding: 0;
+        padding: 0.15rem 0 0;
       }
+
+      .topbar.filters-open .filters { display: grid; }
 
       .search {
         grid-column: 1 / -1;
         min-width: 0;
         flex: none;
-        font-size: 16px; /* avoid iOS zoom on focus */
+        font-size: 16px;
         padding: 0.62rem 0.75rem;
       }
 
@@ -725,12 +849,37 @@
         width: 100%;
         min-width: 0;
         font-size: 16px;
-        padding: 0.55rem 0.55rem;
+        padding: 0.55rem 0.5rem;
       }
 
-      .list-panel {
-        padding: 0.65rem;
-        padding-bottom: max(0.65rem, env(safe-area-inset-bottom));
+      .list-panel { padding: 0; }
+
+      .list-tabs {
+        padding: 0.55rem 0.55rem 0.5rem;
+        gap: 0.3rem;
+        scroll-snap-type: x proximity;
+        overscroll-behavior-x: contain;
+      }
+
+      .list-tab {
+        padding: 0.42rem 0.62rem;
+        font-size: 0.74rem;
+        min-height: 34px;
+        scroll-snap-align: start;
+      }
+
+      .list-tab-label-full { display: none; }
+      .list-tab-label-short { display: inline; }
+
+      .list-tab-count {
+        font-size: 0.64rem;
+        min-width: 1.05rem;
+        padding: 0.06rem 0.28rem;
+      }
+
+      .list-body {
+        padding: 0.55rem;
+        padding-bottom: max(0.55rem, env(safe-area-inset-bottom));
       }
 
       .list-grid {
@@ -738,47 +887,46 @@
         max-width: none;
       }
 
-      .month-label {
-        padding: 0.65rem 0.85rem 0.5rem;
-        font-size: 0.9rem;
-      }
-
       .uni-item {
-        grid-template-columns: 1.75rem minmax(0, 1fr);
-        gap: 0.45rem 0.6rem;
-        padding: 0.75rem 0.8rem;
+        grid-template-columns: 1.6rem minmax(0, 1fr);
+        gap: 0.4rem 0.55rem;
+        padding: 0.7rem 0.75rem;
         min-height: 52px;
       }
 
       .uni-item-serial {
-        font-size: 0.72rem;
-        padding-top: 0.15rem;
+        font-size: 0.7rem;
+        padding-top: 0.12rem;
       }
 
       .uni-item-side { display: none; }
 
+      .uni-item-top { gap: 0.3rem 0.4rem; }
+
       .uni-item-uni {
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         word-break: break-word;
       }
 
       .uni-item-course {
-        font-size: 0.82rem;
+        font-size: 0.8rem;
+        line-height: 1.35;
       }
 
       .uni-item-meta {
-        margin-top: 0.35rem;
-        gap: 0.28rem;
+        margin-top: 0.32rem;
+        gap: 0.25rem;
       }
 
       .chip {
-        font-size: 0.62rem;
-        padding: 0.18rem 0.36rem;
+        font-size: 0.6rem;
+        padding: 0.16rem 0.32rem;
       }
 
-      .stage.has-detail .list-panel {
-        right: 0;
-        padding-bottom: calc(min(68vh, 480px) + 0.5rem);
+      .stage.has-detail .list-panel { right: 0; }
+
+      .stage.has-detail .list-body {
+        padding-bottom: calc(min(62vh, 460px) + 0.75rem);
       }
 
       .detail-panel {
@@ -787,72 +935,93 @@
         right: 0;
         bottom: 0;
         width: 100%;
-        max-height: min(68vh, 520px);
+        max-height: min(72dvh, 560px);
         border-left: 0;
         border-top: 1px solid var(--line);
         border-radius: 18px 18px 0 0;
         box-shadow: 0 -16px 40px rgba(20, 32, 43, 0.16);
         transform: translateY(110%);
-        padding: 0.35rem 1rem max(1rem, env(safe-area-inset-bottom));
+        padding: 0.25rem 0.9rem max(0.9rem, env(safe-area-inset-bottom));
       }
 
-      .detail-panel.is-open {
-        transform: translateY(0);
-      }
+      .detail-panel.is-open { transform: translateY(0); }
 
       .detail-panel::before {
         content: '';
         display: block;
         width: 40px;
         height: 4px;
-        margin: 0.35rem auto 0.75rem;
+        margin: 0.35rem auto 0.65rem;
         border-radius: 999px;
         background: var(--line);
       }
 
       .detail-close {
-        top: 0.85rem;
-        right: 0.75rem;
+        top: 0.75rem;
+        right: 0.65rem;
         width: 40px;
         height: 40px;
       }
 
+      .detail-kicker {
+        font-size: 0.64rem;
+        padding-right: 2.6rem;
+      }
+
       .detail-title {
-        font-size: 1.2rem;
-        padding-right: 2.5rem;
+        font-size: 1.15rem;
+        padding-right: 2.6rem;
       }
 
       .detail-course {
-        font-size: 0.92rem;
-        margin-bottom: 0.8rem;
+        font-size: 0.88rem;
+        margin-bottom: 0.75rem;
       }
 
       .detail-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 0.55rem 0.65rem;
-        margin-bottom: 0.85rem;
+        gap: 0.5rem 0.6rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .detail-field dd {
+        font-size: 0.82rem;
+        word-break: break-word;
+      }
+
+      .detail-loader {
+        min-height: 180px;
+        padding: 1.75rem 0.75rem;
       }
 
       .detail-actions {
         position: sticky;
         bottom: 0;
-        padding-top: 0.65rem;
+        padding-top: 0.55rem;
         background: linear-gradient(180deg, transparent, #fff 28%);
-        gap: 0.45rem;
+        gap: 0.4rem;
       }
 
       .detail-actions .btn {
-        flex: 1 1 calc(50% - 0.25rem);
+        flex: 1 1 calc(50% - 0.2rem);
         min-height: 44px;
         justify-content: center;
+        font-size: 0.82rem;
+        padding: 0.55rem 0.75rem;
+      }
+
+      .map-pin,
+      .map-pin-dot {
+        width: 26px;
+        height: 26px;
       }
 
       .map-pin-label {
-        max-width: min(62vw, 180px);
+        max-width: min(58vw, 160px);
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: 0.7rem;
-        padding: 0.28rem 0.5rem;
+        font-size: 0.68rem;
+        padding: 0.26rem 0.45rem;
       }
 
       .leaflet-top.leaflet-left {
@@ -861,20 +1030,20 @@
       }
 
       .leaflet-control-zoom a {
-        width: 36px !important;
-        height: 36px !important;
-        line-height: 36px !important;
-        font-size: 16px !important;
+        width: 34px !important;
+        height: 34px !important;
+        line-height: 34px !important;
+        font-size: 15px !important;
       }
 
       .leaflet-control-attribution {
-        font-size: 9px !important;
-        max-width: min(58vw, 200px);
+        font-size: 8px !important;
+        max-width: min(52vw, 180px);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         margin: 0 !important;
-        padding: 2px 5px !important;
+        padding: 2px 4px !important;
       }
 
       .leaflet-bottom.leaflet-right {
@@ -882,16 +1051,28 @@
       }
 
       .stage.has-detail .leaflet-bottom {
-        bottom: min(68vh, 520px);
+        bottom: min(72dvh, 560px);
       }
     }
 
     @media (max-width: 420px) {
-      .brand-mark { font-size: 1.12rem; }
+      .brand-mark { font-size: 1.05rem; }
+      .filter-toggle-label { font-size: 0.72rem; }
+      .top-actions { gap: 0.28rem; }
+      .view-toggle button { padding: 0.38rem 0.55rem; }
       .detail-grid { grid-template-columns: 1fr; }
       .detail-actions .btn { flex: 1 1 100%; }
-      .uni-item { padding: 0.7rem 0.75rem; }
-      .search::placeholder { font-size: 0.85rem; }
+      .uni-item { padding: 0.65rem 0.7rem; }
+      .search::placeholder { font-size: 0.82rem; }
+      .list-tab { padding: 0.38rem 0.55rem; }
+    }
+
+    @media (max-width: 360px) {
+      .stats { display: none; }
+      .filter-toggle-count { display: none; }
+      .filter-toggle.has-active {
+        box-shadow: inset 0 0 0 1.5px var(--accent);
+      }
     }
   </style>
 </head>
@@ -905,13 +1086,17 @@
         </a>
         <div class="stats" id="stats"></div>
         <div class="top-actions">
+          <button type="button" class="filter-toggle" id="btn-filters" aria-expanded="false" aria-controls="filters">
+            <span class="filter-toggle-label">Filters</span>
+            <span class="filter-toggle-count" id="filter-count">0</span>
+          </button>
           <div class="view-toggle" role="tablist" aria-label="View mode">
             <button type="button" id="btn-map" class="is-active" role="tab" aria-selected="true">Map</button>
             <button type="button" id="btn-list" role="tab" aria-selected="false">List</button>
           </div>
         </div>
       </div>
-      <div class="filters">
+      <div class="filters" id="filters">
         <input class="search" id="search" type="search" placeholder="Search university, course, city…" autocomplete="off">
         <select id="filter-month" aria-label="Filter by month"><option value="">All months</option></select>
         <select id="filter-method" aria-label="Filter by method"><option value="">All methods</option></select>
@@ -932,6 +1117,15 @@
     const PROGRAMS = [{"id": 1, "month": "September", "university": "University of Würzburg", "degree": "Master of Science", "course": "Computer Science", "period": "4 semesters", "ielts": "C1", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 August – 31 October", "winterDeadline": "January – 15 March", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.informatik.uni-wuerzburg.de/en/studies/degree-programmes/master-computer-science/", "city": "Würzburg", "lat": 49.7939, "lng": 9.9512, "short": "JMU", "code": "JMU"}, {"id": 2, "month": "September", "university": "Universität Paderborn", "degree": "Master of Science (M.Sc.)", "course": "Computer Science", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "until 30 November", "winterDeadline": "until 31 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-paderborn.de/en/studyoffer/course_of_study/computer-science-master", "city": "Paderborn", "lat": 51.7189, "lng": 8.7575, "short": "UPB", "code": "UPB"}, {"id": 3, "month": "September", "university": "University of Bamberg", "degree": "Master of Science (M.Sc.)", "course": "International Software Systems Science", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "15 January", "winterDeadline": "15 July", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-bamberg.de/studiengaenge/international-software-systems-science-master/", "city": "Bamberg", "lat": 49.8988, "lng": 10.9028, "short": "Uni Bamberg", "code": "BAM"}, {"id": 4, "month": "September", "university": "RPTU University Kaiserslautern-Landau", "degree": "Master of Science (M.Sc.)", "course": "Computer Science", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "15 January", "winterDeadline": "15 July", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.cs.rptu.de/en/studium/studiengaenge/bm-inf/", "city": "Kaiserslautern", "lat": 49.4401, "lng": 7.7491, "short": "RPTU", "code": "RPTU"}, {"id": 5, "month": "September", "university": "Universität Augsburg", "degree": "Master of Science", "course": "Data Science", "period": "4 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Aptitude Test", "admissionMethod": "Direct Apply", "summerDeadline": "1 March", "winterDeadline": "1 September", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-augsburg.de/en/studium/studienangebot/uebersicht/data-science-msc/", "city": "Augsburg", "lat": 48.3705, "lng": 10.8978, "short": "UniA", "code": "UniA"}, {"id": 6, "month": "September", "university": "Universität Koblenz", "degree": "Master of Science", "course": "Web and Data Science", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "By 15 November", "winterDeadline": "15 May – 15 June", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-koblenz.de/en/degree-programs/web-and-data-science-msc", "city": "Koblenz", "lat": 50.3569, "lng": 7.589, "short": "Uni Koblenz", "code": "KO"}, {"id": 7, "month": "September", "university": "Universität Bremen", "degree": "Master of Science (M.Sc.)", "course": "Communication and Information Technology", "period": "4 semesters", "ielts": "7", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 Aug – 15 Oct", "winterDeadline": "1 Dec – 15 Jan", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-bremen.de/en/studies/orientation-application/offered-study-program/dbs/study/communication-and-information-technology-master", "city": "Bremen", "lat": 53.0793, "lng": 8.8017, "short": "Uni Bremen", "code": "HB"}, {"id": 8, "month": "September", "university": "Universität zu Lübeck", "degree": "Master of Science (M.Sc.)", "course": "Computer Science", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Sep – 15 Oct", "winterDeadline": "15 Feb – 1 Apr", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www2.uni-luebeck.de/en/study-program/computer-science-and-mathematics/information-technology/masters-program-in-computer-science/", "city": "Lübeck", "lat": 53.8655, "lng": 10.6866, "short": "UzL", "code": "UzL"}, {"id": 9, "month": "September", "university": "Universität zu Lübeck", "degree": "Master of Science (M.Sc.)", "course": "IT Security", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Sep – 15 Oct", "winterDeadline": "15 Feb – 1 Apr", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www2.uni-luebeck.de/en/studium/informatik-und-mathematik/it-security/masters-degree-program-it-security/", "city": "Lübeck", "lat": 53.8655, "lng": 10.6866, "short": "UzL", "code": "UzL"}, {"id": 10, "month": "September", "university": "University of Kassel", "degree": "Master of Science (M.Sc.)", "course": "Computer Science", "period": "4 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Sep – 15 Jan", "winterDeadline": "1 Mar – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-kassel.de/uni/en/study/computer-science-masters.html", "city": "Kassel", "lat": 51.3127, "lng": 9.4797, "short": "Uni Kassel", "code": "KS"}, {"id": 11, "month": "September", "university": "Universität Hildesheim", "degree": "M.Sc.", "course": "Software Engineering", "period": "4 semesters", "ielts": "6", "moi": "MOI", "admissionMode": "Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "21 Sep – 15 Dec", "winterDeadline": "1 Apr – 30 Jun", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-hildesheim.de/en/studium/studieninteressierte/studiengaenge/masterstudium/software-engineering-msc/", "city": "Hildesheim", "lat": 52.15, "lng": 9.951, "short": "Uni HI", "code": "HI"}, {"id": 12, "month": "September", "university": "Universität Hildesheim", "degree": "M.Sc.", "course": "Data Analytics", "period": "4 semesters", "ielts": "6", "moi": "MOI", "admissionMode": "Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "19 Sep – 15 Dec", "winterDeadline": "1 Apr – 30 Jun", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-hildesheim.de/en/studium/studieninteressierte/studiengaenge/masterstudium/data-analytics-msc/", "city": "Hildesheim", "lat": 52.15, "lng": 9.951, "short": "Uni HI", "code": "HI"}, {"id": 13, "month": "October", "university": "TU Chemnitz", "degree": "Master of Science (M.Sc.)", "course": "Web Engineering", "period": "4 semesters", "ielts": "5.5", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Oct – 15 Jan", "winterDeadline": "1 Apr – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.tu-chemnitz.de/informatik/studium/studiengaenge/ma_web_engineering.php.en", "city": "Chemnitz", "lat": 50.8278, "lng": 12.9214, "short": "TUC", "code": "TUC"}, {"id": 14, "month": "October", "university": "TU Chemnitz", "degree": "Master of Science (M.Sc.)", "course": "Automotive Software Engineering", "period": "4 semesters", "ielts": "5.5", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Oct – 15 Jan", "winterDeadline": "1 Apr – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.tu-chemnitz.de/informatik/studium/studiengaenge/ma_automotive_software_engineering.php.en", "city": "Chemnitz", "lat": 50.8278, "lng": 12.9214, "short": "TUC", "code": "TUC"}, {"id": 15, "month": "October", "university": "Universität Rostock", "degree": "Master of Science (M.Sc.)", "course": "Computer Science International", "period": "4 semesters", "ielts": "7", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Oct – 30 Nov", "winterDeadline": "1 Apr – 31 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-rostock.de/en/computer-science-international-master/", "city": "Rostock", "lat": 54.0924, "lng": 12.0991, "short": "Uni Rostock", "code": "HRO"}, {"id": 16, "month": "October", "university": "TH Deggendorf", "degree": "Master of Science (M.Sc.)", "course": "Applied Computer Science", "period": "3 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 Oct – 1 Nov", "winterDeadline": "15 Apr – 15 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.th-deg.de/ai-m-en", "city": "Deggendorf", "lat": 48.8358, "lng": 12.9608, "short": "THD", "code": "THD"}, {"id": 17, "month": "October", "university": "TH Deggendorf", "degree": "Master of Science (M.Sc.)", "course": "Artificial Intelligence and Data Science", "period": "3 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 Oct – 1 Nov", "winterDeadline": "15 Apr – 15 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.th-deg.de/aid-m-en", "city": "Deggendorf", "lat": 48.8358, "lng": 12.9608, "short": "THD", "code": "THD"}, {"id": 18, "month": "October", "university": "TH Deggendorf", "degree": "Master of Engineering (M.Eng.)", "course": "Automotive Software Engineering", "period": "3 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 Oct – 1 Nov", "winterDeadline": "—", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.th-deg.de/ase-m-en", "city": "Deggendorf", "lat": 48.8358, "lng": 12.9608, "short": "THD", "code": "THD"}, {"id": 19, "month": "October", "university": "THWS Würzburg-Schweinfurt", "degree": "Master of Science (M.Sc.)", "course": "Artificial Intelligence", "period": "3 semesters", "ielts": "6.0+", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "15 Oct – 15 Dec", "winterDeadline": "—", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.thws.de/en/studies-at-thws/studying-at-thws/degree-programmes/artificial-intelligence/", "city": "Schweinfurt", "lat": 50.0489, "lng": 10.2217, "short": "THWS", "code": "THWS"}, {"id": 20, "month": "October", "university": "University of Regensburg", "degree": "Master of Science (M.Sc.)", "course": "Data Science", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Aptitude Test", "admissionMethod": "Uni-Assist", "summerDeadline": "15 Oct – 1 Dec", "winterDeadline": "1 June", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-regensburg.de/en/studies/prospective-students/study-programs/master/data-science-msc", "city": "Regensburg", "lat": 49.0134, "lng": 12.1016, "short": "UR", "code": "UR"}, {"id": 21, "month": "October", "university": "University of Regensburg", "degree": "Master of Science (M.Sc.)", "course": "Computer Science", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Aptitude Test", "admissionMethod": "Uni-Assist", "summerDeadline": "15 Oct – 1 Dec", "winterDeadline": "15 Apr – 1 Jun", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-regensburg.de/en/studies/prospective-students/study-programs/master/computer-science-msc", "city": "Regensburg", "lat": 49.0134, "lng": 12.1016, "short": "UR", "code": "UR"}, {"id": 22, "month": "October", "university": "Ulm University", "degree": "Master of Science", "course": "Artificial Intelligence for Connected Industries", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "15 Oct – 15 Nov or 2 Dec – 15 Jan", "winterDeadline": "1 Apr – 15 May or 1 Jun – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-ulm.de/index.php?id=140250", "city": "Ulm", "lat": 48.4011, "lng": 9.9876, "short": "Uni Ulm", "code": "ULM"}, {"id": 23, "month": "November", "university": "TH OWL", "degree": "Master of Science (M.Sc.)", "course": "Information Technology", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "17 Nov – 15 Jan", "winterDeadline": "1 Apr – 1 Jun", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.th-owl.de/en/studies/available-courses/degree-programs/detail/information-technology/", "city": "Lemgo", "lat": 52.0285, "lng": 8.9012, "short": "TH OWL", "code": "OWL"}, {"id": 24, "month": "November", "university": "HAW Kiel", "degree": "Master of Science (M.Sc.)", "course": "Data Science / CS", "period": "3 semesters", "ielts": "B2 & GRE", "moi": "N/A", "admissionMode": "Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "November – 15 Jan", "winterDeadline": "May – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.haw-kiel.de/en/degree-courses/courses/data-science", "city": "Kiel", "lat": 54.3233, "lng": 10.1228, "short": "HAW Kiel", "code": "KIEL"}, {"id": 25, "month": "November", "university": "University of Potsdam", "degree": "Master of Science (M.Sc.)", "course": "Computer Science", "period": "4 semesters", "ielts": "C1 (7)", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Nov – 1 Dec", "winterDeadline": "1 Apr – 1 Jun", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-potsdam.de/de/studium/studienangebot/master/computer-science", "city": "Potsdam", "lat": 52.3906, "lng": 13.0645, "short": "Uni Potsdam", "code": "UP"}, {"id": 26, "month": "November", "university": "University of Potsdam", "degree": "Master of Science (M.Sc.)", "course": "Data Science", "period": "4 semesters", "ielts": "C1 (7)", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Nov – 1 Dec", "winterDeadline": "1 Apr – 1 Jun", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-potsdam.de/de/studium/studienangebot/master/data-science", "city": "Potsdam", "lat": 52.3906, "lng": 13.0645, "short": "Uni Potsdam", "code": "UP"}, {"id": 27, "month": "November", "university": "OTH Amberg-Weiden", "degree": "Master of Science (M.Sc.)", "course": "Artificial Intelligence for Industrial Applications", "period": "3 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Nov – 8 Dec", "winterDeadline": "15 Apr – 8 Jun", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.oth-aw.de/en/studies/study-offers/study-programmes/master/artificial-intelligence-industrial-applications/", "city": "Amberg", "lat": 49.4447, "lng": 11.8483, "short": "OTH AW", "code": "OTH"}, {"id": 28, "month": "November", "university": "University of Passau", "degree": "Master of Science (M.Sc.)", "course": "Artificial Intelligence Engineering", "period": "4 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct / Uni-Assist", "summerDeadline": "1 Nov – 15 Dec", "winterDeadline": "1 Apr – 31 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-passau.de/en/msc-ai-eng", "city": "Passau", "lat": 48.5665, "lng": 13.4312, "short": "Uni Passau", "code": "PA"}, {"id": 29, "month": "November", "university": "University of Göttingen", "degree": "Master of Science", "course": "Applied Data Science", "period": "4 semesters", "ielts": "C1", "moi": "MOI", "admissionMode": "Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 November", "winterDeadline": "1 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-goettingen.de/en/642405.html#bewerbung", "city": "Göttingen", "lat": 51.5413, "lng": 9.9158, "short": "Uni Göttingen", "code": "GOE"}, {"id": 30, "month": "November", "university": "University of Passau", "degree": "Master of Science (M.Sc.)", "course": "Computer Science", "period": "4 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct / Uni-Assist", "summerDeadline": "1 Nov – 15 Dec", "winterDeadline": "1 Apr – 31 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-passau.de/en/msc-computer-science", "city": "Passau", "lat": 48.5665, "lng": 13.4312, "short": "Uni Passau", "code": "PA"}, {"id": 31, "month": "November", "university": "Universität zu Lübeck", "degree": "Master of Science (M.Sc.)", "course": "Artificial Intelligence", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Nov – 15 Jan", "winterDeadline": "1 May – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www2.uni-luebeck.de/en/studium/informatik-und-mathematik/artificial-intelligence/master-studiengang-artificial-intelligence/", "city": "Lübeck", "lat": 53.8655, "lng": 10.6866, "short": "UzL", "code": "UzL"}, {"id": 32, "month": "November", "university": "TU Dortmund", "degree": "Master of Science (M.Sc.)", "course": "Data Science", "period": "4 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "2 Nov – 15 Jan", "winterDeadline": "4 Jan – 15 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.tu-dortmund.de/en/studies/degree-programs/master/data-science-682/", "city": "Dortmund", "lat": 51.5136, "lng": 7.4653, "short": "TUDO", "code": "TUDO"}, {"id": 33, "month": "December", "university": "TU Berlin", "degree": "Master of Science (M.Sc.)", "course": "Computer Science (Informatik)", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 Dec 2026 – 28 Feb 2027", "winterDeadline": "1 Jun 2027 – 31 Aug 2027", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.tu.berlin/en/eecs/academics-teaching/study-offer/masters-programs/msc-computer-science-informatik", "city": "Berlin", "lat": 52.5122, "lng": 13.327, "short": "TUB", "code": "TUB"}, {"id": 34, "month": "December", "university": "HAW Hamburg", "degree": "Master of Science (M.Sc.)", "course": "Information and Communications Engineering", "period": "3 semesters", "ielts": "B2", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 Dec – 15 Jan", "winterDeadline": "1 Jun – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.haw-hamburg.de/en/master-information-and-communications-engineering/", "city": "Hamburg", "lat": 53.5511, "lng": 9.9937, "short": "HAW HH", "code": "HAW"}, {"id": 35, "month": "December", "university": "TU Darmstadt", "degree": "Master of Science", "course": "Computer Science", "period": "4 semesters", "ielts": "C1", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 Dec 2026 – 15 Jan 2027", "winterDeadline": "15 July", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.tu-darmstadt.de/studieren/studieninteressierte/studienangebot_studiengaenge/studiengang_334656.en.jsp", "city": "Darmstadt", "lat": 49.8728, "lng": 8.6512, "short": "TUDa", "code": "TUDa"}, {"id": 36, "month": "December", "university": "TU Darmstadt", "degree": "Master of Science", "course": "Artificial Intelligence and Machine Learning", "period": "4 semesters", "ielts": "C1", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "1 Dec 2026 – 15 Jan 2027", "winterDeadline": "15 July", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.tu-darmstadt.de/studieren/studieninteressierte/studienangebot_studiengaenge/studiengang_334592.en.jsp", "city": "Darmstadt", "lat": 49.8728, "lng": 8.6512, "short": "TUDa", "code": "TUDa"}, {"id": 37, "month": "December", "university": "Catholic University of Eichstätt-Ingolstadt", "degree": "Master of Science (M.Sc.)", "course": "Data Science", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "1 Dec – 15 Jan", "winterDeadline": "1 May – 15 Jul", "tuition": "€88", "status": "Not yet", "decision": "", "link": "https://www.ku.de/en/study-offer/data-science-msc", "city": "Ingolstadt", "lat": 48.7651, "lng": 11.4237, "short": "KU", "code": "KU"}, {"id": 38, "month": "December", "university": "Ruhr-Universität Bochum", "degree": "Master of Science", "course": "IT Security / Information Engineering", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "December – 15 Jan", "winterDeadline": "June – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://studienangebot.ruhr-uni-bochum.de/en/it-security-information-engineering/master-1-subject", "city": "Bochum", "lat": 51.4818, "lng": 7.2162, "short": "RUB", "code": "RUB"}, {"id": 39, "month": "December", "university": "Ruhr-Universität Bochum", "degree": "Master of Science", "course": "Applied Computer Science", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "December – 15 Jan", "winterDeadline": "June – 15 Jul", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://studienangebot.ruhr-uni-bochum.de/en/applied-computer-science/master-1-subject", "city": "Bochum", "lat": 51.4818, "lng": 7.2162, "short": "RUB", "code": "RUB"}, {"id": 40, "month": "December", "university": "Trier University", "degree": "Master of Science", "course": "Data Science", "period": "4 semesters", "ielts": "6.5", "moi": "MOI", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "15 Dec – 15 Jan", "winterDeadline": "5 May – 31 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-trier.de/en/studium/studienangebot/studienfaecher/studiengang?sgaid=225&cHash=6c39c99293272486d911c98766722b5a", "city": "Trier", "lat": 49.7499, "lng": 6.6371, "short": "Uni Trier", "code": "TR"}, {"id": 41, "month": "—", "university": "University of Siegen", "degree": "Master of Science", "course": "Computer Science", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "—", "winterDeadline": "1 Jan – 30 Apr", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-siegen.de/studium/master/computer-science", "city": "Siegen", "lat": 50.8748, "lng": 8.0243, "short": "Uni Siegen", "code": "SI"}, {"id": 42, "month": "—", "university": "Carl von Ossietzky Universität Oldenburg", "degree": "Master of Science", "course": "Computer Science", "period": "4 semesters", "ielts": "5.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "—", "winterDeadline": "15 Mar – 30 Apr", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://uol.de/en/course-of-study/computer-science-master-642", "city": "Oldenburg", "lat": 53.1435, "lng": 8.2146, "short": "Uni Oldenburg", "code": "OL"}, {"id": 43, "month": "—", "university": "Frankfurt UAS", "degree": "Master of Engineering (M.Eng.)", "course": "Information Technology", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "—", "winterDeadline": "15 April", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.frankfurt-university.de/en/studies/master-programs/information-technology-meng/for-prospective-students/", "city": "Frankfurt", "lat": 50.1109, "lng": 8.6821, "short": "FRA-UAS", "code": "FRA"}, {"id": 44, "month": "—", "university": "Hochschule Schmalkalden", "degree": "Master of Science", "course": "Applied Computer Science", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "—", "winterDeadline": "1 Feb – 15 Apr", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.hs-schmalkalden.de/en/studying/programmes/master-degree-courses/applied-computer-science-msc", "city": "Schmalkalden", "lat": 50.7214, "lng": 10.4486, "short": "HSM", "code": "HSM"}, {"id": 45, "month": "—", "university": "Leuphana University Lüneburg", "degree": "Master of Science", "course": "Management & Data Science", "period": "4 semesters", "ielts": "5.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "—", "winterDeadline": "until 1 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.leuphana.de/en/graduate-school/masters-programmes/management-data-science.html", "city": "Lüneburg", "lat": 53.2464, "lng": 10.4115, "short": "Leuphana", "code": "LEU"}, {"id": 46, "month": "—", "university": "University of Konstanz", "degree": "Master of Science", "course": "Web and Data Science", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "—", "winterDeadline": "until 15 June", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-konstanz.de/studieren/vor-dem-studium/studienangebot/detail/computer-and-information-science-msc/", "city": "Konstanz", "lat": 47.6779, "lng": 9.1732, "short": "Uni KN", "code": "KN"}, {"id": 47, "month": "—", "university": "TU Ilmenau", "degree": "Master of Science", "course": "Data Science", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "—", "winterDeadline": "1 April or 1 October", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.tu-ilmenau.de/en/study/before-the-study/range-of-courses/master/data-science-msc", "city": "Ilmenau", "lat": 50.6844, "lng": 10.9186, "short": "TU Ilmenau", "code": "ILM"}, {"id": 48, "month": "—", "university": "FH Dortmund", "degree": "Master of Engineering (M.Eng.)", "course": "Embedded Systems Engineering", "period": "4 semesters", "ielts": "6.5", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "—", "winterDeadline": "beginning of April – 15 Jun", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.fh-dortmund.de/studiengaenge/embedded-systems-engineering-master.php?loc=en", "city": "Dortmund", "lat": 51.5136, "lng": 7.4653, "short": "FHDO", "code": "FHDO"}, {"id": 49, "month": "—", "university": "TH Bingen", "degree": "Master of Science (M.Sc.)", "course": "Computer Science", "period": "3 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Uni-Assist", "summerDeadline": "—", "winterDeadline": "1 May – 1 June", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.th-bingen.de/en/studium/master/computer-science", "city": "Bingen", "lat": 49.9669, "lng": 7.899, "short": "TH Bingen", "code": "THB"}, {"id": 50, "month": "—", "university": "Heinrich Heine University Düsseldorf", "degree": "Master of Science", "course": "Artificial Intelligence and Data Science", "period": "4 semesters", "ielts": "6", "moi": "N/A", "admissionMode": "Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "—", "winterDeadline": "5 Apr 2026 – 15 Jul 2026", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.hhu.de/en/studies/all-courses-of-study-at-heinrich-heine-university/course-information/artificial-intelligence-and-data-science-master", "city": "Düsseldorf", "lat": 51.2277, "lng": 6.7735, "short": "HHU", "code": "HHU"}, {"id": 51, "month": "—", "university": "Universität Augsburg", "degree": "Master of Science", "course": "Software Engineering (Elite graduate programme)", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Aptitude Test", "admissionMethod": "Direct Apply", "summerDeadline": "—", "winterDeadline": "1 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.uni-augsburg.de/en/studium/studienangebot/uebersicht/software-engineering-elite-graduate-programme-msc/", "city": "Augsburg", "lat": 48.3705, "lng": 10.8978, "short": "UniA", "code": "UniA"}, {"id": 52, "month": "—", "university": "FAU Erlangen-Nürnberg", "degree": "Master of Science", "course": "Artificial Intelligence", "period": "4 semesters", "ielts": "B2", "moi": "N/A", "admissionMode": "Non Restricted", "admissionMethod": "Direct Apply", "summerDeadline": "—", "winterDeadline": "31 May", "tuition": "—", "status": "Not yet", "decision": "", "link": "https://www.fau.eu/degree-program/artificial-intelligence-ai-m-sc/", "city": "Erlangen", "lat": 49.5978, "lng": 11.0045, "short": "FAU", "code": "FAU"}];
 
     const MONTH_ORDER = ['September', 'October', 'November', 'December', '—'];
+    const LIST_TABS = [
+      { key: 'September', label: 'September', short: 'Sep' },
+      { key: 'October', label: 'October', short: 'Oct' },
+      { key: 'November', label: 'November', short: 'Nov' },
+      { key: 'December', label: 'December', short: 'Dec' },
+      { key: '—', label: 'Winter upcoming', short: 'Winter' },
+    ];
+
+    let listTab = 'September';
 
     const els = {
       search: document.getElementById('search'),
@@ -939,12 +1133,17 @@
       method: document.getElementById('filter-method'),
       mode: document.getElementById('filter-mode'),
       moi: document.getElementById('filter-moi'),
+      filters: document.getElementById('filters'),
       list: document.getElementById('list'),
       stats: document.getElementById('stats'),
       detail: document.getElementById('detail'),
       stage: document.getElementById('stage'),
+      topbar: document.querySelector('.topbar'),
       btnMap: document.getElementById('btn-map'),
       btnList: document.getElementById('btn-list'),
+      btnFilters: document.getElementById('btn-filters'),
+      filterCount: document.getElementById('filter-count'),
+      filterLabel: document.querySelector('.filter-toggle-label'),
     };
 
     let activeId = null;
@@ -957,12 +1156,12 @@
       return String(a).localeCompare(String(b));
     });
 
-    const fillSelect = (select, values, allLabel) => {
+    const fillSelect = (select, values, allLabel, labelMap = {}) => {
       select.innerHTML = `<option value="">${allLabel}</option>` +
-        values.map((v) => `<option value="${escapeAttr(v)}">${escapeHtml(v)}</option>`).join('');
+        values.map((v) => `<option value="${escapeAttr(v)}">${escapeHtml(labelMap[v] || v)}</option>`).join('');
     };
 
-    fillSelect(els.month, unique('month'), 'All months');
+    fillSelect(els.month, unique('month'), 'All months', { '—': 'Winter upcoming' });
     fillSelect(els.method, unique('admissionMethod'), 'All methods');
     fillSelect(els.mode, unique('admissionMode'), 'All modes');
     fillSelect(els.moi, unique('moi'), 'MOI / N/A');
@@ -1007,24 +1206,41 @@
         <span class="stats-short"><strong>${items.length}</strong> · <strong>${unis.size}</strong> unis · <strong>${cities.size}</strong> cities</span>
       `;
 
+      const counts = Object.fromEntries(LIST_TABS.map((t) => [t.key, 0]));
+      const monthKey = (p) => (LIST_TABS.some((t) => t.key === p.month) ? p.month : '—');
+      for (const p of items) counts[monthKey(p)] += 1;
+
+      if (!LIST_TABS.some((t) => t.key === listTab && counts[t.key] > 0)) {
+        const first = LIST_TABS.find((t) => counts[t.key] > 0);
+        listTab = first ? first.key : 'September';
+      }
+
+      const tabItems = items.filter((p) => monthKey(p) === listTab);
+
+      const tabsHtml = `<div class="list-tabs" role="tablist" aria-label="Deadline month">
+        ${LIST_TABS.map((t) => `
+          <button type="button" class="list-tab${listTab === t.key ? ' is-active' : ''}" role="tab" aria-selected="${listTab === t.key ? 'true' : 'false'}" data-month="${escapeAttr(t.key)}" ${counts[t.key] === 0 ? 'disabled' : ''}>
+            <span class="list-tab-label-full">${escapeHtml(t.label)}</span>
+            <span class="list-tab-label-short">${escapeHtml(t.short)}</span>
+            <span class="list-tab-count">${counts[t.key]}</span>
+          </button>
+        `).join('')}
+      </div>`;
+
       if (!items.length) {
-        els.list.innerHTML = '<div class="list-grid"><div class="empty">No programs match these filters.</div></div>';
+        els.list.innerHTML = `${tabsHtml}<div class="list-body"><div class="list-grid"><div class="empty">No programs match these filters.</div></div></div>`;
         return;
       }
 
-      const groups = new Map();
-      for (const p of items) {
-        if (!groups.has(p.month)) groups.set(p.month, []);
-        groups.get(p.month).push(p);
+      if (!tabItems.length) {
+        els.list.innerHTML = `${tabsHtml}<div class="list-body"><div class="list-grid"><div class="empty">No programs in this month.</div></div></div>`;
+        return;
       }
 
       let serial = 0;
-      const orderedMonths = [...groups.keys()].sort((a, b) => MONTH_ORDER.indexOf(a) - MONTH_ORDER.indexOf(b));
-      els.list.innerHTML = `<div class="list-grid">${orderedMonths.map((month) => {
-        const label = month === '—' ? 'Open / other deadlines' : month;
-        const rows = groups.get(month).map((p) => {
-          serial += 1;
-          return `
+      const rows = tabItems.map((p) => {
+        serial += 1;
+        return `
           <button type="button" class="uni-item${p.id === activeId ? ' is-active' : ''}" data-id="${p.id}">
             <span class="uni-item-serial">${serial}</span>
             <div class="uni-item-main">
@@ -1041,12 +1257,12 @@
               </div>
             </div>
             <div class="uni-item-side">
-              <span class="chip">${escapeHtml(p.month === '—' ? 'Open' : p.month)}</span>
+              <span class="chip">${escapeHtml(p.month === '—' ? 'Winter upcoming' : p.month)}</span>
             </div>
           </button>`;
-        }).join('');
-        return `<div class="month-label">${escapeHtml(label)}</div>${rows}`;
-      }).join('')}</div>`;
+      }).join('');
+
+      els.list.innerHTML = `${tabsHtml}<div class="list-body"><div class="list-grid">${rows}</div></div>`;
     }
 
     let detailLoadToken = 0;
@@ -1056,7 +1272,7 @@
         <button type="button" class="detail-close" id="detail-close" aria-label="Close">×</button>
         <div class="detail-loader" role="status" aria-live="polite">
           <div class="detail-spinner" aria-hidden="true"></div>
-          <span>Loading details…</span>
+          <span>Loading…</span>
         </div>
       `;
       els.detail.classList.add('is-open');
@@ -1085,7 +1301,7 @@
       els.detail.innerHTML = `
         <button type="button" class="detail-close" id="detail-close" aria-label="Close">×</button>
         <div class="detail-body">
-          <div class="detail-kicker">${escapeHtml(p.code || p.short)} · ${escapeHtml(p.month === '—' ? 'Open' : p.month)} · ${escapeHtml(p.city)}</div>
+          <div class="detail-kicker">${escapeHtml(p.code || p.short)} · ${escapeHtml(p.month === '—' ? 'Winter upcoming' : p.month)} · ${escapeHtml(p.city)}</div>
           <h2 class="detail-title">${escapeHtml(p.university)}</h2>
           <p class="detail-course">${escapeHtml(p.course)}${p.degree && p.degree !== '—' ? ` · ${escapeHtml(p.degree)}` : ''}</p>
           <dl class="detail-grid">
@@ -1185,8 +1401,8 @@
           L.geoJSON(geo, {
             style: {
               color: '#ffffff',
-              weight: 14,
-              opacity: 0.9,
+              weight: 7,
+              opacity: 0.85,
               fill: false,
               lineJoin: 'round',
               lineCap: 'round',
@@ -1197,7 +1413,7 @@
           const germany = L.geoJSON(geo, {
             style: {
               color: '#1e3a8a',
-              weight: 7,
+              weight: 3,
               opacity: 1,
               fill: false,
               lineJoin: 'round',
@@ -1284,10 +1500,35 @@
       }
     }
 
+    function activeFilterCount() {
+      let n = 0;
+      if (els.search.value.trim()) n += 1;
+      if (els.month.value) n += 1;
+      if (els.method.value) n += 1;
+      if (els.mode.value) n += 1;
+      if (els.moi.value) n += 1;
+      return n;
+    }
+
+    function updateFilterToggle() {
+      const n = activeFilterCount();
+      els.btnFilters?.classList.toggle('has-active', n > 0);
+      if (els.filterCount) els.filterCount.textContent = String(n);
+    }
+
+    function setFiltersOpen(open) {
+      els.topbar?.classList.toggle('filters-open', open);
+      els.btnFilters?.classList.toggle('is-open', open);
+      els.btnFilters?.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (els.filterLabel) els.filterLabel.textContent = open ? 'Hide' : 'Filters';
+      if (map) setTimeout(() => map.invalidateSize({ animate: false }), 80);
+    }
+
     function refresh() {
       const items = filtered();
       renderList(items);
       refreshMarkers(items);
+      updateFilterToggle();
       if (activeId && !items.some((p) => p.id === activeId)) selectProgram(null, { fly: false });
     }
 
@@ -1309,6 +1550,12 @@
     }
 
     els.list.addEventListener('click', (e) => {
+      const tab = e.target.closest('.list-tab');
+      if (tab && !tab.disabled) {
+        listTab = tab.dataset.month;
+        renderList(filtered());
+        return;
+      }
       const btn = e.target.closest('.uni-item');
       if (!btn) return;
       selectProgram(Number(btn.dataset.id), { fly: false });
@@ -1324,13 +1571,20 @@
 
     els.btnMap.addEventListener('click', () => setView('map'));
     els.btnList.addEventListener('click', () => setView('list'));
+    els.btnFilters?.addEventListener('click', () => {
+      setFiltersOpen(!els.topbar.classList.contains('filters-open'));
+    });
 
     window.addEventListener('resize', () => {
       if (map) map.invalidateSize({ animate: false });
+      if (window.matchMedia('(min-width: 761px)').matches) {
+        setFiltersOpen(false);
+      }
     });
 
     buildMap();
     refresh();
+    updateFilterToggle();
   </script>
 </body>
 </html>
