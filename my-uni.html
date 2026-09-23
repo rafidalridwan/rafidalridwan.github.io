@@ -636,10 +636,21 @@
       }
     }
 
+    .detail-head {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.98);
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .detail-head .detail-course { margin-bottom: 0; }
+
     .detail-close {
       position: absolute;
-      top: 0.7rem;
-      right: 0.7rem;
+      top: 0;
+      right: 0;
       width: 34px;
       height: 34px;
       border: 1px solid var(--line);
@@ -648,7 +659,12 @@
       cursor: pointer;
       font-size: 1.1rem;
       color: var(--muted);
-      z-index: 2;
+      z-index: 4;
+    }
+
+    .detail-panel > .detail-close {
+      top: 0.7rem;
+      right: 0.7rem;
     }
 
     .detail-loader {
@@ -710,12 +726,67 @@
       margin-bottom: 0.95rem;
     }
 
+    .detail-subjects {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .detail-subject {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.85rem 0.9rem 0.95rem;
+      background: #fff;
+    }
+
+    .detail-subject.is-active {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .detail-subject-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.55rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .detail-subject-title {
+      min-width: 0;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .detail-subject-head .chip {
+      flex-shrink: 0;
+      max-width: 46%;
+      white-space: normal;
+      text-align: center;
+    }
+
+    .detail-subject-degree {
+      color: var(--ink-soft);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 0.7rem;
+    }
+
+    .detail-subject .detail-grid { margin-bottom: 0.75rem; }
+
+    .detail-subject-link { width: 100%; }
+
     .detail-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.7rem 0.85rem;
       margin-bottom: 1rem;
     }
+
+    .detail-field { min-width: 0; }
 
     .detail-field dt {
       font-size: 0.66rem;
@@ -926,7 +997,7 @@
       .stage.has-detail .list-panel { right: 0; }
 
       .stage.has-detail .list-body {
-        padding-bottom: calc(min(62vh, 460px) + 0.75rem);
+        padding-bottom: calc(min(72dvh, 560px) + 0.85rem);
       }
 
       .detail-panel {
@@ -956,11 +1027,22 @@
         background: var(--line);
       }
 
-      .detail-close {
-        top: 0.75rem;
-        right: 0.65rem;
+      .detail-close,
+      .detail-panel > .detail-close {
         width: 40px;
         height: 40px;
+      }
+
+      .detail-panel > .detail-close {
+        top: 0.75rem;
+        right: 0.65rem;
+      }
+
+      .detail-head {
+        margin-left: -0.15rem;
+        margin-right: -0.15rem;
+        padding-left: 0.15rem;
+        padding-right: 0.15rem;
       }
 
       .detail-kicker {
@@ -978,6 +1060,16 @@
         margin-bottom: 0.75rem;
       }
 
+      .detail-subject {
+        padding: 0.75rem 0.75rem 0.85rem;
+      }
+
+      .detail-subject-title { font-size: 0.92rem; }
+
+      .detail-subject-link {
+        min-height: 44px;
+      }
+
       .detail-grid {
         grid-template-columns: 1fr 1fr;
         gap: 0.5rem 0.6rem;
@@ -986,7 +1078,7 @@
 
       .detail-field dd {
         font-size: 0.82rem;
-        word-break: break-word;
+        overflow-wrap: anywhere;
       }
 
       .detail-loader {
@@ -1060,7 +1152,7 @@
       .filter-toggle-label { font-size: 0.72rem; }
       .top-actions { gap: 0.28rem; }
       .view-toggle button { padding: 0.38rem 0.55rem; }
-      .detail-grid { grid-template-columns: 1fr; }
+      .detail-grid { grid-template-columns: 1fr 1fr; }
       .detail-actions .btn { flex: 1 1 100%; }
       .uni-item { padding: 0.65rem 0.7rem; }
       .search::placeholder { font-size: 0.82rem; }
@@ -1280,6 +1372,73 @@
       document.getElementById('detail-close')?.addEventListener('click', () => selectProgram(null));
     }
 
+    function detailFieldsHtml(program) {
+      const fields = [
+        ['Study period', program.period],
+        ['IELTS', program.ielts],
+        ['MOI', program.moi],
+        ['Admission mode', program.admissionMode],
+        ['Method', program.admissionMethod],
+        ['Tuition', program.tuition],
+        ['Summer deadline', program.summerDeadline],
+        ['Winter deadline', program.winterDeadline],
+        ['Status', program.status],
+        ['Decision', program.decision],
+      ];
+      return fields.map(([label, value]) => `
+        <div class="detail-field"><dt>${label}</dt><dd>${escapeHtml(value || '—')}</dd></div>
+      `).join('');
+    }
+
+    function programLinkHtml(program, className) {
+      if (!program.link) return '';
+      return `<a class="btn btn-primary${className ? ` ${className}` : ''}" href="${escapeAttr(program.link)}" target="_blank" rel="noopener noreferrer">Open program page</a>`;
+    }
+
+    function monthLabel(program) {
+      return program.month === '—' ? 'Winter upcoming' : program.month;
+    }
+
+    function detailHeadHtml(kicker, title, course) {
+      return `
+        <div class="detail-head">
+          <button type="button" class="detail-close" id="detail-close" aria-label="Close">×</button>
+          <div class="detail-kicker">${kicker}</div>
+          <h2 class="detail-title">${title}</h2>
+          <p class="detail-course">${course}</p>
+        </div>
+      `;
+    }
+
+    function revealActiveListItem() {
+      if (!window.matchMedia('(max-width: 760px)').matches) return;
+      const item = document.querySelector('.uni-item.is-active');
+      const listBody = document.querySelector('.list-body');
+      if (!item || !listBody || !els.detail.classList.contains('is-open')) return;
+      const visibleTop = listBody.getBoundingClientRect().top;
+      const visibleBottom = els.detail.getBoundingClientRect().top;
+      if (visibleBottom <= visibleTop + 40) return;
+      const itemRect = item.getBoundingClientRect();
+      const viewCenter = (visibleTop + visibleBottom) / 2;
+      const itemCenter = itemRect.top + itemRect.height / 2;
+      listBody.scrollBy({ top: itemCenter - viewCenter });
+    }
+
+    function subjectCardHtml(program, isActive) {
+      const degree = program.degree && program.degree !== '—' ? escapeHtml(program.degree) : '';
+      return `
+        <section class="detail-subject${isActive ? ' is-active' : ''}" data-subject-id="${program.id}">
+          <div class="detail-subject-head">
+            <h3 class="detail-subject-title">${escapeHtml(program.course)}</h3>
+            <span class="chip">${escapeHtml(monthLabel(program))}</span>
+          </div>
+          ${degree ? `<p class="detail-subject-degree">${degree}</p>` : ''}
+          <dl class="detail-grid">${detailFieldsHtml(program)}</dl>
+          ${programLinkHtml(program, 'detail-subject-link')}
+        </section>
+      `;
+    }
+
     function renderDetail(programsAtUni, focusProgram) {
       const p = focusProgram || (programsAtUni && programsAtUni[0]);
       if (!p) {
@@ -1291,41 +1450,52 @@
         return;
       }
       const list = programsAtUni || [p];
-      const extras = list.length > 1
-        ? `<div class="detail-field" style="grid-column:1/-1"><dt>Programs here</dt><dd>${list.map((x) => escapeHtml(x.course)).join('<br>')}</dd></div>`
-        : '';
-      const linkBtn = p.link
-        ? `<a class="btn btn-primary" href="${escapeAttr(p.link)}" target="_blank" rel="noopener noreferrer">Open program page</a>`
-        : '';
+      const multi = list.length > 1;
       const inList = els.stage.dataset.view === 'list';
-      els.detail.innerHTML = `
-        <button type="button" class="detail-close" id="detail-close" aria-label="Close">×</button>
-        <div class="detail-body">
-          <div class="detail-kicker">${escapeHtml(p.code || p.short)} · ${escapeHtml(p.month === '—' ? 'Winter upcoming' : p.month)} · ${escapeHtml(p.city)}</div>
-          <h2 class="detail-title">${escapeHtml(p.university)}</h2>
-          <p class="detail-course">${escapeHtml(p.course)}${p.degree && p.degree !== '—' ? ` · ${escapeHtml(p.degree)}` : ''}</p>
-          <dl class="detail-grid">
-            <div class="detail-field"><dt>Study period</dt><dd>${escapeHtml(p.period || '—')}</dd></div>
-            <div class="detail-field"><dt>IELTS</dt><dd>${escapeHtml(p.ielts || '—')}</dd></div>
-            <div class="detail-field"><dt>MOI</dt><dd>${escapeHtml(p.moi || '—')}</dd></div>
-            <div class="detail-field"><dt>Admission mode</dt><dd>${escapeHtml(p.admissionMode || '—')}</dd></div>
-            <div class="detail-field"><dt>Method</dt><dd>${escapeHtml(p.admissionMethod || '—')}</dd></div>
-            <div class="detail-field"><dt>Tuition</dt><dd>${escapeHtml(p.tuition || '—')}</dd></div>
-            <div class="detail-field"><dt>Summer deadline</dt><dd>${escapeHtml(p.summerDeadline || '—')}</dd></div>
-            <div class="detail-field"><dt>Winter deadline</dt><dd>${escapeHtml(p.winterDeadline || '—')}</dd></div>
-            <div class="detail-field"><dt>Status</dt><dd>${escapeHtml(p.status || '—')}</dd></div>
-            <div class="detail-field"><dt>Decision</dt><dd>${escapeHtml(p.decision || '—')}</dd></div>
-            ${extras}
-          </dl>
-          <div class="detail-actions">
-            ${linkBtn}
-            ${inList ? '<button type="button" class="btn btn-ghost" id="detail-focus">Show on map</button>' : ''}
+      const mapBtn = inList ? '<button type="button" class="btn btn-ghost" id="detail-focus">Show on map</button>' : '';
+      const head = detailHeadHtml(
+        multi
+          ? `${escapeHtml(p.code || p.short)} · ${escapeHtml(p.city)}`
+          : `${escapeHtml(p.code || p.short)} · ${escapeHtml(monthLabel(p))} · ${escapeHtml(p.city)}`,
+        escapeHtml(p.university),
+        multi
+          ? `${list.length} programs — details by subject`
+          : `${escapeHtml(p.course)}${p.degree && p.degree !== '—' ? ` · ${escapeHtml(p.degree)}` : ''}`
+      );
+      const body = multi
+        ? `
+          ${head}
+          <div class="detail-subjects">
+            ${list.map((x) => subjectCardHtml(x, x.id === p.id)).join('')}
           </div>
-        </div>
-      `;
+          ${mapBtn ? `<div class="detail-actions">${mapBtn}</div>` : ''}
+        `
+        : `
+          ${head}
+          <dl class="detail-grid">${detailFieldsHtml(p)}</dl>
+          <div class="detail-actions">
+            ${programLinkHtml(p)}
+            ${mapBtn}
+          </div>
+        `;
+      els.detail.innerHTML = `<div class="detail-body">${body}</div>`;
       els.detail.classList.add('is-open');
       els.stage.classList.add('has-detail');
       if (map) setTimeout(() => map.invalidateSize(), 280);
+      if (multi) {
+        const activeSubject = els.detail.querySelector('.detail-subject.is-active');
+        const headEl = els.detail.querySelector('.detail-head');
+        if (activeSubject && headEl) {
+          const subjectRect = activeSubject.getBoundingClientRect();
+          const headBottom = headEl.getBoundingClientRect().bottom;
+          const panelBottom = els.detail.getBoundingClientRect().top + els.detail.clientHeight;
+          const visibleHeight = Math.min(subjectRect.bottom, panelBottom) - Math.max(subjectRect.top, headBottom);
+          if (visibleHeight < 160) {
+            els.detail.scrollBy({ top: subjectRect.top - headBottom - 8 });
+          }
+        }
+      }
+      requestAnimationFrame(revealActiveListItem);
       document.getElementById('detail-close')?.addEventListener('click', () => selectProgram(null));
       document.getElementById('detail-focus')?.addEventListener('click', () => {
         setView('map');
